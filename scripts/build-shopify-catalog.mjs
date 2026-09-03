@@ -15,6 +15,7 @@
  *   node scripts/build-shopify-catalog.mjs            # full build
  *   node scripts/build-shopify-catalog.mjs --dry      # fetch/parse only, no image downloads; prints mapping stats
  *   node scripts/build-shopify-catalog.mjs --cap 40   # per-category cap (default 100)
+ *   node scripts/build-shopify-catalog.mjs --dry --cached-only   # mapping stats from already-cached pages only
  *   node scripts/build-shopify-catalog.mjs --test "<raw title>" "<brand>"   # debug the name cleaner
  *
  * Env:
@@ -48,10 +49,13 @@ const DATASET_ID = "Shopify/product-catalogue (Hugging Face), Apache-2.0";
 
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
+const CACHED_ONLY = args.includes("--cached-only"); // use only pages already in .cache (debugging the mapping)
 const CAP = Number(args[args.indexOf("--cap") + 1]) || 100; // per-category cap
 const OVERSELECT = 1.35; // select extra candidates to absorb image failures
 const PAGE = 100;
-const FETCH_CONCURRENCY = 5;
+const FETCH_CONCURRENCY = 3;
+const MIN_INTERVAL_MS = 1000; // global pacing for the rows API (~60 req/min keeps it under the burst limit)
+const PAUSE_429_MS = 45000; // all workers back off this long after a 429
 const IMG_CONCURRENCY = 6;
 const MAX_EDGE = 512;
 const TARGET_BYTES = 48 * 1024; // per image; total budget is ~40 MB
@@ -719,18 +723,43 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const HEADERS = { "user-agent": "faire-personalization-prototype/1.0 (catalog build script)" };
 if (process.env.HF_TOKEN) HEADERS.authorization = `Bearer ${process.env.HF_TOKEN}`;
 
-async function fetchWithRetry(url, { attempts = 6, timeoutMs = 60000, headers = HEADERS } = {}) {
+// Global pacer shared by all workers: one request start per MIN_INTERVAL_MS, plus a
+// shared pause after any 429 (the datasets-server enforces a short burst limit per IP).
+let nextSlot = 0;
+let pausedUntil = 0;
+const rl = { hits429: 0, requests: 0 };
+async function throttle() {
+  for (;;) {
+    const now = Date.now();
+    const wait = Math.max(nextSlot - now, pausedUntil - now);
+    if (wait <= 0) break;
+    await sleep(wait);
+  }
+  nextSlot = Math.max(Date.now(), nextSlot) + MIN_INTERVAL_MS;
+}
+
+async function fetchWithRetry(url, { attempts = 6, timeoutMs = 60000, headers = HEADERS, paced = false } = {}) {
   let lastErr;
+  let n429 = 0;
   for (let i = 0; i < attempts; i++) {
+    if (paced) await throttle();
     try {
+      rl.requests++;
       const res = await fetch(url, { headers, signal: AbortSignal.timeout(timeoutMs) });
       if (res.ok) return res;
-      const retryable = res.status === 429 || res.status >= 500;
       lastErr = new Error(`GET ${url.slice(0, 120)} -> ${res.status}`);
       lastErr.status = res.status;
-      if (!retryable) return res;
-      const ra = Number(res.headers.get("retry-after"));
-      await sleep((ra ? ra * 1000 : 1000 * 2 ** i) + Math.random() * 500);
+      if (res.status === 429) {
+        rl.hits429++;
+        n429++;
+        const ra = Number(res.headers.get("retry-after"));
+        pausedUntil = Math.max(pausedUntil, Date.now() + (ra ? ra * 1000 : paced ? PAUSE_429_MS : 15000));
+        if (n429 < 12) i--; // 429s do not consume attempts (bounded)
+        await sleep(paced ? 0 : 15000);
+        continue;
+      }
+      if (res.status < 500) return res;
+      await sleep(1000 * 2 ** i + Math.random() * 500);
     } catch (e) {
       lastErr = e;
       await sleep(1000 * 2 ** i + Math.random() * 500);
@@ -753,8 +782,9 @@ async function fetchPage(offset, { force = false } = {}) {
       /* corrupt cache; refetch */
     }
   }
+  if (CACHED_ONLY && !force) return null;
   const url = `${API}?dataset=${encodeURIComponent(DATASET)}&config=default&split=train&offset=${offset}&length=${PAGE}`;
-  const res = await fetchWithRetry(url);
+  const res = await fetchWithRetry(url, { paced: true });
   if (!res.ok) throw new Error(`rows API ${res.status} at offset ${offset}`);
   const json = await res.json();
   if (!Array.isArray(json.rows)) throw new Error(`rows API: no rows at offset ${offset}`);
@@ -885,6 +915,7 @@ async function main() {
 
   // 1. Page through the rows API (cached).
   const first = await fetchPage(0);
+  if (!first) throw new Error("--cached-only needs at least the first page in the cache");
   const total = first.num_rows_total;
   const offsets = [];
   for (let o = 0; o < total; o += PAGE) offsets.push(o);
@@ -893,9 +924,9 @@ async function main() {
   const pages = await pool(offsets, FETCH_CONCURRENCY, async (o) => {
     const cached = fs.existsSync(pageFile(o));
     const p = await fetchPage(o);
-    if (!cached) fromNetwork++;
+    if (!cached && p) fromNetwork++;
     fetched++;
-    if (fetched % 50 === 0) console.log(`  pages ${fetched}/${offsets.length}`);
+    if (fetched % 25 === 0) console.log(`  pages ${fetched}/${offsets.length}  (${rl.requests} requests, ${rl.hits429} rate-limited, ${((Date.now() - t0) / 1000).toFixed(0)}s)`);
     return p;
   });
   const pageErrors = pages.filter((p) => p && p.error);
@@ -903,7 +934,8 @@ async function main() {
     console.error(`  ${pageErrors.length} pages failed:`, pageErrors.slice(0, 3).map((p) => String(p.error.message || p.error)));
     throw new Error("page fetch failed; re-run to resume from the cache");
   }
-  console.log(`Fetched ${offsets.length} pages (${fromNetwork} from network, ${offsets.length - fromNetwork} cached); ${total} rows`);
+  const missing = pages.filter((p) => !p).length;
+  console.log(`Fetched ${offsets.length - missing} pages (${fromNetwork} from network, ${offsets.length - missing - fromNetwork} cached${missing ? `, ${missing} missing (--cached-only)` : ""}); ${total} rows; ${rl.hits429} rate-limit hits`);
 
   // 2. Rows -> candidates.
   const stats = { rows: 0, secondhand: 0, unmapped: 0, skippedByRule: 0, hardSkip: 0, nonEnglish: 0, catSkip: 0, noImage: 0, smallImage: 0, badName: 0, dupe: 0 };
@@ -912,6 +944,7 @@ async function main() {
   const seenTitle = new Set();
   const seenBrandKey = new Set();
   for (const page of pages) {
+    if (!page) continue;
     for (const r of page.rows) {
       stats.rows++;
       if (r.ground_truth_is_secondhand !== false) {

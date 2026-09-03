@@ -136,12 +136,44 @@ body {
     margin-bottom: 20px;
   }
   .top-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 22px;
     color: var(--ink);
-    text-decoration: none;
+  }
+  .top-nav__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 19px;
+    line-height: 1;
+    padding-bottom: 2px;
+  }
+  .top-nav__restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .top-nav__restart:hover {
+    background: var(--surface-2);
   }
   .top-nav__links {
     display: flex;
+    align-items: center;
     gap: 28px;
     font-size: 14px;
   }
