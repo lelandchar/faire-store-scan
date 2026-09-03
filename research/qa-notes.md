@@ -23,8 +23,9 @@ Tested 2026-09-02 with Playwright (390×844 mobile viewport and 1280×900 deskto
 
 ## Open issues, prioritized
 
-P0 — needs your input
-- The store read is configured for Meta Muse Spark 1.3 at xhigh effort via OpenRouter, but the account has not completed OpenRouter's 18+ attestation, so every request currently falls back to Claude Sonnet 5 (low effort, ~16-19 s for 8 frames). Confirm at https://openrouter.ai/settings/preferences and Muse Spark takes over automatically; the engineer view shows "Configured" vs "Served by" and the fallback reason.
+P0 — resolved 2026-09-02 (late)
+- Muse Spark 1.3 is live via OpenRouter after the 18+ attestation. Measured on 6 bookshop photos: xhigh 59 s (5.2k output tokens), medium 25 s (3.7k) with an equivalent read. Railway runs xhigh as requested; `railway variable set ANALYSIS_EFFORT=medium -s web` halves the wait.
+- Sample walkthroughs regenerated as true scans that move through 3-4 sections (bookshop, apparel boutique, general store & pantry; the home & gift clip was already good). The static Pexels clips are retired. Frame selection now drops near-duplicates.
 
 P0 — resolved
 - Real store read runs through OpenRouter with structured outputs and streaming; near-valid outputs (e.g. 5 merchandising notes instead of 4) are coerced instead of failing the run.

@@ -139,7 +139,8 @@ const MAP = [
   ["Home & Garden > Decor > Mailbox*", "Garden & outdoor"],
   ["Home & Garden > Decor > Rain Chains", "Garden & outdoor"],
   ["Home & Garden > Lighting > Landscape Pathway Lighting", "Garden & outdoor"],
-  ["Home & Garden > Lawn & Garden > Outdoor Power Equipment", null],
+  ["Home & Garden > Lawn & Garden > Outdoor Power Equipment*", null],
+  ["Home & Garden > Lawn & Garden > Gardening > Gardening Tool Accessories", null],
   ["Home & Garden > Lawn & Garden > Snow Removal", null],
   ["Home & Garden > Lawn & Garden > Watering & Irrigation > Watering Cans", "Garden & outdoor"],
   ["Home & Garden > Lawn & Garden > Watering & Irrigation", null],
@@ -177,6 +178,7 @@ const MAP = [
 
   // --- Kitchen & tabletop ---
   ["Home & Garden > Kitchen & Dining > Kitchen Appliance*", null], // Kitchen Appliances + Kitchen Appliance Accessories
+  ["Home & Garden > Kitchen & Dining > Prefabricated Kitchens*", null],
   ["Home & Garden > Kitchen & Dining", "Kitchen & tabletop"],
 
   // --- Stationery & paper / Books & journals ---
@@ -246,6 +248,13 @@ const MAP = [
   ["Health & Beauty > Personal Care > Hair Care > Hair Dryer*", null],
   ["Health & Beauty > Personal Care > Hair Care > Hair Styling Tools", null],
   ["Health & Beauty > Personal Care > Hair Care > Hair Styling Tool Accessories", null],
+  ["Health & Beauty > Personal Care > Oral Care > Toothbrushes > Manual Toothbrushes", "Bath & body"],
+  ["Health & Beauty > Personal Care > Oral Care", null],
+  ["Health & Beauty > Personal Care > Hair Care > Hair Loss*", null],
+  ["Health & Beauty > Personal Care > Hair Care > Hair Color*", null],
+  ["Health & Beauty > Personal Care > Hair Care > Hair Permanents*", null],
+  ["Health & Beauty > Personal Care > Cosmetics > Cosmetic Tools > Nail Tools > Nail Drill*", null],
+  ["Health & Beauty > Personal Care > Cosmetics > Nail Care > Manicure & Pedicure*", null],
   ["Health & Beauty > Personal Care > Oral Care > Dental Water Jets", null],
   ["Health & Beauty > Personal Care > Oral Care > Power Flossers", null],
   ["Health & Beauty > Personal Care > Oral Care > Toothbrush Accessories", null],
@@ -281,6 +290,12 @@ const MAP = [
   ["Baby & Toddler > Baby Transport*", null],
   ["Baby & Toddler > Potty Training", null],
   ["Baby & Toddler > Nursing & Feeding > Breast*", null],
+  ["Baby & Toddler > Nursing & Feeding > Baby & Toddler Food > Baby Formula", null],
+  ["Baby & Toddler > Diapering > Diapers", null],
+  ["Baby & Toddler > Diapering > Diaper Pail*", null],
+  ["Baby & Toddler > Diapering > Diaper Liners", null],
+  ["Baby & Toddler > Diapering > Baby Wipes", null],
+  ["Baby & Toddler > Diapering > Diaper Rash*", null],
   ["Baby & Toddler > Baby & Toddler Furniture", null],
   ["Baby & Toddler", "Kids & baby"],
   ["Toys & Games > Outdoor Play Equipment", null],
@@ -293,7 +308,10 @@ const MAP = [
   ["Animals & Pet Supplies > Pet Supplies > Pet Vitamins*", null],
   ["Animals & Pet Supplies > Pet Supplies > Pet Flea*", null],
   ["Animals & Pet Supplies > Pet Supplies > Pet First Aid*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Fish & Aquatic Supplies", null],
   ["Animals & Pet Supplies > Pet Supplies > Fish Supplies", null],
+  ["Animals & Pet Supplies > Pet Supplies > Dog Supplies > Dog Diaper*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Cat Supplies > Cat Litter*", null],
   ["Animals & Pet Supplies > Pet Supplies > Reptile*", null],
   ["Animals & Pet Supplies > Pet Supplies > Pet Door*", null],
   ["Animals & Pet Supplies > Pet Supplies > Pet Containment", null],
@@ -317,7 +335,7 @@ function mapCategory(pathStr) {
 
 // Parts / refills / deep "X Accessories" leaves (pizza-cutter stands, pot lids, window hooks...) are
 // dropped in every category; "Hair Accessories" / "Home Fragrance Accessories" style nodes stay.
-const PARTS_RX = /\b(Replacement Parts|Replacement Heads|Refills?|Cartridges|Spare Parts|Accessory Mounts|Lids|Stands)\b/;
+const PARTS_RX = /\b(Replacement Parts|Replacement Heads|Refills?|Cartridges|Spare Parts|Parts|Attachments|Accessory Mounts|Lids|Stands|Blades|Belts|Springs|Tires|Nozzles|Tubings?|Filters|Controllers|Fertilizers|Treatments|Whitening|Hair Loss|Hair Color|Formula|Underwear|Underpants|Training Pants|Incontinence|Waste Disposal|Training Pads?|Wheelbarrows?|Electric|Electronics?|Power Tools?|Machines?|Appliances?|Cleaning|Can Crushers|Sharpeners|Staplers?|Staples|Adding Machine|Fresh & Frozen|Fresh Cut|Frozen|Live Food|Medicated|Batteries|Chargers|Cables|Software|Digital)\b/;
 function isPartsLeaf(pathStr) {
   if (PARTS_RX.test(pathStr)) return true;
   const parts = pathStr.split(" > ");
@@ -355,9 +373,33 @@ function humanizeLeaf(leaf) {
     .join(" ");
 }
 
+const LEAF_RENAME = {
+  "Handbags, Wallets & Cases": "Bags",
+  "Handbag & Wallet Accessories": "Bag accessories",
+  "Clothing Accessories": "Accessories",
+  "Book Accessories": "Book accessories",
+  Headwear: "Hats",
+  "Home Fragrances": "Home fragrance",
+  "Home Fragrance Accessories": "Fragrance accessories",
+  "Nursing & Feeding": "Feeding",
+  "Baby Toys & Activity Equipment": "Baby toys",
+  "Kitchen Tools & Utensils": "Kitchen tools",
+  "Cookware & Bakeware": "Cookware",
+  "Gift Wrapping": "Gift wrap",
+  "Greeting & Note Cards": "Greeting cards",
+  "Notebooks & Notepads": "Notebooks",
+  "Art & Craft Kits": "Craft kits",
+  "Charms & Pendants": "Charms & pendants",
+  "Wallets & Money Clips": "Wallets",
+  "Coffee & Tea Sets": "Coffee & tea",
+  "Decorative Bottles": "Bottles",
+  "Throw Pillows": "Pillows",
+  "Vases": "Vases",
+};
 function subcategoryFor(category, pathStr) {
   const parts = pathStr.split(" > ").map((s) => s.trim());
   let leaf = parts[parts.length - 1];
+  if (LEAF_RENAME[leaf]) return LEAF_RENAME[leaf];
   if (GENERIC_LEAVES.has(leaf) || parts.length <= 2) {
     // Special-case a few generic leaves that still say something.
     if (leaf === "Home Fragrances") return "Home fragrance";
@@ -411,12 +453,22 @@ function deriveSub(category, title) {
 const CANDLE_FROM = new Set(["Home decor", "Kitchen & tabletop", "Bath & body", "Garden & outdoor", "Stationery & paper", "Jewelry & accessories", "Apparel"]);
 const BOOK_FROM = new Set(["Stationery & paper", "Home decor", "Kitchen & tabletop"]);
 /** Returns [category, subcategory] after keyword overrides. */
+const CRAFT_NEG = /\b(molds?|moulds?|making|wicks?|kits?|dye|supplies|warmers?|fragrance oils? for|scent(ed)? oils? for|tins? only|jars? only|labels?)\b/i;
+const PEN_NEG = /\b(pens?|pencils?|highlighters?|markers?|stickers?|stamps?|refills?|filler paper|inserts?|dividers?|clips?|tabs?|covers?|sleeves?|stand|holder|light|bookmark)\b/i;
+/** Keyword must appear early in the title and not right after "for/with" (an accessory *for* candles/planners). */
+function headMatch(rx, title) {
+  const m = rx.exec(title);
+  if (!m) return false;
+  if (m.index > 45) return false;
+  const before = title.slice(Math.max(0, m.index - 12), m.index);
+  return !/\b(for|with|fits|compatible)\s*$/i.test(before);
+}
 function applyOverrides(category, subcategory, title) {
   if (CANDLE_FROM.has(category) && !RXO.lightNeg.test(title)) {
-    if (RXO.candleHolder.test(title)) return ["Candles & fragrance", "Candle holders", true];
-    if (RXO.candle.test(title)) return ["Candles & fragrance", deriveSub("Candles & fragrance", title), true];
+    if (headMatch(RXO.candleHolder, title)) return ["Candles & fragrance", "Candle holders", true];
+    if (headMatch(RXO.candle, title) && !CRAFT_NEG.test(title)) return ["Candles & fragrance", deriveSub("Candles & fragrance", title), true];
   }
-  if (BOOK_FROM.has(category) && RXO.book.test(title) && !RXO.bookNeg.test(title)) {
+  if (BOOK_FROM.has(category) && headMatch(RXO.book, title) && !RXO.bookNeg.test(title) && !PEN_NEG.test(title)) {
     return ["Books & journals", deriveSub("Books & journals", title), true];
   }
   return [category, subcategory, false];
@@ -428,11 +480,15 @@ function applyOverrides(category, subcategory, title) {
 
 // Utility / electronics / medical / big-box / weapons / adult — dropped regardless of category.
 // Superset of the ABO build's HARD_SKIP plus the Shopify-specific additions from the brief.
-const HARD_SKIP = /\b(replacement|refill cartridge|spare parts?|battery|batteries|charger|usb|hdmi|bluetooth|wifi|wi-fi|electric|electrical|cordless|corded|voltage|watt|led bulb|light bulb|bulbs?|power strip|extension cord|surge|socket|plug|phone case|iphone|ipad|galaxy|pixel \d|xiaomi|redmi|oneplus|samsung|huawei|airpods?|macbook|mobile cover|back cover|screen protector|laptop|tablet|kindle|printer|toner|ink cartridge|adapter|cable|mount|bracket|hardware|screw|bolt|hinge|drawer slide|ladder|toilet|plunger|urinal|trash bag|garbage bag|detergent|bleach|disinfect|sanitizer|cleaner|cleaning|mop|broom|dustpan|vacuum|pest|insect|rodent|mouse trap|medic\w*|pharma\w*|tablets?|capsules?|softgels?|supplements?|vitamins?|probiotics?|prescription|melatonin|creatine|protein powder|pre-?workout|collagen peptides|condoms?|lubricant|pregnancy test|thermometer|blood pressure|glucose|nicotine|cigarette|cigar|vape|e-?liquid|hookah|bong|cannabis|cbd|thc|marijuana|knife sharpener|lawn mower|chainsaw|generator|automotive|car seat cover|steering|tire|wiper|engine|motor oil|3d printer|filament|subscription|gift card|e-gift|digital (code|download|product|file)|download|printable|swatch|sample|renewed|refurbished|strip lights?|rope lights?|work lights?|flood lights?|led strip|thermoelectric|12v|ac\/ ?dc|amazon|walmart|costco|ebay|aliexpress|temu|shein|wish\.com|dropship\w*|pack of (\d{3,}|[5-9]\d)|(\d{3,}|[5-9]\d)[- ]?(pack|pcs|pieces|count|ct)|wholesale lot|guns?|rifle|pistol|firearm|ammo|ammunition|holster|swords?|machete|crossbow|taser|stun gun|pepper spray|brass knuckles|knuckles|tactical|airsoft|sex|sexy|dildo|vibrator|erotic|adult toys?|bondage|fetish|lingerie|g-string|pre-?order|preorder|deposit|custom order|reserved for|do not buy|test product|placeholder)\b/i;
+const HARD_SKIP = /\b(replacement|refill cartridge|spare parts?|battery|batteries|charger|usb|hdmi|bluetooth|wifi|wi-fi|electric|electrical|cordless|corded|voltage|watt|led bulb|light bulb|bulbs?|power strip|extension cord|surge|socket|plug|phone case|iphone|ipad|galaxy|pixel \d|xiaomi|redmi|oneplus|samsung|huawei|airpods?|macbook|mobile cover|back cover|screen protector|laptop|tablet|kindle|printer|toner|ink cartridge|adapter|cable|mount|bracket|hardware|screw|bolt|hinge|drawer slide|ladder|toilet|plunger|urinal|trash bag|garbage bag|detergent|bleach|disinfect|sanitizer|cleaner|cleaning|mop|broom|dustpan|vacuum|pest|insect|rodent|mouse trap|medic\w*|pharma\w*|tablets?|capsules?|softgels?|supplements?|vitamins?|probiotics?|prescription|melatonin|creatine|protein powder|pre-?workout|collagen peptides|condoms?|lubricant|pregnancy test|thermometer|blood pressure|glucose|nicotine|cigarette|cigar|vape|e-?liquid|hookah|bong|cannabis|cbd|thc|marijuana|knife sharpener|lawn mower|chainsaw|generator|automotive|car seat cover|steering|tire|wiper|engine|motor oil|3d printer|filament|subscription|gift card|e-gift|digital (code|download|product|file)|download|printable|swatch|sample|renewed|refurbished|strip lights?|rope lights?|work lights?|flood lights?|led strip|thermoelectric|12v|ac\/ ?dc|amazon|walmart|costco|ebay|aliexpress|temu|shein|wish\.com|dropship\w*|pack of (\d{3,}|[5-9]\d)|(\d{3,}|[5-9]\d)[- ]?(pack|pcs|pieces|count|ct)|wholesale lot|guns?|rifle|pistol|firearm|ammo|ammunition|holster|swords?|machete|crossbow|taser|stun gun|pepper spray|brass knuckles|knuckles|tactical|airsoft|sex|sexy|dildo|vibrator|erotic|adult toys?|bondage|fetish|lingerie|g-string|pre-?order|preorder|deposit|custom order|reserved for|do not buy|test product|placeholder|(stand|lid|base|top|bottom|cover|handle|blade|bag|insert|frame) only|electrolyte|regulator|tubing|nozzle|attachment|co2|spare|dispenser refill|whitening)\b/i;
 
 // Non-English function words (German, French, Spanish, Italian, Swedish/Danish/Norwegian, Dutch, Portuguese).
 const NON_EN = /\b(mit|und|für|fuer|teilig|aus|oder|nicht|sind|der|das|avec|pour|les|des|une|sont|dans|votre|vous|cette|para|con|del|una|por|las|los|está|este|esta|della|dello|degli|pezzi|sono|questo|och|för|med|till|från|som|het|een|voor|niet|ook|zijn|deze|não|você|juego|conjunto|ensemble|stück|stuck|größe|grösse|farbe|schwarz|weiß|weiss|noir|blanc|rouge|bleu|vert|negro|blanco|rojo|azul|nero|bianco|rosso|svart|vit|blå|grön)\b/i;
-const NON_EN_G = new RegExp(NON_EN.source, "gi");
+// Foreign function words that are unambiguous in any case, and ambiguous ones that only count in lower case
+// ("de" could be "Eau de Parfum"; "LA" could be Los Angeles).
+const TITLE_FOREIGN_CI = /\b(pour|para|pentru|copii|und|mit|für|fuer|von|zum|zur|avec|sans|della|dello|delle|degli|gli|voor|ohne|uma|umas|não|você|och|för|från|ikke|også)\b/i;
+const TITLE_FOREIGN_LC = /(^|[^A-Za-z])(de(?!\s+(parfum|toilette|cologne|luxe|la\s+mer|la\s+cr[eè]me|provence|bain|toilette))|la|le|les|el|los|las|du|des|dans|sur|con|il|per(?!\s+(cent|pack|set|piece|pc|box|unit|pair|person|day|serving|bottle|bag|roll|sheet|order|item|\d))|het|een|van(?!s\b)|das|dos|com|sem|est|é|und)(?=[^A-Za-z]|$)/;
+const NON_EN_G = /\b(de|la|le|les|el|los|las|du|des|pour|para|con|pentru|copii|und|mit|für|von|zum|zur|ein|eine|einen|der|die|das|ist|nicht|auch|il|gli|della|dello|delle|degli|per|che|non|una|uno|het|een|voor|van|niet|ook|zijn|deze|ohne|avec|sans|dans|sur|sous|est|sont|vous|votre|nous|com|sem|uma|não|você|este|esta|está|pero|más|muy|och|för|med|till|från|som|är|att|inte|og|til|av|ikke|det|den)\b/gi;
 const EN_STOP_G = /\b(the|and|with|for|of|in|is|are|this|that|your|our|from|made|to|on|by|it|you|or|at|as|be|has|have|will|can|all|each|every|perfect|beautiful|design|designed|quality|handmade|gift|available|features?|includes?|comes?|size|color|colour)\b/gi;
 const COMMON_EN = /\b(the|and|with|for|of|in|set|gift|handmade|made|from|by|to|on|your|our|kit|box|bag|cup|mug|candle|soap|cards?|book|print|art|tee|shirt|dress|hat|toy|dog|cat|baby|kids|home|wall|table|kitchen|garden|natural|organic|small|large|mini|new|classic|vintage|wood|wooden|cotton|glass|ceramic|leather|gold|silver|black|white|blue|green|pink|red|grey|gray|brown|hand|face|body|hair|bath|tea|coffee|chocolate|honey|jam|cookies?|candy|salt|spice|oil|pet|puppy|kitten|bird|plants?|planter|pot|vase|pillow|blanket|throw|towel|earrings?|necklace|bracelet|ring|watch|wallet|tote|pen|pencil|notebook|journal|planner|stickers?|stationery|paper|wrap|wrapping|greeting|birthday|christmas|holiday|halloween|easter|valentine|wedding|women|womens|women's|men|mens|men's|boys|girls|kid|child|toddler|infant|newborn|pack|pair|piece|sets?|bowl|plate|jar|bottle|light|lamp|frame|clock|mirror|basket|tray|holder|stand|mat|rug|sign|ornament|decor|scent|scented|fragrance|diffuser|lotion|cream|balm|scrub|wash|shampoo|mask|serum|socks|scarf|gloves|beanie|cap|sweater|hoodie|jacket|pants|shorts|skirt|top|boots|sandals|sneakers|shoes|bib|onesie|romper|plush|puzzle|game|blocks|doll|treats?|collar|leash|bed|seeds?|tool|tools)\b/i;
 
@@ -534,7 +590,8 @@ function normalizeBrand(raw) {
   const letters = b.replace(/[^A-Za-z]/g, "");
   if (letters.length >= 5 && letters === letters.toUpperCase()) b = b.split(" ").map(titleCaseWord).join(" ");
   if (!/^[\x20-\x7e]+$/.test(b)) b = b.replace(/[^\x20-\x7e]+/g, "").replace(/\s+/g, " ").trim();
-  if (/^(n\/a|na|none|null|unknown|no brand|generic|-+|—)$/i.test(b)) b = "";
+  if (/^(n\/a|na|none|null|unknown|no brand|unbranded|generic|universal|default|default title|vendor|tba|tbd|printify|printful|-+|—)$/i.test(b)) b = "";
+  if (b.length > 40 || /^\d+$/.test(b) || /\d{3,}/.test(b) || (/\d/.test(b) && !/[aeiouy]/i.test(b)) || !/[a-z]/i.test(b)) b = "";
   return b.trim() || "—";
 }
 
@@ -669,7 +726,7 @@ function nameLooksReal(name) {
   const words = name
     .toLowerCase()
     .replace(/'s\b/g, "")
-    .replace(/[^a-z\s-]/g, " ")
+    .replace(/[^a-z\s]/g, " ")
     .split(/\s+/)
     .filter((w) => w.length >= 3 && !COLOR_ALIASES.has(w) && !SIZE_WORDS.has(w) && !["men", "women", "mens", "womens", "kids", "boys", "girls", "set", "pack", "with", "and", "the", "for", "colour", "color", "assorted"].includes(w));
   return words.length >= 2;
@@ -683,12 +740,16 @@ function looksEnglish(title, desc) {
   if (ascii / letters.length < 0.9) return false;
   if (NON_EN.test(title)) return false;
   const hasDiacritics = /[À-ɏͰ-ϿЀ-ӿ぀-ヿ一-鿿]/.test(title);
-  if (hasDiacritics && !COMMON_EN.test(title)) return false;
-  const d = normalizeText(desc).slice(0, 500);
+  const common = COMMON_EN.test(title);
+  if (hasDiacritics && !common) return false;
+  if (!common && (TITLE_FOREIGN_CI.test(title) || TITLE_FOREIGN_LC.test(title))) return false;
+  const d = normalizeText(desc).slice(0, 600);
   if (d) {
     const nonEn = (d.match(NON_EN_G) || []).length;
     const en = (d.match(EN_STOP_G) || []).length;
-    if (nonEn >= 3 && nonEn > en) return false;
+    const words = d.split(/\s+/).length;
+    if (words >= 8 && nonEn >= 3 && nonEn >= en * 0.8) return false;
+    if (!common && words >= 5 && nonEn >= 2 && nonEn > en) return false;
     const dl = d.match(/\p{L}/gu) || [];
     if (dl.length >= 40) {
       const da = dl.filter((ch) => /[A-Za-z]/.test(ch)).length;
@@ -1171,9 +1232,9 @@ async function main() {
     }
     console.log("Sample selections:");
     for (const cat of CATEGORIES) {
-      const sample = selected.filter((c) => c.category === cat).slice(0, 8);
+      const sample = selected.filter((c) => c.category === cat).slice(0, 10);
       console.log(`  [${cat}]`);
-      for (const c of sample) console.log(`     ${c.name}  |  ${c.brand}  |  ${c.subcategory}`);
+      for (const c of sample) console.log(`     ${c.name}  |  ${c.brand}  |  ${c.subcategory}  |  ${c.sourceCategory.split(" > ").slice(1).join(" > ")}`);
     }
   }
 
