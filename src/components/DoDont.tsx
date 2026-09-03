@@ -20,13 +20,6 @@ const CARDS: { kind: "do" | "dont"; title: string; body: string; video?: string;
   },
   {
     kind: "dont",
-    title: "Don't get too close",
-    body: "One product tells us less than the whole shelf.",
-    video: "/samples/videos/bad-too-close.mp4",
-    poster: "/samples/videos/bad-too-close.jpg",
-  },
-  {
-    kind: "dont",
     title: "Don't stand too far away",
     body: "From across the room we can't see what's on the shelf.",
     video: "/samples/videos/bad-too-far.mp4",
