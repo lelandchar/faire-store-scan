@@ -21,12 +21,12 @@ export default function StoreDetailsPage() {
 
   const next = () => {
     dispatch({ type: "setDetails", storeName: name.trim(), description: description.trim() });
-    router.push("/onboarding/store-category");
+    router.push("/onboarding/scan");
   };
 
   return (
     <Screen
-      back="/onboarding/store-type"
+      back="/onboarding/welcome"
       title="Store Details"
       footer={
         <Button disabled={!canNext} onClick={next}>

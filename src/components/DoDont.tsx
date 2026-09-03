@@ -27,6 +27,13 @@ const CARDS: { kind: "do" | "dont"; title: string; body: string; video?: string;
   },
   {
     kind: "dont",
+    title: "Don't stand too far away",
+    body: "From across the room we can't see what's on the shelf.",
+    video: "/samples/videos/bad-too-far.mp4",
+    poster: "/samples/videos/bad-too-far.jpg",
+  },
+  {
+    kind: "dont",
     title: "Turn the lights on",
     body: "Dim shots hide colors and materials.",
     video: "/samples/videos/bad-too-dark.mp4",
@@ -63,9 +70,9 @@ export function DoDont() {
     return () => io.disconnect();
   }, []);
   return (
-    <div ref={ref} className="-mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none]">
+    <div ref={ref} className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none]" style={{ touchAction: "pan-x pan-y", overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch" }}>
       {CARDS.map((c) => (
-        <div key={c.title} className="w-[168px] shrink-0 snap-start">
+        <div key={c.title} className="w-[150px] shrink-0">
           <div className="relative overflow-hidden rounded-[var(--radius-lg)] bg-surface-2" style={{ aspectRatio: "4 / 5" }}>
             {c.video ? (
               <video className="h-full w-full object-cover" src={c.video} poster={c.poster} muted loop playsInline preload="metadata" />

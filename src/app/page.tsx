@@ -1,48 +1,37 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { useOnboarding } from "@/lib/store";
+import { OptionRow } from "@/components/ui/OptionRow";
+import { Screen } from "@/components/ui/Screen";
+import { useOnboarding, type StoreTypeChoice } from "@/lib/store";
 
-export default function CoverPage() {
+const OPTIONS: { value: StoreTypeChoice; label: string }[] = [
+  { value: "physical", label: "Physical retail store" },
+  { value: "popup", label: "Pop-up shop" },
+];
+
+/** Faire's real first onboarding question, trimmed to the two store types a walkthrough makes sense for. */
+export default function StoreTypePage() {
   const router = useRouter();
-  const { dispatch } = useOnboarding();
+  const { state, dispatch } = useOnboarding();
   return (
-    <div className="flex min-h-full flex-1 flex-col">
-      <div className="relative h-[46%] min-h-[300px] w-full overflow-hidden bg-surface-2">
-        <video
-          className="h-full w-full object-cover"
-          src="/samples/videos/home-gift-walkthrough.mp4"
-          poster="/samples/videos/home-gift-walkthrough.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-      </div>
-      <div className="flex flex-1 flex-col px-6 pb-8">
-        <p className="text-caption uppercase tracking-[0.14em]">Prototype · new retailer onboarding</p>
-        <h1 className="text-display mt-2 rise">Your first feed should already know your store.</h1>
-        <p className="text-body mt-4 rise">
-          Film a 15-second walkthrough of your shelves. Faire reads what you carry and personalizes your home feed
-          before you&apos;ve searched for anything.
-        </p>
-        <div className="mt-auto space-y-3 pt-8">
-          <Button
+    <Screen back={false} title="Store type" subtitle="Where do you sell your products?" className="pt-14">
+      <div className="mt-8 space-y-3">
+        {OPTIONS.map((o) => (
+          <OptionRow
+            key={o.value}
+            selected={state.storeType === o.value}
             onClick={() => {
               dispatch({ type: "reset" });
-              router.push("/onboarding/store-type");
+              dispatch({ type: "setStoreType", value: o.value });
+              router.push("/onboarding/welcome");
             }}
           >
-            Start the onboarding demo
-          </Button>
-          <Link href="/about" className="block py-2 text-center text-[14px] text-ink underline underline-offset-4">
-            How it works
-          </Link>
-        </div>
+            {o.label}
+          </OptionRow>
+        ))}
       </div>
-    </div>
+      <p className="mt-6 text-center text-[15px] text-ink-2 underline underline-offset-4">I&apos;m just shopping for myself</p>
+    </Screen>
   );
 }

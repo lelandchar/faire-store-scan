@@ -120,7 +120,7 @@ body {
     /* dynamic island */
     content: "";
     position: absolute;
-    top: 12px;
+    top: 38px; /* below the 26px prototype tab */
     left: 50%;
     transform: translateX(-50%);
     width: 118px;
@@ -133,12 +133,59 @@ body {
   .status-bar {
     height: 54px;
   }
+  /* Small tab at the very top of the frame: prototype navigation, not part of the app UI. */
+  .proto-tab {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    height: 26px;
+    align-items: center;
+    background: #1b1b1b;
+    color: #cfcfcf;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .proto-tab a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 @media (max-width: 899px) {
   .status-bar {
     display: none;
   }
   .side-panel {
+    display: none;
+  }
+  .proto-tab {
+    position: absolute;
+    top: max(8px, env(safe-area-inset-top));
+    right: 10px;
+    z-index: 45;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(27, 27, 27, 0.8);
+    color: #ddd;
+    font-size: 11px;
+    backdrop-filter: blur(6px);
+  }
+  .proto-tab a {
+    color: #fff;
+  }
+  .proto-tab span {
+    display: none;
+  }
+  .proto-tab a:last-child {
+    display: none;
+  }
+  /* On the feed screens the top-right corner belongs to the app; keep the tab out of the way. */
+  .proto-tab--quiet {
     display: none;
   }
 }

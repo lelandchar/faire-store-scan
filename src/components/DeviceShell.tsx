@@ -3,43 +3,40 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { StatusBar } from "./StatusBar";
 
 const STEPS = [
-  { href: "/onboarding/store-type", label: "Faire's existing onboarding" },
-  { href: "/onboarding/scan", label: "New: film a store walkthrough" },
-  { href: "/onboarding/analyzing", label: "Frames → structured signals" },
+  { href: "/", label: "Store type (Faire's onboarding)" },
+  { href: "/onboarding/welcome", label: "Why film your store" },
+  { href: "/onboarding/store-details", label: "Store details" },
+  { href: "/onboarding/scan", label: "Film a 15-second walkthrough" },
+  { href: "/onboarding/analyzing", label: "Reading the shelves" },
   { href: "/onboarding/profile", label: "Retailer confirms the read" },
-  { href: "/home", label: "Cold-start personalized feed" },
+  { href: "/home", label: "Personalized storefront" },
 ];
 
 export function DeviceShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   // The engineer/admin trace view is a full-width page, not a phone screen.
   if (pathname?.startsWith("/admin")) return <>{children}</>;
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname?.startsWith(href));
   return (
     <div className="shell">
       <aside className="side-panel w-[360px] shrink-0 self-center text-ink">
-        <p className="text-caption uppercase tracking-[0.14em]">Prototype</p>
-        <h1 className="text-display mt-2">Store Scan</h1>
-        <p className="text-body mt-3">
-          Cold-start personalization for new Faire retailers: film your shelves, and your first feed already knows your store.
-        </p>
-        <ol className="mt-6 space-y-2">
+        <h1 className="text-display">Store Scan</h1>
+        <p className="text-body mt-3">A new step in Faire&apos;s retailer onboarding: film your shelves, and your storefront is personalized from day one.</p>
+        <ol className="mt-6 space-y-1.5">
           {STEPS.map((s, i) => {
-            const active = pathname?.startsWith(s.href);
+            const active = isActive(s.href);
             return (
               <li key={s.href}>
                 <Link
                   href={s.href}
-                  className={`flex items-center gap-3 rounded-[var(--radius)] px-2 py-1.5 text-[15px] transition-colors ${
+                  className={`flex items-center gap-3 rounded-[var(--radius)] px-2 py-1.5 text-[14px] transition-colors ${
                     active ? "bg-white text-ink shadow-sm" : "text-ink-2 hover:bg-white/60"
                   }`}
                 >
-                  <span
-                    className={`flex h-6 w-6 items-center justify-center rounded-full border text-[12px] ${
-                      active ? "border-ink bg-ink text-white" : "border-line text-muted"
-                    }`}
-                  >
+                  <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[12px] ${active ? "border-ink bg-ink text-white" : "border-line text-muted"}`}>
                     {i + 1}
                   </span>
                   {s.label}
@@ -48,28 +45,15 @@ export function DeviceShell({ children }: { children: ReactNode }) {
             );
           })}
         </ol>
-        <div className="mt-8 space-y-2 text-caption">
-          <p>
-            <Link href="/about" className="underline underline-offset-2">
-              How it works
-            </Link>{" "}
-            ·{" "}
-            <Link href="/admin" className="underline underline-offset-2">
-              Engineer view
-            </Link>{" "}
-            · built by Leland Char
-          </p>
-          <p>Independent concept inspired by an interview conversation. Not affiliated with or endorsed by Faire.</p>
-        </div>
+        <p className="text-caption mt-8">Built by Leland Char</p>
       </aside>
       <div className="device">
-        <div className="status-bar flex shrink-0 items-end justify-between px-8 pb-2 text-[15px] font-semibold text-ink">
-          <span>9:41</span>
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block h-[10px] w-[16px] rounded-[2px] bg-ink" />
-            <span className="inline-block h-[10px] w-[22px] rounded-[3px] border border-ink" />
-          </span>
+        <div className={`proto-tab ${pathname?.startsWith("/home") || pathname?.startsWith("/search") ? "proto-tab--quiet" : ""}`}>
+          <Link href="/about">How it works</Link>
+          <span aria-hidden>·</span>
+          <Link href="/admin">Engineer view</Link>
         </div>
+        <StatusBar />
         <div className="screen">{children}</div>
       </div>
     </div>
