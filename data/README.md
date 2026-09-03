@@ -102,3 +102,14 @@ could not pick up each other's output files.
   msrp ~2x wholesale). Edit the JSON directly for small tweaks.
 - Images: re-run the `imagePrompt` for a product through `codex-image`, then resize with
   `sips -z 800 800 in.png --out tmp.png && sips -s format jpeg -s formatOptions 80 tmp.png --out public/catalog/<id>.jpg`.
+
+## Generation stats (this build)
+
+- 72 products, 72 images, 0 failed generations, 0 retries needed
+- Per-image generation time (wall clock, one `codex-image` call): mean 45.8s,
+  median 37s, min 32s, max 500s (one slow outlier, kt-06 at 500s)
+- Throughput: 4 concurrent workers finished 67 images in 18m 28s wall time
+- Output size: 6.98 MB total across 72 JPEGs, average 99 KB,
+  largest 120 KB (all <= 120 KB)
+- JPEG quality used: 40 images at q80, the rest stepped down (72/64/56/48/44) to stay under 120 KB;
+  the step-downs are on high-texture subjects (weaves, fringe, marbled paper) and remain visually clean

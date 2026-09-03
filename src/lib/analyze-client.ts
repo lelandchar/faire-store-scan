@@ -44,6 +44,7 @@ export async function runAnalysis(opts: {
       if (!line) continue;
       const evt = JSON.parse(line.slice(6)) as {
         delta?: string;
+        replace?: string;
         error?: string;
         status?: string;
         done?: boolean;
@@ -61,6 +62,7 @@ export async function runAnalysis(opts: {
           /* incomplete token boundary; wait for more */
         }
       }
+      if (evt.replace) text = evt.replace;
       if (evt.done) opts.onMeta?.({ mock: evt.mock, model: evt.model, usage: evt.usage });
     }
   }

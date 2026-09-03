@@ -6,6 +6,45 @@ import { pickMock } from "@/lib/mock-analysis";
 import { CATEGORIES, STYLES } from "@/lib/types";
 
 export const runtime = "nodejs";
+
+type Provider = "mock" | "anthropic" | "openrouter";
+
+function pickProvider(): Provider {
+  if (process.env.MOCK_ANALYSIS === "1") return "mock";
+  const forced = process.env.ANALYSIS_PROVIDER as Provider | undefined;
+  if (forced === "openrouter" && process.env.OPENROUTER_API_KEY) return "openrouter";
+  if (forced === "anthropic" && process.env.ANTHROPIC_API_KEY) return "anthropic";
+  if (process.env.OPENROUTER_API_KEY) return "openrouter";
+  if (process.env.ANTHROPIC_API_KEY) return "anthropic";
+  return "mock";
+}
+
+/** Model id for OpenRouter: accept bare Anthropic ids and prefix them. */
+function openRouterModel(): string {
+  const m = process.env.OPENROUTER_MODEL || process.env.ANALYSIS_MODEL || "anthropic/claude-sonnet-5";
+  return m.includes("/") ? m : `anthropic/${m}`;
+}
+
+/** Pull the first balanced JSON object out of a model reply that may carry fences or prose. */
+function extractJson(text: string): string | null {
+  const start = text.indexOf("{");
+  if (start < 0) return null;
+  let depth = 0;
+  let inStr = false;
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (inStr) {
+      if (ch === "\\") i++;
+      else if (ch === '"') inStr = false;
+    } else if (ch === '"') inStr = true;
+    else if (ch === "{") depth++;
+    else if (ch === "}") {
+      depth--;
+      if (depth === 0) return text.slice(start, i + 1);
+    }
+  }
+  return null;
+}
 export const maxDuration = 120;
 
 const MAX_FRAMES = 12;
@@ -66,14 +105,15 @@ export async function POST(req: Request) {
     }
   }
 
-  const useMock = process.env.MOCK_ANALYSIS === "1" || !process.env.ANTHROPIC_API_KEY;
+  const provider = pickProvider();
+  const useMock = provider === "mock";
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const send = (obj: Record<string, unknown>) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`));
       try {
-        send({ status: "started", mock: useMock });
+        send({ status: "started", mock: useMock, provider });
         if (useMock) {
           const json = JSON.stringify(pickMock(parsed.context));
           // Roughly the pace of a real model so the reveal choreography is honest.
@@ -83,6 +123,116 @@ export async function POST(req: Request) {
             await sleep(28);
           }
           send({ done: true, mock: true });
+          return;
+        }
+
+        const ctx0 = parsed.context;
+        const ctxLines0 = [
+          ctx0.storeName ? `Store name: ${ctx0.storeName}` : null,
+          ctx0.storeType ? `Store type the retailer selected: ${ctx0.storeType}` : null,
+          ctx0.description ? `Retailer's own description: "${ctx0.description}"` : null,
+        ].filter(Boolean);
+        const finalInstruction = `${ctxLines0.length ? ctxLines0.join("\n") + "\n\n" : ""}These ${parsed.frames.length} frames come from the retailer's walkthrough, in order. Produce the structured store read now.`;
+
+        if (provider === "openrouter") {
+          // OpenAI-compatible chat completions with a strict JSON schema, streamed as SSE.
+          const model = openRouterModel();
+          const userContent: ({ type: "text"; text: string } | { type: "image_url"; image_url: { url: string } })[] = [];
+          for (const f of parsed.frames) {
+            const label = f.timestampMs ? `Frame ${f.id} at ${(f.timestampMs / 1000).toFixed(1)}s:` : `Frame ${f.id}:`;
+            userContent.push({ type: "text", text: label });
+            userContent.push({ type: "image_url", image_url: { url: f.dataUrl } });
+          }
+          userContent.push({ type: "text", text: finalInstruction });
+          const schema = z.toJSONSchema(AnalysisSchema);
+          const effort = process.env.ANALYSIS_EFFORT;
+          const makeBody = (strict: boolean) =>
+            JSON.stringify({
+              model,
+              stream: true,
+              max_tokens: 6000,
+              messages: [
+                { role: "system", content: SYSTEM + "\n\nRespond with a single JSON object that matches the required schema. No prose, no code fences." },
+                { role: "user", content: userContent },
+              ],
+              response_format: { type: "json_schema", json_schema: { name: "store_read", strict, schema } },
+              ...(effort ? { reasoning: { effort } } : {}),
+            });
+          const call = (strict: boolean) =>
+            fetch("https://openrouter.ai/api/v1/chat/completions", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+                "Content-Type": "application/json",
+                "HTTP-Referer": process.env.PUBLIC_URL || "https://web-production-dd80b.up.railway.app",
+                "X-Title": "Store Scan prototype",
+              },
+              body: makeBody(strict),
+            });
+          let res = await call(true);
+          if (!res.ok && res.status >= 400 && res.status < 500) {
+            const errText = await res.text().catch(() => "");
+            console.warn("[analyze] openrouter strict request failed, retrying non-strict:", res.status, errText.slice(0, 300));
+            res = await call(false);
+          }
+          if (!res.ok || !res.body) {
+            const errText = await res.text().catch(() => "");
+            console.error("[analyze] openrouter error", res.status, errText.slice(0, 500));
+            send({ error: res.status === 401 ? "The analysis service is not configured (bad API key)." : `Analysis failed (${res.status}). Please try again.` });
+            return;
+          }
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let buf = "";
+          let full = "";
+          let usage: { input?: number; output?: number } | undefined;
+          let finished = false;
+          while (!finished) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buf += decoder.decode(value, { stream: true });
+            let idx: number;
+            while ((idx = buf.indexOf("\n")) >= 0) {
+              const line = buf.slice(0, idx).trim();
+              buf = buf.slice(idx + 1);
+              if (!line.startsWith("data:")) continue;
+              const payload = line.slice(5).trim();
+              if (payload === "[DONE]") {
+                finished = true;
+                break;
+              }
+              try {
+                const evt = JSON.parse(payload) as {
+                  choices?: { delta?: { content?: string | null }; finish_reason?: string | null }[];
+                  usage?: { prompt_tokens?: number; completion_tokens?: number };
+                  error?: { message?: string };
+                };
+                if (evt.error?.message) {
+                  send({ error: `Analysis failed: ${evt.error.message}` });
+                  return;
+                }
+                const delta = evt.choices?.[0]?.delta?.content;
+                if (delta) {
+                  full += delta;
+                  send({ delta });
+                }
+                if (evt.usage) usage = { input: evt.usage.prompt_tokens, output: evt.usage.completion_tokens };
+              } catch {
+                /* keep-alive comments or partial lines */
+              }
+            }
+          }
+          // If the model wrapped the JSON in fences or prose, hand the client a clean copy.
+          const trimmed = full.trim();
+          if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) {
+            const clean = extractJson(full);
+            if (!clean) {
+              send({ error: "The analysis came back in an unexpected format. Please try again." });
+              return;
+            }
+            send({ replace: clean });
+          }
+          send({ done: true, usage, model });
           return;
         }
 
