@@ -200,8 +200,15 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     if (state.analysisStatus === "analyzing" || state.analysisStatus === "extracting") return;
     const t = setTimeout(() => {
       try {
-        const frameBytes = state.frames.reduce((n, f) => n + f.dataUrl.length, 0);
-        const toSave = { ...state, frames: frameBytes < MAX_PERSISTED_FRAME_BYTES ? state.frames : [] };
+        // Full frames when they fit; otherwise the 640px copies (plenty for retrieval and the recap),
+        // so a long walkthrough still reaches the matching step after a page load.
+        const full = state.frames.reduce((n, f) => n + f.dataUrl.length, 0);
+        let frames: Frame[] = state.frames.map((f) => ({ id: f.id, dataUrl: f.dataUrl, timestampMs: f.timestampMs, source: f.source }));
+        if (full >= MAX_PERSISTED_FRAME_BYTES) {
+          const shrunk = state.frames.map(({ small, ...f }) => ({ ...f, dataUrl: small ?? f.dataUrl }));
+          frames = shrunk.reduce((n, f) => n + f.dataUrl.length, 0) < MAX_PERSISTED_FRAME_BYTES ? shrunk : [];
+        }
+        const toSave = { ...state, frames };
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
       } catch {
         /* quota or private mode: fine */

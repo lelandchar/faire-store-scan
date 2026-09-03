@@ -104,6 +104,23 @@ function difference(a: Float32Array, b: Float32Array): number {
 }
 
 const DUPLICATE_THRESHOLD = 0.035;
+/** Retrieval models see 224px inputs, so a 640px copy loses nothing and fits sessionStorage for long clips. */
+const SMALL_EDGE = 640;
+const SMALL_QUALITY = 0.72;
+
+async function makeSmall(dataUrl: string): Promise<string> {
+  const img = await loadImage(dataUrl);
+  const [w, h] = fitSize(img.naturalWidth, img.naturalHeight, SMALL_EDGE);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  canvas.getContext("2d")?.drawImage(img, 0, 0, w, h);
+  return canvas.toDataURL("image/jpeg", SMALL_QUALITY);
+}
+
+async function withSmall(frames: Frame[]): Promise<Frame[]> {
+  return Promise.all(frames.map(async (f) => ({ ...f, small: await makeSmall(f.dataUrl) })));
+}
 
 function fitSize(w: number, h: number, maxEdge: number): [number, number] {
   const scale = Math.min(1, maxEdge / Math.max(w, h));
@@ -194,12 +211,14 @@ export async function extractFramesFromVideo(file: File, opts: ExtractOptions = 
     }
     chosen.sort((x, y) => x.t - y.t);
     opts.onSelected?.(chosen.map((c) => candidates.indexOf(c)));
-    return chosen.map((c, i) => ({
-      id: `f${i + 1}`,
-      dataUrl: c.dataUrl,
-      timestampMs: Math.round(c.t * 1000),
-      source: "video" as const,
-    }));
+    return withSmall(
+      chosen.map((c, i) => ({
+        id: `f${i + 1}`,
+        dataUrl: c.dataUrl,
+        timestampMs: Math.round(c.t * 1000),
+        source: "video" as const,
+      })),
+    );
   } finally {
     video.pause();
     video.removeAttribute("src");
@@ -240,7 +259,7 @@ export async function framesFromImages(files: File[], opts: ExtractOptions = {})
     }
   }
   opts.onSelected?.(frames.map((_, i) => i));
-  return frames;
+  return withSmall(frames);
 }
 
 /** Load already-hosted sample photos (same-origin URLs) into frames. */
@@ -260,7 +279,7 @@ export async function framesFromUrls(urls: string[], opts: ExtractOptions = {}):
     opts.onProgress?.(i + 1, urls.length);
   }
   opts.onSelected?.(frames.map((_, i) => i));
-  return frames;
+  return withSmall(frames);
 }
 
 /** Approximate upload size in bytes for a set of frames. */

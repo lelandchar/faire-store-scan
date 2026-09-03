@@ -13,7 +13,7 @@ Not affiliated with or endorsed by Faire. Synthetic and public data only.
 5. **Retailer confirms** — a switch per category, style cards, and two dials (restock ↔ discover, lightly ↔ fully personalized). Nothing is matched until the retailer confirms.
 6. **Nearest neighbors** — `/api/retrieve` embeds the frames and per-category prompts with SigLIP base on the server (transformers.js, int8 ONNX) and scores every catalog product: the two best frame matches (visual) and the two best prompt matches (semantic).
 7. **Buyer's-eye rerank** — `/api/rerank` sends the top 60 candidates (thumbnails + a brief of the confirmed store) to a vision LM (Claude Sonnet 5 by default), which rates each 1–5; the score shifts ±0.30 across that range.
-8. **Personalized feed and search** — deterministic, explainable re-ranking fused with the embedding scores and the review. Toggle generic vs personalized; every card explains why. On desktop a recap of the scanned store sits beside the phone.
+8. **Personalized feed and search** — deterministic, explainable re-ranking fused with the embedding scores and the review. Toggle a random order (the blank slate a new account starts from) vs personalized; every card explains why. On desktop a recap of the scanned store sits on one side of the phone and, on hover, a ranking breakdown for the card (tag parts, shelf and brief matches, buyer's-eye fit, fused score) on the other.
 9. **End-to-end trace view** (`/admin`) — run the pipeline on example inputs and inspect input → output at every stage, including the rerank table and P50-paced progress.
 
 ## Run it

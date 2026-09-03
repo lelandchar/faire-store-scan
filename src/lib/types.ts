@@ -129,8 +129,10 @@ export interface StoreProfile {
 
 export interface Frame {
   id: string;
-  /** JPEG data URL */
+  /** JPEG data URL (≤1280px, what the store read sees) */
   dataUrl: string;
+  /** Smaller copy (≤640px) kept for retrieval and the recap when the full set is too big to persist */
+  small?: string;
   timestampMs: number;
   source: "video" | "photo";
 }
