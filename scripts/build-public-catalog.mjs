@@ -956,10 +956,9 @@ function categorize(pt, title, text) {
     }
     if (overrideOk && (pt === "BEAUTY" || pt === "ABIS_BEAUTY" || pt === "HEALTH_PERSONAL_CARE" || pt === "SKIN_MOISTURIZER" || pt === "SKIN_CLEANING_AGENT")) {
       if (RX.candleBeauty.test(t)) return ["Candles & fragrance", deriveSub("Candles & fragrance", t)];
-    } else if (overrideOk && !isFood && RX.candleHolder.test(t)) {
-      return ["Candles & fragrance", "Candle holders"];
-    } else if (overrideOk && !isFood && RX.candle.test(t)) {
-      return ["Candles & fragrance", deriveSub("Candles & fragrance", t)];
+    } else if (overrideOk && !isFood && !/\b(chandelier|pendant|ceiling|fixture|lamp|bulbs?|electric)\b/i.test(t)) {
+      if (RX.candleHolder.test(t)) return ["Candles & fragrance", "Candle holders"];
+      if (RX.candle.test(t)) return ["Candles & fragrance", deriveSub("Candles & fragrance", t)];
     }
     if (overrideOk && !isFood && RX.book.test(t) && !RX.bookNeg.test(t)) {
       return ["Books & journals", deriveSub("Books & journals", t)];
@@ -980,7 +979,7 @@ function categorize(pt, title, text) {
   // Type-specific filters / derivations.
   switch (pt) {
     case "GROCERY":
-      if (RX.perishable.test(t)) return null;
+      if (RX.perishable.test(t) || /\b(crescent|dough|refrigerated|ready to bake|pie crust|pizza crust|biscuits?\b.*\bcan)\b/i.test(t)) return null;
       return [cat, deriveSub(cat, t)];
     case "LEGUME":
     case "COOKIE":
@@ -996,6 +995,10 @@ function categorize(pt, title, text) {
     case "ABIS_BEAUTY":
       if (/\b(device|electric|dryer|straightener|curler|trimmer|epilator|clipper|massager|machine)\b/i.test(t)) return null;
       return [cat, deriveSub(cat, t)];
+    case "CANDLE_HOLDER":
+    case "CANDLE":
+      if (/\b(chandelier|pendant|ceiling|fixture|lamp|bulbs?|electric|led)\b/i.test(t)) return ["Home decor", "Lighting"];
+      return [cat, sub || deriveSub(cat, t)];
     case "AREA_DEODORIZER":
       if (!/\b(spray|freshener|diffuser|scent|fragrance|odor|odour|aroma|deodoriz)/i.test(t)) return null;
       return [cat, deriveSub(cat, t)];

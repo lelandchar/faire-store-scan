@@ -162,15 +162,21 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     setHydrated(true);
   }, []);
 
+  // Persist lazily: serializing a few MB of frames on every streamed delta would
+  // jank the reveal on a phone, so debounce and skip the hot analysis phase.
   useEffect(() => {
     if (!hydrated) return;
-    try {
-      const frameBytes = state.frames.reduce((n, f) => n + f.dataUrl.length, 0);
-      const toSave = { ...state, frames: frameBytes < MAX_PERSISTED_FRAME_BYTES ? state.frames : [] };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-    } catch {
-      /* quota or private mode: fine */
-    }
+    if (state.analysisStatus === "analyzing" || state.analysisStatus === "extracting") return;
+    const t = setTimeout(() => {
+      try {
+        const frameBytes = state.frames.reduce((n, f) => n + f.dataUrl.length, 0);
+        const toSave = { ...state, frames: frameBytes < MAX_PERSISTED_FRAME_BYTES ? state.frames : [] };
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+      } catch {
+        /* quota or private mode: fine */
+      }
+    }, 250);
+    return () => clearTimeout(t);
   }, [state, hydrated]);
 
   const value = useMemo(() => ({ state, dispatch, hydrated }), [state, hydrated]);

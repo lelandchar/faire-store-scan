@@ -1,5 +1,5 @@
 import { parse, Allow } from "partial-json";
-import { AnalysisSchema } from "./analysis-schema";
+import { coerceAnalysis } from "./analysis-schema";
 import type { Analysis, Frame } from "./types";
 
 export interface AnalyzeMeta {
@@ -72,7 +72,8 @@ export async function runAnalysis(opts: {
   } catch {
     throw new Error("The analysis came back incomplete. Please try again.");
   }
-  const result = AnalysisSchema.safeParse(raw);
-  if (!result.success) throw new Error("The analysis came back malformed. Please try again.");
-  return result.data as Analysis;
+  const { data, issues } = coerceAnalysis(raw);
+  if (issues.length) console.warn("[analysis] schema issues (coerced where possible):", issues);
+  if (!data) throw new Error("The analysis came back malformed. Please try again.");
+  return data as Analysis;
 }

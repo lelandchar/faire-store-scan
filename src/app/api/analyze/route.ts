@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
-import { AnalysisSchema } from "@/lib/analysis-schema";
+import { AnalysisSchema, coerceAnalysis } from "@/lib/analysis-schema";
 import { pickMock } from "@/lib/mock-analysis";
 import { CATEGORIES, STYLES } from "@/lib/types";
 
@@ -224,15 +224,27 @@ export async function POST(req: Request) {
           }
           // If the model wrapped the JSON in fences or prose, hand the client a clean copy.
           const trimmed = full.trim();
+          let finalText = trimmed;
           if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) {
             const clean = extractJson(full);
             if (!clean) {
               send({ error: "The analysis came back in an unexpected format. Please try again." });
               return;
             }
-            send({ replace: clean });
+            finalText = clean;
           }
-          send({ done: true, usage, model });
+          // Validate server-side too; ship a coerced copy so the client never has to guess.
+          let issues: string[] = [];
+          try {
+            const coerced = coerceAnalysis(JSON.parse(finalText));
+            issues = coerced.issues;
+            if (issues.length) console.warn("[analyze] schema issues:", issues.slice(0, 8));
+            if (coerced.data) finalText = JSON.stringify(coerced.data);
+          } catch (e) {
+            console.error("[analyze] final JSON parse failed", e);
+          }
+          if (finalText !== trimmed) send({ replace: finalText });
+          send({ done: true, usage, model, issues });
           return;
         }
 

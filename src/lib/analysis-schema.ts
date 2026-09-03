@@ -77,3 +77,80 @@ export const AnalysisSchema = z.object({
 });
 
 export type AnalysisOutput = z.infer<typeof AnalysisSchema>;
+
+/**
+ * Models occasionally overshoot a max-items constraint or invent an enum value.
+ * Rather than failing the whole run, clamp what we can and drop what we can't,
+ * then validate again. Returns null only when the shape is truly unusable.
+ */
+export function coerceAnalysis(raw: unknown): { data: AnalysisOutput | null; issues: string[] } {
+  const first = AnalysisSchema.safeParse(raw);
+  if (first.success) return { data: first.data, issues: [] };
+  const issues = first.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`);
+  if (!raw || typeof raw !== "object") return { data: null, issues };
+  const r = raw as Record<string, unknown>;
+  const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
+  const str = (v: unknown, fallback = ""): string => (typeof v === "string" ? v : fallback);
+  const strArr = (v: unknown, max: number) => arr(v).filter((x): x is string => typeof x === "string").slice(0, max);
+  const cats = new Set<string>(CATEGORIES);
+  const styles = new Set<string>(STYLES);
+  const conf = (v: unknown) => (v === "high" || v === "medium" || v === "low" ? v : "medium");
+  const share = (v: unknown) => (v === "dominant" || v === "strong" || v === "present" || v === "trace" ? v : "present");
+  const pp = (r.price_position ?? {}) as Record<string, unknown>;
+  const sr = (r.store_read ?? {}) as Record<string, unknown>;
+  const fixed = {
+    frame_notes: arr(r.frame_notes)
+      .map((n) => n as Record<string, unknown>)
+      .filter((n) => typeof n?.frame_id === "string")
+      .map((n) => ({ frame_id: str(n.frame_id), what_we_saw: str(n.what_we_saw).slice(0, 80) })),
+    categories: arr(r.categories)
+      .map((c) => c as Record<string, unknown>)
+      .filter((c) => cats.has(str(c?.name)))
+      .slice(0, 6)
+      .map((c) => ({
+        name: str(c.name),
+        share: share(c.share),
+        confidence: conf(c.confidence),
+        evidence_frames: strArr(c.evidence_frames, 12),
+        examples: strArr(c.examples, 4),
+      })),
+    styles: arr(r.styles)
+      .map((s) => s as Record<string, unknown>)
+      .filter((s) => styles.has(str(s?.name)))
+      .slice(0, 4)
+      .map((s) => ({ name: str(s.name), confidence: conf(s.confidence), evidence_frames: strArr(s.evidence_frames, 12) })),
+    materials: arr(r.materials)
+      .map((m) => m as Record<string, unknown>)
+      .filter((m) => typeof m?.name === "string")
+      .slice(0, 6)
+      .map((m) => ({ name: str(m.name), evidence_frames: strArr(m.evidence_frames, 12) })),
+    palette: arr(r.palette)
+      .map((p) => p as Record<string, unknown>)
+      .filter((p) => typeof p?.hex === "string")
+      .slice(0, 5)
+      .map((p) => ({ name: str(p.name, "color"), hex: str(p.hex) })),
+    price_position: {
+      tier: ["value", "mid", "premium", "unknown"].includes(str(pp.tier)) ? str(pp.tier) : "unknown",
+      confidence: conf(pp.confidence),
+      rationale: str(pp.rationale, "No clear price cues were visible."),
+    },
+    visible_brands: arr(r.visible_brands)
+      .map((b) => b as Record<string, unknown>)
+      .filter((b) => typeof b?.name === "string")
+      .slice(0, 5)
+      .map((b) => ({ name: str(b.name), evidence_frames: strArr(b.evidence_frames, 12) })),
+    merchandising_notes: strArr(r.merchandising_notes, 4),
+    suggested_complements: arr(r.suggested_complements)
+      .map((c) => c as Record<string, unknown>)
+      .filter((c) => cats.has(str(c?.category)))
+      .slice(0, 3)
+      .map((c) => ({ category: str(c.category), reason: str(c.reason) })),
+    store_read: {
+      store_type_guess: str(sr.store_type_guess, "Independent retailer"),
+      vibe_words: strArr(sr.vibe_words, 4),
+      summary: str(sr.summary, "Your shelves gave us a clear read on your store."),
+    },
+  };
+  const second = AnalysisSchema.safeParse(fixed);
+  return { data: second.success ? second.data : null, issues };
+}

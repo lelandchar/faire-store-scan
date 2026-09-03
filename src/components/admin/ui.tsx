@@ -70,7 +70,7 @@ export function Thumb({ src, alt = "", size = 40, className = "", title }: { src
       title={title}
       width={size}
       height={size}
-      loading="lazy"
+     
       className={`shrink-0 rounded-[3px] bg-surface-2 object-cover ${className}`}
       style={{ width: size, height: size }}
     />

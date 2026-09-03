@@ -10,7 +10,7 @@ function Tile({ p, delta, inSet }: { p: Product; delta?: number; inSet: boolean 
     <div className="min-w-0">
       <div className="relative overflow-hidden rounded-[var(--radius)] bg-surface-2" style={{ aspectRatio: "1" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-cover" />
+        <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
         {delta !== undefined && delta !== 0 && (
           <span className="absolute left-1.5 top-1.5 rounded-full bg-white/95 px-1.5 py-0.5 shadow-sm">
             <DeltaBadge delta={delta} />
