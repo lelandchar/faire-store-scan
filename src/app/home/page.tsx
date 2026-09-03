@@ -33,16 +33,22 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!personalized) return;
+    let celebrate = false;
     try {
       if (sessionStorage.getItem("celebrated") !== "1") {
         sessionStorage.setItem("celebrated", "1");
-        setConfetti(true);
-        const t = setTimeout(() => setConfetti(false), 2400);
-        return () => clearTimeout(t);
+        celebrate = true;
       }
     } catch {
       /* ignore */
     }
+    if (!celebrate) return;
+    const start = setTimeout(() => setConfetti(true), 0);
+    const stop = setTimeout(() => setConfetti(false), 2400);
+    return () => {
+      clearTimeout(start);
+      clearTimeout(stop);
+    };
   }, [personalized]);
 
   const feed: FeedItem[] = useMemo(() => {

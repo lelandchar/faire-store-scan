@@ -39,18 +39,6 @@ export default function AnalyzingPage() {
   const [error, setError] = useState<string | null>(null);
   const started = useRef(false);
 
-  useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-    const input = takePendingInput();
-    if (!input) {
-      router.replace(state.analysisStatus === "done" && state.profile ? "/onboarding/profile" : "/onboarding/scan");
-      return;
-    }
-    void run(input);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   async function run(input: PendingInput) {
     try {
       setPhase("extracting");
@@ -119,6 +107,21 @@ export default function AnalyzingPage() {
     }
   }
 
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    const input = takePendingInput();
+    if (!input) {
+      router.replace(state.analysisStatus === "done" && state.profile ? "/onboarding/profile" : "/onboarding/scan");
+      return;
+    }
+    // Kick off asynchronously so the effect itself does not set state. No cleanup on
+    // purpose: StrictMode's simulated unmount must not cancel a run that already
+    // consumed the pending input.
+    setTimeout(() => void run(input), 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const a = state.analysis;
   const frames = state.frames;
   const notes = useMemo(() => new Map((a?.frame_notes ?? []).filter((n) => n?.frame_id && n?.what_we_saw).map((n) => [n.frame_id, n.what_we_saw])), [a?.frame_notes]);
@@ -162,7 +165,6 @@ export default function AnalyzingPage() {
       <div className="relative mt-6 overflow-hidden rounded-[var(--radius-lg)] bg-surface-2" style={{ aspectRatio: "4 / 3" }}>
         <AnimatePresence mode="popLayout">
           {hero ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <motion.img
               key={hero.id}
               src={hero.dataUrl}

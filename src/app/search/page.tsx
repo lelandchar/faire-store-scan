@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, Search as SearchIcon, Sparkles, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
 import { getCatalog } from "@/lib/catalog";
@@ -32,11 +32,6 @@ function SearchInner() {
   const scores = state.retrieval && state.retrieval.catalog === state.catalogSource ? state.retrieval.scores : undefined;
   const ranked = useMemo(() => (profile ? personalize(catalog, profile, { scores, weights: state.weights }) : null), [catalog, profile, scores, state.weights]);
   const [why, setWhy] = useState<Ranked | null>(null);
-
-  useEffect(() => {
-    setQ(initial);
-    setSubmitted(initial);
-  }, [initial]);
 
   const results: FeedItem[] = useMemo(() => {
     const query = submitted.trim();

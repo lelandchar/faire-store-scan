@@ -32,7 +32,7 @@ const STEPS: { title: string; body: string }[] = [
   },
   {
     title: "Match by look",
-    body: "Open-source CLIP embeddings of the frames are compared with product photos; nearest neighbors are fused with the tag-based score. In progress.",
+    body: "Open-source CLIP embeddings of the frames are compared with product photos; nearest neighbors are fused with the tag-based score, with adjustable weights in the engineer view.",
   },
 ];
 

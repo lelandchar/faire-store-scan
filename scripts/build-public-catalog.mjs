@@ -386,15 +386,16 @@ const RX = {
   petNeg: /\b(hot dog|cat eye|dog[- ]?ear|catwalk|doggy bag|puppy love|kitten heel|print|framed?|canvas|poster|wall art|artwork|pillow|cushion|mug|t-shirt|tee|socks?|pajamas?|costume|ornament|figurine|statue|sculpture|bookend|doorstop|ring dish|necklace|earrings?|charm|bracelet)\b/i,
   kids: /\b(kids?|kid's|children|children's|child's|toddlers?|baby(?!\s*(blue|pink|soft))|babies|infants?|nursery|newborn|boys?|girls?|boy's|girl's|youth|crib|kindergarten|preschool|plush|stuffed animal|teether|teething)\b/i,
   babyFood: /\b(baby food|infant formula|toddler formula|baby cereal|baby puree)\b/i,
-  candle: /\b(candles?|tealights?|tea lights?|wax melts?|diffusers?|reed diffuser|incense|potpourri|room spray|air freshener|perfume|eau de (parfum|toilette|cologne)|cologne|fragrance mist|body mist|aromatherapy|scented)\b/i,
+  candle: /\b(candles?|tealights?|tea lights?|wax melts?|diffusers?|reed diffuser|incense|potpourri|room spray|air freshener|perfume|eau de (parfum|toilette|cologne)|cologne|fragrance mist|body mist|aromatherapy)\b/i,
+  feetInches: /\b\d+(\.\d+)?\s*['′]\s*(\d+(\.\d+)?\s*["”″])?(\s*[x×]\s*\d+(\.\d+)?\s*['′]\s*(\d+(\.\d+)?\s*["”″])?)?/g,
   candleBeauty: /\b(perfume|eau de (parfum|toilette|cologne)|cologne|fragrance mist|body mist|aromatherapy|essential oil|diffuser|candle)\b/i,
   book: /\b(notebooks?|journals?|planners?|diary|diaries|sketchbooks?|sketch book|notepads?|note pad|composition book|guest book|address book|memo book|cookbook|books?)\b/i,
-  bookNeg: /\b(bookshelf|bookshelves|bookcase|bookcases|bookends?|book\s?shelf|book\s?case|book\s?end|bookmarks?|book light|book stand|book display|book rack|book art|e-?books?|kindle|book reader|book holder|notebook computer|laptop|checkbook|passbook|book bag|bookbag|steno)\b/i,
+  bookNeg: /\b(bookshelf|bookshelves|bookcase|bookcases|bookends?|book\s?shelf|book\s?case|book\s?end|bookmarks?|book light|book stand|book display|book rack|book art|e-?books?|kindle|book reader|book holder|notebook computer|laptop|checkbook|passbook|book bag|bookbag|steno|backpack|bundle|kit)\b/i,
   candleHolder: /\b(candle ?holders?|candlesticks?|candle stands?|candelabras?|tealight (holders?|globes?|lanterns?)|candle (lanterns?|globes?|sconces?)|hurricanes?|votive holders?)\b/i,
   garden: /\b(outdoor|patio|garden|balcony|porch|poolside|lawn|backyard|deck|camping|picnic|bird ?feeder|bird ?bath)\b/i,
   perishable: /\b(cream|milk|cheese|yogurt|yoghurt|butter(?!\s*(cookie|cracker|toffee|pecan))|eggs?|chicken|beef|pork|turkey|salmon|tuna|fish|shrimp|steak|sausage|bacon|ham|deli|frozen|ice cream|fresh|salad|sandwich|sushi|tofu|hummus|dip|smoothie|kombucha|bread|bagels?|muffins?|cakes?|pies?|pastry|dough|tortillas?|lettuce|spinach|kale|carrots?|onions?|potato(es)?|tomato(es)?|peppers?|broccoli|celery|cucumber|melon|mango|pineapple|lemons?|limes?|oranges?|apples?|bananas?|grapes|berries|strawberr\w+|blueberr\w+|avocado|guacamole|wraps?|burrito|pizza|lasagna|meal|entree|dinner|lunch|bowl|juice|sparkling water|soda|water|pt\b|quart|gallon|half gallon|lb\b|pound)\b/i,
   dims: /\b\d+(\.\d+)?\s*(cm|mm|in|inch|inches|ft|feet|['"”″′])?\s*(x|×|by)\s*\d+(\.\d+)?(\s*(x|×|by)\s*\d+(\.\d+)?)?\s*(cm|mm|in|inch|inches|ft|feet|['"”″′]|-inch|-in)?(?![A-Za-z0-9])/gi,
-  units: /\b\d+(\.\d+)?\s*[-–]?\s*(fl\.?\s*oz|fluid\s*ounces?|fz|oz|ounces?|lbs?|pounds?|ml|l|liters?|litres?|g|grams?|kg|mg|mm|cm|m|meters?|metres?|yds?|yards?|inch|inches|in(?!\s*[-–]?\s*\d)|ft|feet|foot|pt|qt|quarts?|gal|gallons?|w|watts?|v|volts?|mah|gsm|tc|thread count|count|ct|pcs?|pieces?(?=\s*(pack|set|$))|pairs?|sheets?|pages?|labels?|units?)\b\.?/gi,
+  units: /\b\d+(\.\d+)?(\s*(-|–|to)\s*\d+(\.\d+)?)?\s*[-–]?\s*(fl\.?\s*oz|fluid\s*ounces?|fz|oz|ounces?|lbs?|pounds?|ml|l|liters?|litres?|g|gr|grams?|kg|mg|mm|cm|m|meters?|metres?|yds?|yards?|inch|inches|in(?!\s*[-–]?\s*\d)|ft|feet|foot|pt|qt|quarts?|gal|gallons?|w|watts?|v|volts?|mah|gsm|tc|thread count|count|ct|pcs?|pieces?(?=\s*(pack|set|$))|pairs?|sheets?|pages?|labels?|units?|packets?|pulls?|rolls?|tabs?)\b\.?/gi,
 };
 
 // ---------------------------------------------------------------------------
@@ -616,13 +617,13 @@ const SUB = {
     [/\b(cushion|pillow|seat pad)s?\b/i, "Outdoor cushions"],
     [/\b(chair|sofa|loveseat|table|dining set|conversation set|bench|chaise|lounger|sectional|ottoman|stool|bar set|bistro)\b/i, "Patio furniture"],
     [/\b(hammock|swing|daybed)\b/i, "Hammocks & swings"],
-    [/\b(lantern|solar light|string light|torch|path light|outdoor light|landscape light)\b/i, "Outdoor lighting"],
+    [/\b(lantern|sconce|wall light|solar light|string light|torch|path light|outdoor light|landscape light|lamp post)\b/i, "Outdoor lighting"],
     [/\b(rug|mat|doormat)\b/i, "Outdoor rugs"],
     [/\b(garden tool|trowel|pruner|shears?|rake|shovel|hoe|spade|weeder|gloves?|kneeler|watering can|hose|sprinkler|nozzle)\b/i, "Garden tools"],
+    [/\b(fountain|statue|gnome|wind chime|windchime|garden decor|garden stake|yard art|weathervane|plaque|plant hanger|plant stand|bird house|birdhouse)\b/i, "Garden decor"],
     [/\b(seed|bulb|plant|tree|shrub|succulent|herb kit|grow kit|soil|fertilizer|compost|mulch)s?\b/i, "Plants & seeds"],
     [/\b(tent|sleeping bag|camp|hiking|backpacking|cooler|camping)\b/i, "Camping"],
-    [/\b(gazebo|canopy|pergola|shelter|awning|shade)\b/i, "Shelters & gazebos"],
-    [/\b(fountain|statue|gnome|wind chime|windchime|garden decor|garden stake|yard art|weathervane|plaque)\b/i, "Garden decor"],
+    [/\b(gazebo|canopy|pergola|shelter|awning|shade sail|sun shade|sunshade)\b/i, "Shelters & gazebos"],
     [/\b(trellis|arbor|obelisk|fence|edging|stakes?)\b/i, "Garden structures"],
     [/\b(pool|beach|towel|float|picnic|blanket)\b/i, "Beach & picnic"],
     [/\b(cover|protector)s?\b/i, "Furniture covers"],
@@ -769,24 +770,33 @@ function truncateWords(s, max) {
 
 const HOUSE_BRANDS = /^\s*(amazon\s*basics|amazonbasics|amazon\s*commercial|amazoncommercial|amazon\s*elements|amazon\s*essentials|amazon\s*kitchen|amazon\s*collection|amazon\s*aware|solimo|pinzon|rivet|stone\s*&\s*beam|strathwood|ravenna\s*home|365\s*everyday\s*value|365\s*by\s*whole\s*foods\s*market|whole\s*foods\s*market|happy\s*belly|mama\s*bear|presto!?|wag|whole\s*paws|wickedly\s*prime|eono|umi|the\s*fix|find\.?|goodthreads|daily\s*ritual|lark\s*&\s*ro|core\s*10|peak\s*velocity|206\s*collective|franklin\s*tailored|the\s*drop|belei|denali|kitzini|movian|alkove|nod|truly\s*free|simple\s*joys\s*by\s*carter's|spotted\s*zebra|buttoned\s*down|jam\s*&\s*honey|moon\s*and\s*back|red\s*wagon|allegro\s*coffee)\b\.?\s*(by\s+amazon(\.com)?)?\s*[-–—:|,]?\s*/i;
 
-function cleanName(raw, brand) {
+/** Title with brand / house-brand prefixes and "[Find]"-style bracket tags removed, nothing else. */
+function stripBrand(raw, brand) {
   let s = normalizeText(raw);
-  // parentheticals / brackets first (sizes, SKUs, color codes, "[Find]")
-  s = s.replace(/\([^)]*\)/g, " ").replace(/\[[^\]]*\]/g, " ").replace(/\{[^}]*\}/g, " ");
-  s = s.replace(/\s{2,}/g, " ").trim();
-  // Amazon private-label prefixes (may repeat: "Amazon Brand - Solimo Solimo ...")
+  s = s.replace(/^\s*\[[^\]]*\]\s*/g, "");
   for (let i = 0; i < 3; i++) {
     s = s.replace(/^\s*amazon\s*brand\s*[-–—:]?\s*/i, "");
     s = s.replace(/^\s*by\s+amazon(\.com)?\s*[-–—:|]?\s*/i, "");
     if (brand && brand !== "—") {
       const b = escapeRegex(brand.replace(/[.!]+$/, ""));
       s = s.replace(new RegExp(`^\\s*amazon\\s*[-–—:]?\\s*(?=${b}\\b)`, "i"), "");
-      s = s.replace(new RegExp(`^\\s*${b}\\b\\.?\\s*(by\\s+amazon(\\.com)?)?\\s*[-–—:|,]?\\s*`, "i"), "");
-      s = s.replace(new RegExp(`\\s+by\\s+${b}\\b\\.?`, "i"), "");
+      s = s.replace(new RegExp(`^\\s*${b}\\b[.!]?\\s*(by\\s+amazon(\\.com)?)?\\s*[-–—:|,]?\\s*`, "i"), "");
+      s = s.replace(new RegExp(`\\s+by\\s+${b}\\b[.!]?`, "i"), "");
     }
     s = s.replace(HOUSE_BRANDS, "");
+    s = s.replace(/^\s*(basics|essentials)\b\s*[-–—:|,]?\s*/i, "");
   }
   s = s.replace(/\b(amazon\s*exclusive|amazon\s*brand|amazon's\s*choice|amazon\s*basics|amazonbasics)\b\s*[-–—:]?\s*/gi, " ");
+  return s.replace(/\s{2,}/g, " ").trim();
+}
+
+function cleanName(raw, brand) {
+  let s = stripBrand(raw, brand);
+  // parentheticals / brackets (sizes, SKUs, color codes)
+  s = s.replace(/\([^)]*\)/g, " ").replace(/\[[^\]]*\]/g, " ").replace(/\{[^}]*\}/g, " ").replace(/[()[\]{}]/g, " ");
+  s = s.replace(/\s{2,}/g, " ").trim();
+  // feet/inch dimensions ("2'3\" x 10'", "5' x 8'")
+  s = s.replace(RX.feetInches, " ");
   // n-in-1 protection
   s = s.replace(/\b(\d)\s*-?\s*in\s*-?\s*1\b/gi, "$1-in-1");
   // pack counts ("Pack of 6", "6-Pack", "3 x ...", "x 2")
@@ -798,7 +808,7 @@ function cleanName(raw, brand) {
   s = s.replace(/\b\d+\s*\/\s*\d*\b/g, " ");
   // dimensions
   s = s.replace(RX.dims, " ");
-  s = s.replace(/\b\d+(\.\d+)?\s*(["”″′]|'')\s*([whdl]\b)?/gi, " ");
+  s = s.replace(/\b\d+(\.\d+)?(\s*(-|–|to)\s*\d+(\.\d+)?)?\s*(["”″′]|'')\s*([whdl]\b)?/gi, " ");
   s = s.replace(/\b\d+(\.\d+)?\s*[-–]?\s*(inch|inches|in|cm|mm|ft|feet)\s*[-–]?\s*(w|h|d|l|wide|high|deep|long|tall)\b/gi, " ");
   // units / weights / volumes
   s = s.replace(RX.units, " ");
@@ -809,6 +819,7 @@ function cleanName(raw, brand) {
   s = s.replace(/\b(xs|xxl|xxxl|xl)\b/g, " ");
   s = s.replace(/\bone size\b/gi, " ");
   s = s.replace(/,\s*(small|medium|large|x-large|extra large)\s*$/i, "");
+  s = s.replace(/\b\d+(\.\d+)?\s*(small|medium|large|x-large|wide|narrow|regular|years?\+?|yrs?\+?|months?)\b/gi, " ");
   // SKU-ish tokens: >=3 digits + a letter, length >=5, any case; long digit runs; slash codes; "Model XYZ"
   s = s.replace(/\b(?=[A-Za-z0-9_/-]{5,}\b)(?=[A-Za-z0-9_/-]*\d[A-Za-z0-9_/-]*\d[A-Za-z0-9_/-]*\d)(?=[A-Za-z0-9_/-]*[A-Za-z])[A-Za-z0-9_/-]+\b/g, " ");
   s = s.replace(/\b(?=[A-Z0-9/_-]{6,}\b)(?=[A-Z0-9/_-]*\d)(?=[A-Z0-9/_-]*[A-Z])[A-Z0-9/_-]+\b/g, " ");
@@ -835,13 +846,36 @@ function cleanName(raw, brand) {
   s = s.replace(/([,;:])\s*\1+/g, "$1");
   s = s.replace(/(,\s*)+$/g, "");
   s = s.replace(/^[\s,;:.\-–—|&/]+|[\s,;:.\-–—|&/]+$/g, "");
+  // dangling connectors between commas, "- Set" tails, doubled words
+  s = s.replace(/,\s*(and|with|for|of|in|or|&)\s*,/gi, ",");
+  s = s.replace(/\s*[-–—]\s*(set|kit|pack)\s*$/i, " $1");
+  s = s.replace(/\b(\w+)(\s+\1\b)+/gi, "$1");
+  s = fixCaps(s);
+  s = tidyEnds(s);
+  s = truncateWords(s, 70);
+  s = tidyEnds(s);
+  return s.trim();
+}
+
+function tidyEnds(s) {
+  s = s.replace(/\s{2,}/g, " ");
+  s = s.replace(/^[\s,;:.\-–—|&/]+|[\s,;:.\-–—|&/]+$/g, "");
   // trailing stray numbers ("..., 6." / "... 12") but keep "Set of 4"
   s = s.replace(/(?<!\bof)[,\s]+\d+(\.\d+)?\.?$/g, "");
+  s = s.replace(/\s+(and|with|for|of|in|the|a|an|or|to|by|on|at|from|&)$/i, "");
   s = s.replace(/^[\s,;:.\-–—|&/]+|[\s,;:.\-–—|&/]+$/g, "");
-  s = s.replace(/\s{2,}/g, " ");
-  s = fixCaps(s);
-  s = truncateWords(s, 70);
   return s.trim();
+}
+
+/** True when a cleaned name still carries at least two meaningful words. */
+function nameLooksReal(name) {
+  const words = name
+    .toLowerCase()
+    .replace(/'s\b/g, "")
+    .replace(/[^a-z\s-]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length >= 3 && !COLOR_CANON.includes(w) && !["men", "women", "mens", "womens", "kids", "boys", "girls", "unisex", "set", "pack", "with", "and", "the", "for"].includes(w));
+  return words.length >= 2;
 }
 
 function pickEnglish(arr) {
@@ -923,7 +957,9 @@ function categorize(pt, title, text) {
   const [cat, sub] = mapped;
 
   // Disposables / commercial packs are off-brand for a gift marketplace.
-  if (cat === "Kitchen & tabletop" && /\b(disposable|compostable|biodegradable|take ?away|takeout|individually wrapped|plastic (utensils?|cutlery|forks?|spoons?|knives|knife)|paper (plates?|cups?|napkins?)|foam|styrofoam|\d-ply|ply\b|catering|commercial)\b/i.test(t)) return null;
+  if (cat === "Kitchen & tabletop" && /\b(disposable|compostable|biodegradable|take ?away|takeout|individually wrapped|plastic( \w+)? (utensils?|cutlery|forks?|spoons?|knives|knife)|paper (plates?|cups?|napkins?)|foam|styrofoam|\d-ply|ply\b|catering|commercial)\b/i.test(t)) return null;
+  // Pet-typed wall art / prints belong in Home decor.
+  if (cat === "Pets" && /\b(print|framed?|wall art|canvas|poster|artwork)\b/i.test(t)) return ["Home decor", "Wall art"];
 
   // Type-specific filters / derivations.
   switch (pt) {
@@ -938,7 +974,7 @@ function categorize(pt, title, text) {
       return [cat, sub || deriveSub(cat, t)];
     case "HEALTH_PERSONAL_CARE":
       if (!/\b(soap|wash|lotion|shampoo|conditioner|bath|body|hand|sanitizer|cotton|wipes?|razor|toothbrush|floss|deodorant|balm|cream|oil|salt|scrub|towel|sponge|loofah|spa|massage|skin|face|facial|lip|nail|hair|shave|beard|moisturiz|cleanser|toner|serum)\b/i.test(t)) return null;
-      if (/\b(storage|container|cleaner|detergent|bags?|foil|paper towels?|toilet paper|tissue|napkins?|batteries|first aid|bandage|gauze|mask|gloves?|thermometer|pill|medicine|tablet|capsule|syringe)\b/i.test(t)) return null;
+      if (/\b(storage|container|cleaner|detergent|bags?|foil|paper towels?|toilet paper|tissue|napkins?|batteries|first aid|bandage|gauze|mask|gloves?|thermometer|pill|medicine|tablet|capsule|syringe|cough|cold|flu|allergy|relief|ibuprofen|acetaminophen|antacid|laxative|suspension|drops|fish oil|omega|krill|cod liver|whey|collagen|gas)\b/i.test(t)) return null;
       return [cat, deriveSub(cat, t)];
     case "BEAUTY":
     case "ABIS_BEAUTY":
@@ -1015,6 +1051,7 @@ function categorize(pt, title, text) {
       if (/\b(cover|mower|trimmer|blower|chainsaw|pressure washer|hose reel|sprinkler timer|electric|propane tank|heater|pesticide|herbicide|weed killer|fertilizer spreader|generator)\b/i.test(t)) return null;
       return [cat, deriveSub(cat, t)];
     case "UMBRELLA":
+      if (/\b(inverted|reverse|folding|travel|compact|windproof|auto open|automatic|golf umbrella|rain)\b/i.test(t)) return ["Jewelry & accessories", "Umbrellas"];
       if (/\b(patio|garden|market|beach|cantilever|offset|outdoor|table)\b/i.test(t)) return [cat, "Patio umbrellas"];
       return ["Jewelry & accessories", "Umbrellas"];
     default:
@@ -1209,12 +1246,15 @@ async function main() {
         return;
       }
       const brandRaw = pickEnglish(r.brand)[0] || (r.brand && r.brand[0] && r.brand[0].value) || "";
+      const brand = normalizeBrand(brandRaw);
       const bullets = normalizeText(pickEnglish(r.bullet_point).join(" "));
       const keywords = normalizeText(pickEnglish(r.item_keywords).join(" "));
       const materialField = normalizeText(pickEnglish(r.material).join(" "));
       const colorField = normalizeText(pickEnglish(r.color)[0] || "");
       const text = [rawTitle, bullets, keywords, materialField].join(" ");
-      const cat = categorize(pt, rawTitle, text);
+      // Categorize on the brand-stripped title so brand words ("Red Wagon", "Jam & Honey") don't steer routing.
+      const strippedTitle = stripBrand(rawTitle, brand);
+      const cat = categorize(pt, strippedTitle, text);
       if (!cat) return;
       const [category, subcategory] = cat;
       if (!CATEGORIES.includes(category)) return;
@@ -1233,16 +1273,14 @@ async function main() {
       }
       if (seenImage.has(imgId)) return;
 
-      const brand = normalizeBrand(brandRaw);
       const name = cleanName(rawTitle, brand);
-      if (name.length < 8 || !/[a-z]/i.test(name)) return;
-      // Romanized / non-English residue: too many long vowel-run tokens or non-ASCII.
-      if (!/^[\x20-\x7e]+$/.test(name)) return;
+      if (name.length < 8 || !/[a-z]/i.test(name) || !nameLooksReal(name)) return;
+      if (!/^[\x20-\x7e]+$/.test(name)) return; // non-ASCII residue
       const consumable = category === "Food & drink" || category === "Bath & body";
       const materials = consumable
         ? extractMaterials(text).filter((m) => ["glass", "cotton", "bamboo", "wood", "paper", "silicone", "stainless-steel"].includes(m) && category !== "Food & drink")
         : extractMaterials(text);
-      const colors = consumable ? extractColors(colorField, "") : extractColors(colorField, rawTitle);
+      const colors = consumable ? extractColors(colorField, "") : extractColors(colorField, strippedTitle);
       const key =
         category +
         "|" +
