@@ -15,7 +15,7 @@ const PROMISES = [
 export default function WelcomePage() {
   const router = useRouter();
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    <div className="flex min-h-full grow shrink-0 flex-col">
       <div className="relative h-[36%] min-h-[230px] w-full shrink-0 overflow-hidden bg-surface-2">
         <video
           className="h-full w-full object-cover"

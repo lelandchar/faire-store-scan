@@ -44,7 +44,7 @@ export function Screen({
   className?: string;
 }) {
   return (
-    <div className={`flex min-h-full flex-1 flex-col ${className}`}>
+    <div className={`flex min-h-full grow shrink-0 flex-col ${className}`}>
       <div className="flex-1 px-6 pb-6">
         {back !== false && (
           <div className={`${padTop ? "pt-4" : "pt-2"} pb-6`}>

@@ -19,7 +19,7 @@ export default function DonePage() {
   }, []);
   const perks = ["Free returns on your first order", "Net 60 payment terms", state.profile ? "A feed built from your store" : null].filter(Boolean) as string[];
   return (
-    <div className="relative flex min-h-full flex-1 flex-col">
+    <div className="relative flex min-h-full grow shrink-0 flex-col">
       {burst && <JoyBurst originX={50} originY={46} />}
       <div className="relative h-[42%] min-h-[280px] w-full shrink-0 overflow-hidden bg-surface-2">
         {hero ? (

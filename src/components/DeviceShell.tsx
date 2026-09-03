@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { useOnboarding } from "@/lib/store";
 import { FeedToggle } from "./FeedToggle";
 import { StatusBar } from "./StatusBar";
+import { StoreRecap } from "./StoreRecap";
 
 export function DeviceShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -61,6 +62,7 @@ export function DeviceShell({ children }: { children: ReactNode }) {
           <div className="screen">{children}</div>
           {onFeed && <FeedToggle variant="floating" />}
         </div>
+        {onFeed && <StoreRecap />}
         {onFeed && <FeedToggle variant="side" />}
       </div>
     </div>

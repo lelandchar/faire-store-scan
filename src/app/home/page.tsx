@@ -43,10 +43,10 @@ export default function HomePage() {
     setTimeout(() => setToast(null), 1800);
   };
 
-  if (!hydrated) return <div className="min-h-full flex-1" />;
+  if (!hydrated) return <div className="min-h-full grow shrink-0" />;
 
   return (
-    <div className="relative flex min-h-full flex-1 flex-col">
+    <div className="relative flex min-h-full grow shrink-0 flex-col">
       {/* Search */}
       <div className="sticky top-0 z-20 bg-white px-4 pb-2 pt-3">
         <div className="flex items-center gap-3">

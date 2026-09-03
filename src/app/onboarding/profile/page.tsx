@@ -7,15 +7,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { Screen } from "@/components/ui/Screen";
+import { Switch } from "@/components/ui/Switch";
+import { CATEGORY_TILE_IMAGE } from "@/lib/catalog";
 import { useOnboarding } from "@/lib/store";
-import { CATEGORIES, type Category, type Share } from "@/lib/types";
-
-const SHARE_LABEL: Record<Share, string> = {
-  dominant: "Most of your shelves",
-  strong: "A strong section",
-  present: "A few pieces",
-  trace: "A hint of it",
-};
+import { CATEGORIES, type Category } from "@/lib/types";
 
 /** Screen 1 of 3: what the walkthrough found, and whether the retailer wants more of it. */
 export default function AssortmentPage() {
@@ -52,10 +47,10 @@ export default function AssortmentPage() {
       <p className="mt-3 font-serif text-[17px] leading-[1.35] text-ink rise">{profile.summary}</p>
       <p className="text-caption mt-2">Turn off anything you don&apos;t want more of.</p>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-3">
         {profile.categories.map((c, i) => {
-          const sig = analysis.categories?.find((s) => s.name === c.name);
-          const evidence = evidenceFor(c.name).map((id) => frameById.get(id)).filter(Boolean).slice(0, 3);
+          const evidence = evidenceFor(c.name).map((id) => frameById.get(id)).find(Boolean);
+          const image = evidence?.dataUrl ?? CATEGORY_TILE_IMAGE[c.name];
           const on = c.intent !== "skip";
           return (
             <motion.div
@@ -63,36 +58,16 @@ export default function AssortmentPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className={`flex items-center gap-3 rounded-[var(--radius-lg)] border p-3 transition-colors ${on ? "border-line bg-white" : "border-line bg-surface-2 opacity-70"}`}
+              className={`flex items-center gap-3 rounded-[var(--radius-lg)] border border-line p-3 transition-colors ${on ? "bg-white" : "bg-surface-2"}`}
             >
-              <div className="flex -space-x-2">
-                {evidence.length ? (
-                  evidence.map((f) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={f!.id} src={f!.dataUrl} alt="" className="h-11 w-11 rounded-[6px] border-2 border-white object-cover shadow-sm" />
-                  ))
-                ) : (
-                  <span className="h-11 w-11 rounded-[6px] bg-surface-3" />
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium text-ink">{c.name}</p>
-                <p className="text-caption truncate">
-                  {SHARE_LABEL[c.share]}
-                  {sig?.examples?.length ? ` · ${sig.examples.slice(0, 3).join(", ")}` : ""}
-                </p>
-              </div>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={on}
-                onClick={() => setCategoryIntent(c.name, on ? "skip" : "more")}
-                className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors ${
-                  on ? "border-ink bg-ink text-white" : "border-line bg-white text-muted"
-                }`}
-              >
-                {on ? "Show me more" : "Not interested"}
-              </button>
+              {image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={image} alt="" className={`h-14 w-14 shrink-0 rounded-[6px] object-cover transition-opacity ${on ? "" : "opacity-50"}`} />
+              ) : (
+                <span className="h-14 w-14 shrink-0 rounded-[6px] bg-surface-3" />
+              )}
+              <p className={`min-w-0 flex-1 text-[16px] font-medium leading-snug ${on ? "text-ink" : "text-muted"}`}>{c.name}</p>
+              <Switch checked={on} label={`Show me more ${c.name.toLowerCase()}`} onChange={(next) => setCategoryIntent(c.name, next ? "more" : "skip")} />
             </motion.div>
           );
         })}

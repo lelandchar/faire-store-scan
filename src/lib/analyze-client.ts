@@ -4,6 +4,8 @@ import type { Analysis, Frame } from "./types";
 
 export interface AnalyzeMeta {
   mock?: boolean;
+  /** Median server-side analysis time on this deployment (sent once, at stream start). */
+  p50Ms?: number;
   provider?: string;
   model?: string;
   configuredModel?: string;
@@ -58,6 +60,7 @@ export async function runAnalysis(opts: {
         done?: boolean;
         mock?: boolean;
         provider?: string;
+        p50Ms?: number;
         model?: string;
         configuredModel?: string;
         effort?: string | null;
@@ -67,7 +70,7 @@ export async function runAnalysis(opts: {
       };
       if (evt.error) throw new Error(evt.error);
       if (typeof evt.thinking === "number") opts.onThinking?.(evt.thinking);
-      if (evt.status === "started") opts.onMeta?.({ mock: evt.mock, provider: evt.provider });
+      if (evt.status === "started") opts.onMeta?.({ mock: evt.mock, provider: evt.provider, p50Ms: evt.p50Ms });
       if (evt.delta) {
         text += evt.delta;
         try {

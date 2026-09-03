@@ -414,3 +414,13 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Store recap beside the phone, mirroring the homepage-view control. */
+@media (min-width: 900px) {
+  .stage-side--left {
+    left: auto;
+    right: calc(100% + 48px);
+    width: 240px;
+    top: 64px;
+  }
+}

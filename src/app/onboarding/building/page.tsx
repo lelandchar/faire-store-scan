@@ -67,7 +67,7 @@ export default function BuildingPage() {
   }, [retrieval, catalog, state.catalogSource]);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col px-6 pb-10 pt-10">
+    <div className="flex min-h-full grow shrink-0 flex-col px-6 pb-10 pt-10">
       <p className="text-caption uppercase tracking-[0.14em]">Almost done</p>
       <h1 className="text-display-sm mt-2">Building your storefront</h1>
       <p className="text-body mt-2 text-muted">

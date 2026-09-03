@@ -21,6 +21,9 @@ const SHARE_LABEL: Record<Share, string> = {
   trace: "A hint of it",
 };
 
+/** One sweep per frame; slow enough to read as "looking", not "flashing". */
+const SWEEP_MS = 1700;
+
 const THINKING_STEPS = [
   "Looking at what's on your shelves",
   "Comparing the shelves to each other",
@@ -30,6 +33,37 @@ const THINKING_STEPS = [
   "Double-checking against the frames",
   "Nearly there",
 ];
+
+const DURATIONS_KEY = "store-scan-durations-v1";
+/** End-to-end expectation (frames + read) before this device has seen a run. */
+const DEFAULT_EXPECTED_MS = 58_000;
+
+function readDurations(): number[] {
+  try {
+    const raw = localStorage.getItem(DURATIONS_KEY);
+    const arr: unknown = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter((n): n is number => typeof n === "number" && n > 3000 && n < 600_000) : [];
+  } catch {
+    return [];
+  }
+}
+function median(xs: number[]): number | null {
+  if (!xs.length) return null;
+  const s = [...xs].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+function humanDuration(ms: number): string {
+  const s = ms / 1000;
+  if (s < 40) return "about half a minute";
+  if (s < 100) return "about a minute";
+  return `about ${Math.round(s / 60)} minutes`;
+}
+/** Reaches 90% at the expected time, then creeps toward 97% so a slow run never looks stuck. */
+function progressFor(elapsedMs: number, expectedMs: number): number {
+  const t = elapsedMs / Math.max(1000, expectedMs);
+  return t <= 1 ? 90 * t : Math.min(97, 90 + 7 * (1 - Math.exp(-(t - 1) * 1.4)));
+}
 
 function statusFor(a: Partial<Analysis> | null, phase: Phase, thinkingChars = 0): string {
   switch (phase) {
@@ -81,14 +115,29 @@ export default function AnalyzingPage() {
   const [thinking, setThinking] = useState(0);
   useEffect(() => {
     if (phase !== "analyzing") return;
-    const t = setInterval(() => setScanIdx((i) => i + 1), 850);
+    const t = setInterval(() => setScanIdx((i) => i + 1), SWEEP_MS);
     return () => clearInterval(t);
   }, [phase]);
   const started = useRef(false);
   const sentinel = useRef<HTMLDivElement>(null);
+  // Overall progress, paced against the median end-to-end time.
+  const runStart = useRef(0);
+  const localSamples = useRef(0);
+  const [elapsed, setElapsed] = useState(0);
+  const [expected, setExpected] = useState(DEFAULT_EXPECTED_MS);
+  useEffect(() => {
+    if (phase === "done" || phase === "error") return;
+    const t = setInterval(() => setElapsed(performance.now() - runStart.current), 200);
+    return () => clearInterval(t);
+  }, [phase]);
 
   async function run(input: PendingInput) {
     try {
+      runStart.current = performance.now();
+      const seen = readDurations();
+      localSamples.current = seen.length;
+      const med = median(seen);
+      if (med) setExpected(med);
       dispatch({ type: "setAnalysisStatus", status: "extracting" });
       dispatch({ type: "setAnalysis", analysis: null });
       dispatch({ type: "setProfile", profile: null });
@@ -128,7 +177,11 @@ export default function AnalyzingPage() {
           sampleSlug: state.sampleSlug || undefined,
         },
         onPartial: (p) => dispatch({ type: "setAnalysis", analysis: p }),
-        onMeta: (m) => dispatch({ type: "setAnalysisMeta", meta: { ...m, ms: Math.round(performance.now() - t0) } }),
+        onMeta: (m) => {
+          dispatch({ type: "setAnalysisMeta", meta: { ...m, ms: Math.round(performance.now() - t0) } });
+          // First runs on this device: trust the server's median plus the time frames already took.
+          if (m.p50Ms && localSamples.current < 2) setExpected(performance.now() - runStart.current + m.p50Ms);
+        },
         onThinking: (chars) => setThinking(chars),
       });
       dispatch({ type: "setAnalysis", analysis });
@@ -137,6 +190,13 @@ export default function AnalyzingPage() {
         profile: profileFromAnalysis(analysis, { storeName: state.storeName, storeType: state.storeCategory ?? "", description: state.description }),
       });
       dispatch({ type: "setAnalysisStatus", status: "done" });
+      const total = Math.round(performance.now() - runStart.current);
+      setElapsed(total);
+      try {
+        localStorage.setItem(DURATIONS_KEY, JSON.stringify([...readDurations(), total].slice(-12)));
+      } catch {
+        /* private mode */
+      }
 
       setPhase("done");
     } catch (e) {
@@ -173,18 +233,25 @@ export default function AnalyzingPage() {
   const styles = (a?.styles ?? []).filter((s) => s?.name);
   const complements = (a?.suggested_complements ?? []).filter((c) => c?.category);
   const summary = a?.store_read?.summary;
-  // Keep the newest information in view as it streams in.
-  const version = `${phase}|${candidates.length}|${kept?.length ?? 0}|${notes.size}|${cats.length}|${styles.length}|${complements.length}|${summary ? 1 : 0}`;
+  // Keep the newest information in view as it streams in, unless the retailer has
+  // scrolled up to look at something: then only a stage change moves the view.
+  const version = `${phase}|${candidates.length}|${kept?.length ?? 0}|${notes.size}|${cats.length}|${styles.length}|${complements.length}|${Math.floor((summary?.length ?? 0) / 60)}`;
+  const lastPhase = useRef(phase);
   useEffect(() => {
+    const phaseChanged = lastPhase.current !== phase;
+    lastPhase.current = phase;
+    const el = sentinel.current?.closest(".screen");
+    const nearBottom = !(el instanceof HTMLElement) || el.scrollHeight - el.scrollTop - el.clientHeight < 260;
+    if (!nearBottom && !phaseChanged) return;
     const t = setTimeout(() => sentinel.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 120);
     return () => clearTimeout(t);
-  }, [version]);
+  }, [version, phase]);
 
   const stage1: "active" | "done" = phase === "loading" || phase === "extracting" ? "active" : "done";
   const stage2: "active" | "done" | "pending" = phase === "analyzing" ? "active" : phase === "done" ? "done" : "pending";
 
   return (
-    <div className="flex min-h-full flex-1 flex-col px-6 pb-10 pt-8">
+    <div className="flex min-h-full grow shrink-0 flex-col px-6 pb-24 pt-8">
       <p className="text-caption uppercase tracking-[0.14em]">Store scan</p>
       <h1 className="text-display-sm mt-2">Reading your shelves</h1>
       <div className="mt-2 flex min-h-6 items-center gap-2 text-body">
@@ -202,6 +269,19 @@ export default function AnalyzingPage() {
       </div>
       {phase === "analyzing" && !a && thinking > 0 && (
         <p className="text-caption mt-1">Thinking it through · about {Math.max(1, Math.round(thinking / 5)).toLocaleString()} words so far</p>
+      )}
+      {phase !== "error" && (
+        <div className="mt-3" aria-hidden>
+          <div className="h-[3px] w-full overflow-hidden rounded-full bg-line">
+            <div
+              className="h-full rounded-full bg-ink"
+              style={{ width: `${phase === "done" ? 100 : progressFor(elapsed, expected)}%`, transition: "width 0.3s linear" }}
+            />
+          </div>
+          <p className="text-caption mt-1.5">
+            {phase === "done" ? `Done in ${Math.max(1, Math.round(elapsed / 1000))} seconds` : `Usually takes ${humanDuration(expected)}`}
+          </p>
+        </div>
       )}
 
       {/* Stage 1: the video becomes frames, live */}
@@ -279,7 +359,7 @@ export default function AnalyzingPage() {
                     <img src={f.dataUrl} alt="" className="h-full w-full object-cover" />
                     {scanning && (
                       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                        <div className="absolute inset-x-0 h-[22%] bg-gradient-to-b from-transparent via-white/55 to-transparent" style={{ animation: "scanline 0.85s ease-in-out infinite" }} />
+                        <div className="absolute inset-x-0 h-[22%] bg-gradient-to-b from-transparent via-white/55 to-transparent" style={{ animation: `scanline ${SWEEP_MS}ms ease-in-out infinite` }} />
                       </div>
                     )}
                     <AnimatePresence>

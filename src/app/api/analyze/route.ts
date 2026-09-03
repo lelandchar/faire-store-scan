@@ -95,6 +95,22 @@ function sseHeaders() {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+// Rolling window of recent analysis durations so the client can pace its progress bar
+// against the median (P50) this deployment actually delivers. Seeded with the typical
+// Muse Spark xhigh time; the window lives in process memory and resets on deploy.
+const P50_SEED_MS = Number(process.env.ANALYSIS_P50_MS ?? 52_000);
+type DurationsGlobal = typeof globalThis & { __analysisDurations?: number[] };
+function recordAnalysisDuration(ms: number) {
+  const g = globalThis as DurationsGlobal;
+  g.__analysisDurations = [...(g.__analysisDurations ?? []), ms].slice(-40);
+}
+export function analysisP50Ms(): number {
+  const xs = [...((globalThis as DurationsGlobal).__analysisDurations ?? [])].sort((a, b) => a - b);
+  if (xs.length < 2) return P50_SEED_MS;
+  const m = Math.floor(xs.length / 2);
+  return Math.round(xs.length % 2 ? xs[m] : (xs[m - 1] + xs[m]) / 2);
+}
+
 export async function POST(req: Request) {
   let parsed: z.infer<typeof RequestSchema>;
   try {
@@ -114,9 +130,13 @@ export async function POST(req: Request) {
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (obj: Record<string, unknown>) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`));
+      const startedAt = Date.now();
+      const send = (obj: Record<string, unknown>) => {
+        if (obj.done === true && !useMock) recordAnalysisDuration(Date.now() - startedAt);
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`));
+      };
       try {
-        send({ status: "started", mock: useMock, provider });
+        send({ status: "started", mock: useMock, provider, p50Ms: analysisP50Ms() });
         if (useMock) {
           const json = JSON.stringify(pickMock(parsed.context));
           // Roughly the pace of a real model so the reveal choreography is honest.

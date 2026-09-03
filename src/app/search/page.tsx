@@ -13,7 +13,7 @@ import { useOnboarding } from "@/lib/store";
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="min-h-full flex-1" />}>
+    <Suspense fallback={<div className="min-h-full grow shrink-0" />}>
       <SearchInner />
     </Suspense>
   );
@@ -63,7 +63,7 @@ function SearchInner() {
     }));
   }, [submitted, catalog, ranked, personalized]);
 
-  if (!hydrated) return <div className="min-h-full flex-1" />;
+  if (!hydrated) return <div className="min-h-full grow shrink-0" />;
 
   const submit = (value: string) => {
     setSubmitted(value);
@@ -71,7 +71,7 @@ function SearchInner() {
   };
 
   return (
-    <div className="relative flex min-h-full flex-1 flex-col">
+    <div className="relative flex min-h-full grow shrink-0 flex-col">
       <div className="sticky top-0 z-20 bg-white px-4 pb-2 pt-3">
         <form
           className="flex items-center gap-2"
