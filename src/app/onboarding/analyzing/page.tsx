@@ -429,13 +429,6 @@ export default function AnalyzingPage() {
             </motion.span>
           )}
         </div>
-        {phase === "analyzing" && !a && thinking > 0 && (
-          <p className="text-caption mt-1">
-            Thinking it through · about{" "}
-            {Math.max(1, Math.round(thinking / 5)).toLocaleString()} words so
-            far
-          </p>
-        )}
         {phase !== "error" && (
           <div className="mt-3" aria-hidden>
             <div className="h-[3px] w-full overflow-hidden rounded-full bg-line">
