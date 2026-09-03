@@ -31,6 +31,22 @@ export const SAMPLE_VIDEOS: { slug: string; name: string; tagline: string; store
     file: "/samples/videos/home-gift-walkthrough.mp4",
     poster: "/samples/videos/home-gift-walkthrough.jpg",
   },
+  {
+    slug: "boutique-video",
+    name: "Juniper & June",
+    tagline: "Apparel boutique (real footage)",
+    storeType: "Apparel Boutique",
+    file: "/samples/boutique/walkthrough.mp4",
+    poster: "/samples/boutique/walkthrough.jpg",
+  },
+  {
+    slug: "home-gift-video-2",
+    name: "Hearth & Ember Home",
+    tagline: "Ceramics table (real footage)",
+    storeType: "Home Decor Store",
+    file: "/samples/home-gift/walkthrough.mp4",
+    poster: "/samples/home-gift/walkthrough.jpg",
+  },
 ];
 
 export async function loadSampleManifest(): Promise<SampleStore[]> {

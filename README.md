@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Store Scan — cold-start personalization for new Faire retailers
 
-## Getting Started
+An independent prototype: a new retailer films a 15-second walkthrough of their store, the shelves are read into structured signals, the retailer confirms them, and their very first home feed (and search results) are personalized before they have any behavioral history.
 
-First, run the development server:
+Not affiliated with or endorsed by Faire. Synthetic and public data only.
+
+## What happens end to end
+
+1. **Faire's existing onboarding** — store type, store details, store category (replicated from the iOS app).
+2. **Show us your shelves** (new step) — do/don't examples, record or upload, or pick a sample store.
+3. **Frames on the phone** — the browser samples ~16 candidate frames, drops the blurriest (Laplacian variance), keeps 8 at 1280px. The raw video never uploads.
+4. **Store read** — `/api/analyze` streams a Claude structured-output JSON (categories with evidence frames, styles, materials, palette, price position, legible brands, merchandising notes, complements, summary). The UI reveals signals as they stream.
+5. **Nearest neighbors** — `/api/retrieve` embeds the frames with an open-source CLIP model on the server, scores every catalog product (image-image and text-image cosines) and returns per-frame neighbors plus timings.
+6. **Retailer confirms** — "More like this / Already covered / Not for me" per category, style chips, price point, complements, buying mode.
+7. **Personalized feed and search** — deterministic, explainable re-ranking fused with the embedding scores. Toggle generic vs personalized; every card explains why.
+8. **Engineer view** (`/admin`) — run the pipeline on example inputs and inspect input → output → neighbors → fusion at every stage.
+
+## Run it
 
 ```bash
+npm install
+cp .env.example .env.local   # add ANTHROPIC_API_KEY, or leave MOCK_ANALYSIS=1
+npm run embed                # precompute catalog embeddings (downloads CLIP once, ~150 MB)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. The phone frame appears on desktop widths; on a phone it is full-screen.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy (Railway)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The service builds with `npm run build && npm run warm-models` so the CLIP weights are baked into the image. Set `ANTHROPIC_API_KEY` (and optionally `ANALYSIS_MODEL`, `ANALYSIS_EFFORT`) as service variables. `railway up --service web --detach` deploys the working tree.
 
-## Learn More
+## Layout
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/onboarding/*` — the flow screens; `src/app/home`, `src/app/search`, `src/app/about`, `src/app/admin`.
+- `src/lib/frames.ts` — browser frame extraction. `src/lib/analysis-schema.ts` — the Zod schema the model must follow.
+- `src/lib/ranking.ts` — weights, reasons, fusion. `src/lib/embeddings.ts` — CLIP wrapper. `src/lib/retrieval.ts` — retrieval contract.
+- `data/catalog.json` — synthetic Faire-style catalog (images in `public/catalog`). `data/catalog-public.json` — public dataset catalog. `data/embeddings/` — precomputed vectors.
+- `public/samples/` — sample store photos (Unsplash/Pexels) and Seedance-generated walkthrough clips.
+- `research/` — design tokens, Faire insights, vision API comparison, embeddings notes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Privacy rules the prototype follows
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Raw video stays on device; only ~8 compressed frames are sent. Text visible in images is treated as data, never instructions. Nothing about demographics, location, sales or finances is inferred. Frames and the derived profile can be deleted from the profile screen.

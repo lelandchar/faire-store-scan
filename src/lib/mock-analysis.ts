@@ -162,9 +162,18 @@ const BOUTIQUE: AnalysisOutput = {
 };
 
 export function pickMock(context: { storeType?: string; storeName?: string; description?: string; sampleSlug?: string }): AnalysisOutput {
-  const hay = `${context.sampleSlug ?? ""} ${context.storeType ?? ""} ${context.storeName ?? ""} ${context.description ?? ""}`.toLowerCase();
-  if (/apparel|boutique|clothing|fashion/.test(hay)) return BOUTIQUE;
-  if (/book|paper|stationery/.test(hay)) return BOOKSHOP;
-  if (/home|gift|kitchen|decor|candle/.test(hay)) return HOME_GIFT;
-  return BOOKSHOP;
+  // The sample slug is the most reliable hint; store type next; free text last.
+  const slug = (context.sampleSlug ?? "").toLowerCase();
+  if (/book/.test(slug)) return BOOKSHOP;
+  if (/home|gift|kitchen/.test(slug)) return HOME_GIFT;
+  if (/boutique|apparel/.test(slug)) return BOUTIQUE;
+  const type = (context.storeType ?? "").toLowerCase();
+  if (/apparel|clothing|fashion/.test(type)) return BOUTIQUE;
+  if (/book/.test(type)) return BOOKSHOP;
+  if (/home|gift|general|furniture|florist|garden/.test(type)) return HOME_GIFT;
+  const text = `${context.storeName ?? ""} ${context.description ?? ""}`.toLowerCase();
+  if (/apparel|clothing|fashion|dress/.test(text)) return BOUTIQUE;
+  if (/book|paper|stationery/.test(text)) return BOOKSHOP;
+  if (/home|gift|kitchen|decor|candle|ceramic/.test(text)) return HOME_GIFT;
+  return HOME_GIFT;
 }
