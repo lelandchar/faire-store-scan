@@ -1,5 +1,13 @@
 # QA notes — Store Scan prototype
 
+## 2026-09-03 late session (catalog and flow restructure)
+
+- Default catalog is now the Shopify merchant catalog: 3,793 products with images and CLIP embeddings (Home decor 399, Kitchen 393, Stationery 399, Apparel 400, Bath & body 390, Food & drink 369, Kids & baby 400, Pets 392, Garden 364, Jewelry 190, Candles 53, Books 44). Titles cleaned; live plants, seeds, bulk herbs and similar dropped. Prices, ratings and review counts are synthetic (the dataset has none).
+- Flow: Store type → pitch → details → scan (demo sheet) → Reading your shelves (note first, live frames, scan sweep, pause on "Review what we found") → Your assortment → Your style → Personalization dials → Building your storefront (embedding + matching from the confirmed profile) → Congratulations (burst) → home (flat list, generic/personalized control beside the phone).
+- Reasoning models write their JSON only after thinking; the phone now shows a thinking heartbeat with retailer-facing steps during that stretch. Muse Spark xhigh: 37–56 s per walkthrough; medium ≈ 25 s.
+- Deploys now build from GitHub (`lelandchar/faire-store-scan`); the CLI upload hit Railway's 413 payload limit once the catalog images were added.
+
+
 Tested 2026-09-02 with Playwright (390×844 mobile viewport and 1280×900 desktop) against the local dev server and the Railway deployment. Mock analysis mode (no API key yet); CLIP retrieval is real in both environments.
 
 ## Verified end to end

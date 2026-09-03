@@ -28,14 +28,14 @@ Open http://localhost:3000. The phone frame appears on desktop widths; on a phon
 
 ## Deploy (Railway)
 
-The service builds with `npm run build && npm run warm-models` so the CLIP weights are baked into the image. Set `OPENROUTER_API_KEY` (or `ANTHROPIC_API_KEY`) plus `ANALYSIS_MODEL` and `ANALYSIS_EFFORT` as service variables. `railway up --service web --detach` deploys the working tree.
+The Railway service `web` is connected to the GitHub repo `lelandchar/faire-store-scan` (branch `main`): every push deploys. The build runs `npm run build && npm run warm-models` so the CLIP weights are baked into the image. Service variables: `OPENROUTER_API_KEY` (or `ANTHROPIC_API_KEY`), `ANALYSIS_MODEL` (meta/muse-spark-1.3), `ANALYSIS_EFFORT` (xhigh), `ANALYSIS_FALLBACK_MODEL` (anthropic/claude-sonnet-5). The CLI upload path (`railway up`) no longer fits under Railway's payload limit because of the catalog images.
 
 ## Layout
 
 - `src/app/onboarding/*` — the flow screens; `src/app/home`, `src/app/search`, `src/app/about`, `src/app/admin`.
 - `src/lib/frames.ts` — browser frame extraction. `src/lib/analysis-schema.ts` — the Zod schema the model must follow.
 - `src/lib/ranking.ts` — weights, reasons, fusion. `src/lib/embeddings.ts` — CLIP wrapper. `src/lib/retrieval.ts` — retrieval contract.
-- `data/catalog.json` — synthetic Faire-style catalog (images in `public/catalog`). `data/catalog-public.json` — public dataset catalog. `data/embeddings/` — precomputed vectors.
+- `data/catalog-shopify.json` — default catalog: 3,793 real merchant products from the Hugging Face `Shopify/product-catalogue` dataset (Apache-2.0), images in `public/catalog-shopify`; rebuild with `node scripts/build-shopify-catalog.mjs --cap 400 && npm run postprocess-shopify && npm run embed`. `data/catalog.json` — synthetic Faire-style catalog. `data/catalog-public.json` — Amazon Berkeley Objects catalog. `data/embeddings/` — precomputed CLIP vectors.
 - `public/samples/` — sample store photos (Unsplash/Pexels) and Seedance-generated walkthrough clips.
 - `research/` — design tokens, Faire insights, vision API comparison, embeddings notes.
 
