@@ -23,8 +23,8 @@ Tested 2026-09-02 with Playwright (390×844 mobile viewport and 1280×900 deskto
 
 ## Open issues, prioritized
 
-P0 — needs your input
-- No `ANTHROPIC_API_KEY` yet, so the store read is canned. With a real key the read will match the frames (the mock cannot see them, so CLIP neighbors and the canned summary can disagree, e.g. bookshop photos with a home-goods summary).
+P0 — resolved
+- Real store read now runs through OpenRouter (Claude Sonnet 5, low effort): ~16 s for 8 frames at 1280 px, ~13k input tokens, valid schema output with evidence frames, merchandising notes and complements. The canned mode remains as a fallback when no key is set.
 
 P1 — should fix before sharing
 - Public catalog: data written (1,137 products across 12 categories) but images/embeddings not finished at the time of writing; the catalog selector falls back to the synthetic catalog until then.

@@ -141,7 +141,7 @@ const PT = {
   TABLE: ["Home decor", "Tables"],
   STORAGE_BOX: ["Home decor", "Storage"],
   LAUNDRY_HAMPER: ["Home decor", "Storage"],
-  BEAN_BAG_CHAIR: ["Home decor", "Seating"],
+  BEAN_BAG_CHAIR: ["Home decor", null],
   ROOM_DIVIDER: ["Home decor", "Screens"],
   // Kitchen & tabletop
   KITCHEN: ["Kitchen & tabletop", null],
@@ -557,8 +557,8 @@ const SUB = {
   "Food & drink": [
     [/\b(coffee|espresso|k-cup|cold brew)\b/i, "Coffee"],
     [/\b(tea|matcha|chai)\b/i, "Tea"],
-    [/\b(chocolate|candy|candies|gummies|gummy|licorice|toffee|caramels?|truffles?|mints?)\b/i, "Confectionery"],
     [/\b(cookie|biscuit|wafer|biscotti|shortbread)s?\b/i, "Cookies"],
+    [/\b(chocolate|candy|candies|gummies|gummy|licorice|toffee|caramels?|truffles?|mints?)\b/i, "Confectionery"],
     [/\b(olive oil|avocado oil|coconut oil|sesame oil|almond oil|cooking oil|\w+ oil)\b/i, "Oils"],
     [/\b(chips?|crisps?|popcorn|pretzels?|crackers?|nuts?|cashews?|almonds?|pistachios?|walnuts?|pecans?|peanuts?|trail mix|jerky|granola|snack)\b/i, "Snacks"],
     [/\b(sauce|ketchup|mustard|dressing|vinegar|marinade|salsa|hot sauce|mayo|mayonnaise|relish|pickles?|condiment|sriracha)\b/i, "Sauces & condiments"],
@@ -648,7 +648,7 @@ const FALLBACK_SUB = {
 };
 
 // Products whose title matches these are dropped regardless of type (utility / off-brand for a gift marketplace).
-const HARD_SKIP = /\b(replacement|refill cartridge|battery|batteries|charger|usb|hdmi|bluetooth|wifi|wi-fi|electric|electrical|cordless|corded|voltage|watt|led bulb|light bulb|bulbs?|power strip|extension cord|surge|socket|schuko|plug|phone case|iphone|galaxy|xiaomi|redmi|oneplus|samsung|mobile cover|back cover|screen protector|laptop|tablet|kindle|printer|toner|ink cartridge|adapter|cable|mount|bracket|hardware|screw|bolt|hinge|drawer slide|ladder|toilet|plunger|urinal|trash bag|garbage bag|detergent|bleach|disinfect|sanitizer|cleaner|cleaning|mop|broom|dustpan|vacuum|pest|insect|rodent|mouse trap|medic|pharma|tablets?|capsules?|softgels?|supplement|vitamin|probiotic|prescription|condom|lubricant|pregnancy test|thermometer|blood pressure|glucose|nicotine|cigarette|vape|knife sharpener|lawn mower|chainsaw|generator|automotive|car seat cover|steering|tire|wiper|engine|motor oil|3d printer|filament|prime video|fire tv|echo dot|alexa|subscription|gift card|e-gift|digital code|download|swatch|sample|not applicable|facial tissues?|tissues|renewed|refurbished|20(1\d|2[0-4]))\b/i;
+const HARD_SKIP = /\b(replacement|refill cartridge|battery|batteries|charger|usb|hdmi|bluetooth|wifi|wi-fi|electric|electrical|cordless|corded|voltage|watt|led bulb|light bulb|bulbs?|power strip|extension cord|surge|socket|schuko|plug|phone case|iphone|galaxy|xiaomi|redmi|oneplus|samsung|mobile cover|back cover|screen protector|laptop|tablet|kindle|printer|toner|ink cartridge|adapter|cable|mount|bracket|hardware|screw|bolt|hinge|drawer slide|ladder|toilet|plunger|urinal|trash bag|garbage bag|detergent|bleach|disinfect|sanitizer|cleaner|cleaning|mop|broom|dustpan|vacuum|pest|insect|rodent|mouse trap|medic|pharma|tablets?|capsules?|softgels?|supplement|vitamin|probiotic|prescription|condom|lubricant|pregnancy test|thermometer|blood pressure|glucose|nicotine|cigarette|vape|knife sharpener|lawn mower|chainsaw|generator|automotive|car seat cover|steering|tire|wiper|engine|motor oil|3d printer|filament|prime video|fire tv|echo dot|alexa|subscription|gift card|e-gift|digital code|download|swatch|sample|not applicable|facial tissues?|tissues|renewed|refurbished|strip lights?|rope lights?|work lights?|flood lights?|led strip|thermoelectric|12v|ac\/ ?dc|20(1\d|2[0-4]))\b/i;
 
 // Marketplaces whose en_* titles are genuinely English (JP/DE/etc. rows carry romanized "en_US" titles).
 const EN_COUNTRIES = new Set(["US", "GB", "UK", "CA", "AU", "IN", "SG", "AE"]);
@@ -781,7 +781,7 @@ function stripBrand(raw, brand) {
   let s = normalizeText(raw);
   s = s.replace(/^\s*(\[[^\]]*\]|\([^)]*\))\s*/g, "");
   for (let i = 0; i < 3; i++) {
-    s = s.replace(/^\s*amazon\s*brand\s*[-–—:]?\s*/i, "");
+    s = s.replace(/^\s*amazon\s*(brands?|fresh|go\s*grocery)\b\s*[-–—:]?\s*/i, "");
     s = s.replace(/^\s*by\s+amazon(\.com)?\s*[-–—:|]?\s*/i, "");
     s = s.replace(HOUSE_BRANDS, "");
     if (brand && brand !== "—") {
@@ -789,11 +789,15 @@ function stripBrand(raw, brand) {
       s = s.replace(new RegExp(`^\\s*amazon\\s*[-–—:]?\\s*(?=${b}\\b)`, "i"), "");
       s = s.replace(new RegExp(`^\\s*${b}\\b[.!]?\\s*(by\\s+amazon(\\.com)?)?\\s*[-–—:|,]?\\s*`, "i"), "");
       s = s.replace(new RegExp(`\\s+by\\s+${b}\\b[.!]?`, "i"), "");
+      // brand mentioned mid-title (", Solimo Kids"): drop it unless the brand is a common word
+      if (brand.length >= 5 && !/^(find|nod|wag|umi|presto|symbol|starter|join|core 10)$/i.test(brand)) {
+        s = s.replace(new RegExp(`(^|[\\s,(-])${b}\\b[.!]?(?=$|[\\s,)-])`, "gi"), "$1");
+      }
     }
     s = s.replace(HOUSE_BRANDS, "");
     s = s.replace(/^\s*(basics|essentials)\b\s*[-–—:|,]?\s*/i, "");
   }
-  s = s.replace(/\b(amazon\s*exclusive|amazon\s*brand|amazon's\s*choice|amazon\s*basics|amazonbasics)\b\s*[-–—:]?\s*/gi, " ");
+  s = s.replace(/\b(amazon\s*exclusive|amazon\s*brands?|amazon's\s*choice|amazon\s*basics|amazonbasics|amazonfresh|amazon\s*fresh)\b\s*[-–—:]?\s*/gi, " ");
   return s.replace(/\s{2,}/g, " ").trim();
 }
 
@@ -823,7 +827,8 @@ function cleanName(raw, brand) {
   s = s.replace(/\b(size\s*)?\d+(\.\d+)?\s*(b|d|m|w|wide|narrow|medium|regular)?\s*(us|uk|eu|eur|au|cn)\b/gi, " ");
   s = s.replace(/\b(us|uk|eu|eur)\s*(size\s*)?\d+(\.\d+)?\b/gi, " ");
   s = s.replace(/\bsize\s*[:\-]?\s*(xs|s|m|l|xl|xxl|xxxl|os|one size|\d+(\.\d+)?)\b/gi, " ");
-  s = s.replace(/\b(xs|xxl|xxxl|xl)\b/g, " ");
+  s = s.replace(/\b(xs|xxl|xxxl|xl|xx-large|x-large)\b/gi, " ");
+  s = s.replace(/\s*\/\s*(pack|set|box|carton)\b/gi, " ");
   s = s.replace(/\bone size\b/gi, " ");
   s = s.replace(/\b(us\s+)?(little|big|toddler)\s+kids?\b/gi, " ");
   s = s.replace(/,\s*(small|medium|large|x-large|extra large)\s*$/i, "");
@@ -835,7 +840,7 @@ function cleanName(raw, brand) {
   s = s.replace(/\b[A-Z0-9]+\/[A-Z0-9/]+\b/g, " ");
   s = s.replace(/\b(model|sku|item|part|style)\s*(no\.?|number|#)?\s*:?\s*[A-Z0-9-]+\b/gi, " ");
   // marketing junk
-  s = s.replace(/\b(new arrival|new|hot sale|best ?seller|premium quality|high quality|top quality|100%\s*(pure|natural|genuine|authentic)|free shipping|limited edition|value pack|family pack|bulk|wholesale|exclusive|official|original|genuine|authentic|brand new|great gift|gift idea|perfect gift|for (men|women|kids|boys|girls|him|her)( and (men|women|kids|boys|girls|him|her))?)\b/gi, " ");
+  s = s.replace(/\b(new arrival|new|hot sale|best ?seller|premium quality|high quality|top quality|100%\s*(pure|natural|genuine|authentic)|free shipping|limited edition|value pack|family pack|bulk|wholesale|exclusive|official|original|genuine|authentic|brand new|great gift|gift idea|perfect gift|for (men|women|kids|boys|girls|him|her|adults|teens)(\s*(and|or|&|\/)\s*(men|women|kids|boys|girls|him|her|adults|teens))*)\b/gi, " ");
   // stray quotes / plus signs / dangling ampersands and single letters after dashes
   s = s.replace(/["”″′]/g, " ");
   s = s.replace(/(?<![A-Za-z])'|'(?![A-Za-z])/g, " ");
@@ -1025,13 +1030,16 @@ function categorize(pt, title, text) {
     case "HOME_FURNITURE_AND_DECOR":
     case "HOME_BED_AND_BATH":
       if (/\b(mattress|box spring|bed frame|foundation|headboard|sofa|sectional|loveseat|dresser|wardrobe|armoire|cabinet|tv stand|entertainment center|bunk|futon|recliner sofa|nightstand)\b/i.test(t) && !/\bmattress (pad|protector|topper)\b/i.test(t)) return null;
-      if (/\b(hangers?|shower caddy|toilet|plunger|trash|garbage|drying rack|ironing|laundry basket|clothes rack|shoe rack|step stool|hooks?|rollo|roller blind|heater|fan)\b/i.test(t)) return null;
+      if (/\b(hangers?|shower caddy|toilet|plunger|trash|garbage|drying rack|ironing|laundry basket|clothes rack|shoe rack|step stool|hooks?|rollo|roller blind|heater|fan|curtain rods?|shower rods?|tension rods?|finials?|bean bag cover|mattress)\b/i.test(t)) return null;
       if (/\bmattress (pad|protector|topper)\b/i.test(t)) return [cat, "Bedding"];
       return [cat, deriveSub(cat, t)];
     case "CHAIR":
     case "TABLE":
       if (/\b(office chair|gaming|desk chair|task chair|executive|swivel|folding|massage|computer)\b/i.test(t)) return null;
       return [cat, sub];
+    case "BEAN_BAG_CHAIR":
+      if (/\b(cover|refill|filler|beans)\b/i.test(t)) return null;
+      return [cat, "Seating"];
     case "KITCHEN":
     case "ABIS_KITCHEN":
       if (/\b(electric|blender|toaster|microwave|air fryer|pressure cooker|kettle|coffee maker|machine|appliance|mixer|processor|grinder|juicer|dishwasher|refrigerator|freezer|stove|oven|induction|scale|thermometer|timer|heater|fan|cooler bag|purifier|humidifier)\b/i.test(t)) return null;

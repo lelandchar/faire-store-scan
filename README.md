@@ -9,7 +9,7 @@ Not affiliated with or endorsed by Faire. Synthetic and public data only.
 1. **Faire's existing onboarding** — store type, store details, store category (replicated from the iOS app).
 2. **Show us your shelves** (new step) — do/don't examples, record or upload, or pick a sample store.
 3. **Frames on the phone** — the browser samples ~16 candidate frames, drops the blurriest (Laplacian variance), keeps 8 at 1280px. The raw video never uploads.
-4. **Store read** — `/api/analyze` streams a Claude structured-output JSON (categories with evidence frames, styles, materials, palette, price position, legible brands, merchandising notes, complements, summary). The UI reveals signals as they stream.
+4. **Store read** — `/api/analyze` streams a Claude Sonnet 5 structured-output JSON (via OpenRouter or the Anthropic SDK) (categories with evidence frames, styles, materials, palette, price position, legible brands, merchandising notes, complements, summary). The UI reveals signals as they stream.
 5. **Nearest neighbors** — `/api/retrieve` embeds the frames with an open-source CLIP model on the server, scores every catalog product (image-image and text-image cosines) and returns per-frame neighbors plus timings.
 6. **Retailer confirms** — "More like this / Already covered / Not for me" per category, style chips, price point, complements, buying mode.
 7. **Personalized feed and search** — deterministic, explainable re-ranking fused with the embedding scores. Toggle generic vs personalized; every card explains why.
@@ -19,7 +19,7 @@ Not affiliated with or endorsed by Faire. Synthetic and public data only.
 
 ```bash
 npm install
-cp .env.example .env.local   # add ANTHROPIC_API_KEY, or leave MOCK_ANALYSIS=1
+cp .env.example .env.local   # add OPENROUTER_API_KEY (or ANTHROPIC_API_KEY), or set MOCK_ANALYSIS=1
 npm run embed                # precompute catalog embeddings (downloads CLIP once, ~150 MB)
 npm run dev
 ```
@@ -28,7 +28,7 @@ Open http://localhost:3000. The phone frame appears on desktop widths; on a phon
 
 ## Deploy (Railway)
 
-The service builds with `npm run build && npm run warm-models` so the CLIP weights are baked into the image. Set `ANTHROPIC_API_KEY` (and optionally `ANALYSIS_MODEL`, `ANALYSIS_EFFORT`) as service variables. `railway up --service web --detach` deploys the working tree.
+The service builds with `npm run build && npm run warm-models` so the CLIP weights are baked into the image. Set `OPENROUTER_API_KEY` (or `ANTHROPIC_API_KEY`) plus `ANALYSIS_MODEL` and `ANALYSIS_EFFORT` as service variables. `railway up --service web --detach` deploys the working tree.
 
 ## Layout
 
