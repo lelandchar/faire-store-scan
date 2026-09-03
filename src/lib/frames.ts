@@ -72,6 +72,31 @@ function sharpness(canvas: HTMLCanvasElement): number {
   return sumSq / n - mean * mean;
 }
 
+/** Tiny grayscale signature used to detect near-duplicate frames. */
+function signature(canvas: HTMLCanvasElement): Float32Array {
+  const w = 24;
+  const h = 24;
+  const small = document.createElement("canvas");
+  small.width = w;
+  small.height = h;
+  const ctx = small.getContext("2d", { willReadFrequently: true });
+  const out = new Float32Array(w * h);
+  if (!ctx) return out;
+  ctx.drawImage(canvas, 0, 0, w, h);
+  const { data } = ctx.getImageData(0, 0, w, h);
+  for (let i = 0; i < w * h; i++) out[i] = (0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2]) / 255;
+  return out;
+}
+
+/** Mean absolute difference between two signatures, 0 (identical) .. 1. */
+function difference(a: Float32Array, b: Float32Array): number {
+  let sum = 0;
+  for (let i = 0; i < a.length; i++) sum += Math.abs(a[i] - b[i]);
+  return sum / a.length;
+}
+
+const DUPLICATE_THRESHOLD = 0.035;
+
 function fitSize(w: number, h: number, maxEdge: number): [number, number] {
   const scale = Math.min(1, maxEdge / Math.max(w, h));
   return [Math.round(w * scale), Math.round(h * scale)];
@@ -116,25 +141,41 @@ export async function extractFramesFromVideo(file: File, opts: ExtractOptions = 
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Canvas is not available.");
 
-    const candidates: { t: number; dataUrl: string; sharp: number }[] = [];
+    const candidates: { t: number; dataUrl: string; sharp: number; sig: Float32Array }[] = [];
     for (let i = 0; i < times.length; i++) {
       const t = times[i];
       const seeked = once(video, "seeked", 6000);
       video.currentTime = t;
       await seeked;
       ctx.drawImage(video, 0, 0, w, h);
-      candidates.push({ t, dataUrl: canvas.toDataURL("image/jpeg", quality), sharp: sharpness(canvas) });
+      candidates.push({ t, dataUrl: canvas.toDataURL("image/jpeg", quality), sharp: sharpness(canvas), sig: signature(canvas) });
       opts.onProgress?.(i + 1, times.length);
     }
 
     // Keep temporal spread: bucket candidates by time, take the sharpest of each.
+    // Keep temporal spread (one frame per bucket), prefer sharp frames, and skip
+    // frames that are near-duplicates of ones already kept so a static clip does
+    // not produce eight copies of the same shelf.
     const buckets = Math.min(count, candidates.length);
     const chosen: typeof candidates = [];
+    const isDuplicate = (c: (typeof candidates)[number]) => chosen.some((k) => difference(k.sig, c.sig) < DUPLICATE_THRESHOLD);
     for (let b = 0; b < buckets; b++) {
       const lo = Math.floor((candidates.length * b) / buckets);
       const hi = Math.floor((candidates.length * (b + 1)) / buckets);
-      const slice = candidates.slice(lo, Math.max(lo + 1, hi));
-      chosen.push(slice.reduce((best, c) => (c.sharp > best.sharp ? c : best), slice[0]));
+      const slice = candidates.slice(lo, Math.max(lo + 1, hi)).sort((x, y) => y.sharp - x.sharp);
+      const fresh = slice.find((c) => !isDuplicate(c));
+      if (fresh) chosen.push(fresh);
+    }
+    // If duplicates collapsed the set, top up with the most different remaining candidates.
+    if (chosen.length < Math.min(4, candidates.length)) {
+      const rest = candidates.filter((c) => !chosen.includes(c));
+      rest.sort((x, y) => y.sharp - x.sharp);
+      for (const c of rest) {
+        if (chosen.length >= Math.min(count, candidates.length)) break;
+        if (!isDuplicate(c)) chosen.push(c);
+      }
+      if (chosen.length < 3) for (const c of rest) if (!chosen.includes(c) && chosen.length < 3) chosen.push(c);
+      chosen.sort((x, y) => x.t - y.t);
     }
     return chosen.map((c, i) => ({
       id: `f${i + 1}`,

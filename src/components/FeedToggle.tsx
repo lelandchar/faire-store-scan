@@ -15,13 +15,13 @@ export function FeedToggle({ variant }: { variant: "side" | "floating" }) {
   const set = (value: boolean) => dispatch({ type: "setPersonalized", value });
 
   const segmented = (
-    <div className="flex rounded-full border border-line bg-white p-0.5 text-[13px]" role="radiogroup" aria-label="Homepage view">
+    <div className="inline-flex rounded-full border border-line bg-white p-0.5 text-[13px]" role="radiogroup" aria-label="Homepage view">
       <button
         type="button"
         role="radio"
         aria-checked={!on}
         onClick={() => set(false)}
-        className={`rounded-full px-3 py-1.5 transition-colors ${!on ? "bg-ink text-white" : "text-ink-2"}`}
+        className={`rounded-full px-3 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ink/40 ${!on ? "bg-ink text-white" : "text-ink-2"}`}
       >
         Generic
       </button>
@@ -31,7 +31,7 @@ export function FeedToggle({ variant }: { variant: "side" | "floating" }) {
         aria-checked={on}
         disabled={!hasProfile}
         onClick={() => set(true)}
-        className={`rounded-full px-3 py-1.5 transition-colors ${on ? "bg-ink text-white" : hasProfile ? "text-ink-2" : "text-muted-2"}`}
+        className={`rounded-full px-3 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ink/40 ${on ? "bg-ink text-white" : hasProfile ? "text-ink-2" : "text-muted-2"}`}
       >
         Personalized
       </button>
