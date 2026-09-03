@@ -23,8 +23,11 @@ Tested 2026-09-02 with Playwright (390×844 mobile viewport and 1280×900 deskto
 
 ## Open issues, prioritized
 
+P0 — needs your input
+- The store read is configured for Meta Muse Spark 1.3 at xhigh effort via OpenRouter, but the account has not completed OpenRouter's 18+ attestation, so every request currently falls back to Claude Sonnet 5 (low effort, ~16-19 s for 8 frames). Confirm at https://openrouter.ai/settings/preferences and Muse Spark takes over automatically; the engineer view shows "Configured" vs "Served by" and the fallback reason.
+
 P0 — resolved
-- Real store read now runs through OpenRouter (Claude Sonnet 5, low effort): ~16 s for 8 frames at 1280 px, ~13k input tokens, valid schema output with evidence frames, merchandising notes and complements. The canned mode remains as a fallback when no key is set.
+- Real store read runs through OpenRouter with structured outputs and streaming; near-valid outputs (e.g. 5 merchandising notes instead of 4) are coerced instead of failing the run.
 
 P1 — should fix before sharing
 - Public catalog: data written (1,137 products across 12 categories) but images/embeddings not finished at the time of writing; the catalog selector falls back to the synthetic catalog until then.
