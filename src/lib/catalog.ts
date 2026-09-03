@@ -15,9 +15,9 @@ export function getCatalog(source: CatalogSource): Product[] {
 }
 
 export const CATALOG_LABEL: Record<CatalogSource, string> = {
+  shopify: "Shopify merchant catalog (public, default)",
   synthetic: "Synthetic Faire-style catalog",
   public: "Amazon Berkeley Objects (public)",
-  shopify: "Shopify merchant catalog (public)",
 };
 
 export const STORE_CATEGORIES = [

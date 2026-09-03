@@ -116,6 +116,10 @@ export interface StoreProfile {
   priceTier: PriceTier | "unknown";
   complements: Category[];
   mode: BuyingMode;
+  /** 0 = restock what sells … 1 = discover new brands; `mode` is derived from it. */
+  explore: number;
+  /** 0 = barely shaped by the walkthrough … 1 = fully personalized. */
+  strength: number;
   vibeWords: string[];
   summary: string;
 }

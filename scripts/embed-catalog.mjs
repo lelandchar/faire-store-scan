@@ -38,6 +38,7 @@ env.allowRemoteModels = process.env.TRANSFORMERS_OFFLINE !== "1";
 const CATALOGS = [
   { name: "catalog", json: "data/catalog.json" },
   { name: "catalog-public", json: "data/catalog-public.json" },
+  { name: "catalog-shopify", json: "data/catalog-shopify.json" },
 ];
 
 // Mirrors STYLES in src/lib/types.ts, with readable phrasing for the prompt.

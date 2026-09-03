@@ -9,6 +9,10 @@ export interface ExtractOptions {
   maxEdge?: number;
   quality?: number;
   onProgress?: (done: number, total: number) => void;
+  /** Called for every candidate frame as soon as it is decoded, before selection. */
+  onCandidate?: (candidate: { index: number; dataUrl: string; timestampMs: number }) => void;
+  /** Called once selection is done with the candidate indices that were kept. */
+  onSelected?: (keptIndices: number[]) => void;
 }
 
 const DEFAULTS = { count: 8, maxEdge: 1280, quality: 0.8 };
@@ -148,7 +152,9 @@ export async function extractFramesFromVideo(file: File, opts: ExtractOptions = 
       video.currentTime = t;
       await seeked;
       ctx.drawImage(video, 0, 0, w, h);
-      candidates.push({ t, dataUrl: canvas.toDataURL("image/jpeg", quality), sharp: sharpness(canvas), sig: signature(canvas) });
+      const dataUrl = canvas.toDataURL("image/jpeg", quality);
+      candidates.push({ t, dataUrl, sharp: sharpness(canvas), sig: signature(canvas) });
+      opts.onCandidate?.({ index: i, dataUrl, timestampMs: Math.round(t * 1000) });
       opts.onProgress?.(i + 1, times.length);
     }
 
@@ -177,6 +183,7 @@ export async function extractFramesFromVideo(file: File, opts: ExtractOptions = 
       if (chosen.length < 3) for (const c of rest) if (!chosen.includes(c) && chosen.length < 3) chosen.push(c);
       chosen.sort((x, y) => x.t - y.t);
     }
+    opts.onSelected?.(chosen.map((c) => candidates.indexOf(c)));
     return chosen.map((c, i) => ({
       id: `f${i + 1}`,
       dataUrl: c.dataUrl,
@@ -214,12 +221,15 @@ export async function framesFromImages(files: File[], opts: ExtractOptions = {})
       canvas.width = w;
       canvas.height = h;
       canvas.getContext("2d")?.drawImage(img, 0, 0, w, h);
-      frames.push({ id: `f${i + 1}`, dataUrl: canvas.toDataURL("image/jpeg", quality), timestampMs: 0, source: "photo" });
+      const dataUrl = canvas.toDataURL("image/jpeg", quality);
+      frames.push({ id: `f${i + 1}`, dataUrl, timestampMs: 0, source: "photo" });
+      opts.onCandidate?.({ index: i, dataUrl, timestampMs: 0 });
       opts.onProgress?.(i + 1, limited.length);
     } finally {
       URL.revokeObjectURL(url);
     }
   }
+  opts.onSelected?.(frames.map((_, i) => i));
   return frames;
 }
 
@@ -234,9 +244,12 @@ export async function framesFromUrls(urls: string[], opts: ExtractOptions = {}):
     canvas.width = w;
     canvas.height = h;
     canvas.getContext("2d")?.drawImage(img, 0, 0, w, h);
-    frames.push({ id: `f${i + 1}`, dataUrl: canvas.toDataURL("image/jpeg", quality), timestampMs: 0, source: "photo" });
+    const dataUrl = canvas.toDataURL("image/jpeg", quality);
+    frames.push({ id: `f${i + 1}`, dataUrl, timestampMs: 0, source: "photo" });
+    opts.onCandidate?.({ index: i, dataUrl, timestampMs: 0 });
     opts.onProgress?.(i + 1, urls.length);
   }
+  opts.onSelected?.(frames.map((_, i) => i));
   return frames;
 }
 

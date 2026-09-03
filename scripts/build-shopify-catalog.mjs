@@ -51,12 +51,12 @@ const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
 const CACHED_ONLY = args.includes("--cached-only"); // use only pages already in .cache (debugging the mapping)
 const CAP = Number(args[args.indexOf("--cap") + 1]) || 100; // per-category cap
-const OVERSELECT = 1.35; // select extra candidates to absorb image failures
+const OVERSELECT = 1.2; // select extra candidates to absorb image failures
 const PAGE = 100;
 const FETCH_CONCURRENCY = 3;
 const MIN_INTERVAL_MS = 1000; // global pacing for the rows API (~60 req/min keeps it under the burst limit)
 const PAUSE_429_MS = 45000; // all workers back off this long after a 429
-const IMG_CONCURRENCY = 6;
+const IMG_CONCURRENCY = 8;
 const MAX_EDGE = 512;
 const TARGET_BYTES = 48 * 1024; // per image; total budget is ~40 MB
 const SEED = "faire-shopify-catalog-v1";
@@ -138,7 +138,7 @@ const MAP = [
   ["Home & Garden > Decor > Address Signs", "Garden & outdoor"],
   ["Home & Garden > Decor > Mailbox*", "Garden & outdoor"],
   ["Home & Garden > Decor > Rain Chains", "Garden & outdoor"],
-  ["Home & Garden > Lighting > Landscape Pathway Lighting", "Garden & outdoor"],
+  ["Home & Garden > Lighting > Landscape Pathway Lighting", null],
   ["Home & Garden > Lawn & Garden > Outdoor Power Equipment*", null],
   ["Home & Garden > Lawn & Garden > Gardening > Gardening Tool Accessories", null],
   ["Home & Garden > Lawn & Garden > Snow Removal", null],
@@ -335,7 +335,7 @@ function mapCategory(pathStr) {
 
 // Parts / refills / deep "X Accessories" leaves (pizza-cutter stands, pot lids, window hooks...) are
 // dropped in every category; "Hair Accessories" / "Home Fragrance Accessories" style nodes stay.
-const PARTS_RX = /\b(Replacement Parts|Replacement Heads|Refills?|Cartridges|Spare Parts|Parts|Attachments|Accessory Mounts|Lids|Stands|Blades|Belts|Springs|Tires|Nozzles|Tubings?|Filters|Controllers|Fertilizers|Treatments|Whitening|Hair Loss|Hair Color|Formula|Underwear|Underpants|Training Pants|Incontinence|Waste Disposal|Training Pads?|Wheelbarrows?|Electric|Electronics?|Power Tools?|Machines?|Appliances?|Cleaning|Can Crushers|Sharpeners|Staplers?|Staples|Adding Machine|Fresh & Frozen|Fresh Cut|Frozen|Live Food|Medicated|Batteries|Chargers|Cables|Software|Digital)\b/;
+const PARTS_RX = /\b(Replacement Parts|Replacement Heads|Refills?|Cartridges|Spare Parts|Parts|Attachments|Accessory Mounts|Lids|Stands|Blades|Belts|Springs|Tires|Nozzles|Tubings?|Filters|Controllers|Fertilizers|Treatments|Whitening|Hair Loss|Hair Color|Formula|Underwear|Underpants|Training Pants|Incontinence|Waste Disposal|Training Pads?|Wheelbarrows?|Electric|Electronics?|Power Tools?|Machines?|Appliances?|Cleaning|Can Crushers|Sharpeners|Staplers?|Staples|Adding Machine|Fresh & Frozen|Fresh Cut|Frozen|Live Food|Medicated|Batteries|Chargers|Cables|Software|Digital|Sterilizers?|Soils?|Potting|Contractor|Coveralls|High Visibility|Safety|Ultrasonic|Landscape Pathway Lighting|Long Johns)\b/;
 function isPartsLeaf(pathStr) {
   if (PARTS_RX.test(pathStr)) return true;
   const parts = pathStr.split(" > ");
@@ -375,6 +375,7 @@ function humanizeLeaf(leaf) {
 
 const LEAF_RENAME = {
   "Handbags, Wallets & Cases": "Bags",
+  "Parasols & Rain Umbrellas": "Umbrellas",
   "Handbag & Wallet Accessories": "Bag accessories",
   "Clothing Accessories": "Accessories",
   "Book Accessories": "Book accessories",
@@ -480,10 +481,10 @@ function applyOverrides(category, subcategory, title) {
 
 // Utility / electronics / medical / big-box / weapons / adult — dropped regardless of category.
 // Superset of the ABO build's HARD_SKIP plus the Shopify-specific additions from the brief.
-const HARD_SKIP = /\b(replacement|refill cartridge|spare parts?|battery|batteries|charger|usb|hdmi|bluetooth|wifi|wi-fi|electric|electrical|cordless|corded|voltage|watt|led bulb|light bulb|bulbs?|power strip|extension cord|surge|socket|plug|phone case|iphone|ipad|galaxy|pixel \d|xiaomi|redmi|oneplus|samsung|huawei|airpods?|macbook|mobile cover|back cover|screen protector|laptop|tablet|kindle|printer|toner|ink cartridge|adapter|cable|mount|bracket|hardware|screw|bolt|hinge|drawer slide|ladder|toilet|plunger|urinal|trash bag|garbage bag|detergent|bleach|disinfect|sanitizer|cleaner|cleaning|mop|broom|dustpan|vacuum|pest|insect|rodent|mouse trap|medic\w*|pharma\w*|tablets?|capsules?|softgels?|supplements?|vitamins?|probiotics?|prescription|melatonin|creatine|protein powder|pre-?workout|collagen peptides|condoms?|lubricant|pregnancy test|thermometer|blood pressure|glucose|nicotine|cigarette|cigar|vape|e-?liquid|hookah|bong|cannabis|cbd|thc|marijuana|knife sharpener|lawn mower|chainsaw|generator|automotive|car seat cover|steering|tire|wiper|engine|motor oil|3d printer|filament|subscription|gift card|e-gift|digital (code|download|product|file)|download|printable|swatch|sample|renewed|refurbished|strip lights?|rope lights?|work lights?|flood lights?|led strip|thermoelectric|12v|ac\/ ?dc|amazon|walmart|costco|ebay|aliexpress|temu|shein|wish\.com|dropship\w*|pack of (\d{3,}|[5-9]\d)|(\d{3,}|[5-9]\d)[- ]?(pack|pcs|pieces|count|ct)|wholesale lot|guns?|rifle|pistol|firearm|ammo|ammunition|holster|swords?|machete|crossbow|taser|stun gun|pepper spray|brass knuckles|knuckles|tactical|airsoft|sex|sexy|dildo|vibrator|erotic|adult toys?|bondage|fetish|lingerie|g-string|pre-?order|preorder|deposit|custom order|reserved for|do not buy|test product|placeholder|(stand|lid|base|top|bottom|cover|handle|blade|bag|insert|frame) only|electrolyte|regulator|tubing|nozzle|attachment|co2|spare|dispenser refill|whitening)\b/i;
+const HARD_SKIP = /\b(replacement|refill cartridge|spare parts?|battery|batteries|charger|usb|hdmi|bluetooth|wifi|wi-fi|electric|electrical|cordless|corded|voltage|watt|led bulb|light bulb|bulbs?|power strip|extension cord|surge|socket|plug|phone case|iphone|ipad|galaxy|pixel \d|xiaomi|redmi|oneplus|samsung|huawei|airpods?|macbook|mobile cover|back cover|screen protector|laptop|tablet|kindle|printer|toner|ink cartridge|adapter|cable|mount|bracket|hardware|screw|bolt|hinge|drawer slide|ladder|toilet|plunger|urinal|trash bag|garbage bag|detergent|bleach|disinfect|sanitizer|cleaner|cleaning|mop|broom|dustpan|vacuum|pest|insect|rodent|mouse trap|medic\w*|pharma\w*|tablets?|capsules?|softgels?|supplements?|vitamins?|probiotics?|prescription|melatonin|creatine|protein powder|pre-?workout|collagen peptides|condoms?|lubricant|pregnancy test|thermometer|blood pressure|glucose|nicotine|cigarette|cigar|vape|e-?liquid|hookah|bong|cannabis|cbd|thc|marijuana|knife sharpener|lawn mower|chainsaw|generator|automotive|car seat cover|steering|tire|wiper|engine|motor oil|3d printer|filament|subscription|gift card|e-gift|digital (code|download|product|file)|download|printable|swatch|sample|renewed|refurbished|strip lights?|rope lights?|work lights?|flood lights?|led strip|thermoelectric|12v|ac\/ ?dc|amazon|walmart|costco|ebay|aliexpress|temu|shein|wish\.com|dropship\w*|pack of (\d{3,}|[5-9]\d)|(\d{3,}|[5-9]\d)[- ]?(pack|pcs|pieces|count|ct)|wholesale lot|guns?|rifle|pistol|firearm|ammo|ammunition|holster|swords?|machete|crossbow|taser|stun gun|pepper spray|brass knuckles|knuckles|tactical|airsoft|sex|sexy|dildo|vibrator|erotic|adult toys?|bondage|fetish|lingerie|g-string|pre-?order|preorder|deposit|custom order|reserved for|do not buy|test product|placeholder|(stand|lid|base|top|bottom|cover|handle|blade|bag|insert|frame) only|electrolyte|regulator|tubing|nozzle|attachment|co2|spare|dispenser refill|whitening|ultrasonic|devices?|esterilizador|dropship\w*)\b/i;
 
 // Non-English function words (German, French, Spanish, Italian, Swedish/Danish/Norwegian, Dutch, Portuguese).
-const NON_EN = /\b(mit|und|für|fuer|teilig|aus|oder|nicht|sind|der|das|avec|pour|les|des|une|sont|dans|votre|vous|cette|para|con|del|una|por|las|los|está|este|esta|della|dello|degli|pezzi|sono|questo|och|för|med|till|från|som|het|een|voor|niet|ook|zijn|deze|não|você|juego|conjunto|ensemble|stück|stuck|größe|grösse|farbe|schwarz|weiß|weiss|noir|blanc|rouge|bleu|vert|negro|blanco|rojo|azul|nero|bianco|rosso|svart|vit|blå|grön)\b/i;
+const NON_EN = /\b(mit|und|für|fuer|teilig|aus|oder|nicht|sind|der|das|avec|pour|les|des|une|sont|dans|votre|vous|cette|para|con|del|una|por|las|los|está|este|esta|della|dello|degli|pezzi|sono|questo|och|för|med|till|från|som|het|een|voor|niet|ook|zijn|deze|não|você|juego|conjunto|ensemble|stück|stuck|größe|grösse|farbe|schwarz|weiß|weiss|noir|blanc|rouge|bleu|vert|negro|blanco|rojo|azul|nero|bianco|rosso|svart|vit|blå|grön|stuks?|geur\w*|kaars\w*|verpakking|blokverpakking)\b/i;
 // Foreign function words that are unambiguous in any case, and ambiguous ones that only count in lower case
 // ("de" could be "Eau de Parfum"; "LA" could be Los Angeles).
 const TITLE_FOREIGN_CI = /\b(pour|para|pentru|copii|und|mit|für|fuer|von|zum|zur|avec|sans|della|dello|delle|degli|gli|voor|ohne|uma|umas|não|você|och|för|från|ikke|også)\b/i;
@@ -742,7 +743,8 @@ function looksEnglish(title, desc) {
   const hasDiacritics = /[À-ɏͰ-ϿЀ-ӿ぀-ヿ一-鿿]/.test(title);
   const common = COMMON_EN.test(title);
   if (hasDiacritics && !common) return false;
-  if (!common && (TITLE_FOREIGN_CI.test(title) || TITLE_FOREIGN_LC.test(title))) return false;
+  const t2 = title.replace(/\beau de (parfum|toilette|cologne)\b/gi, "").replace(/\bde la (mer|cr[eè]me)\b/gi, "");
+  if (!common && (TITLE_FOREIGN_CI.test(t2) || TITLE_FOREIGN_LC.test(t2))) return false;
   const d = normalizeText(desc).slice(0, 600);
   if (d) {
     const nonEn = (d.match(NON_EN_G) || []).length;
@@ -1109,7 +1111,7 @@ async function main() {
       }
       const rawTitle = normalizeText(r.product_title);
       const brand = normalizeBrand(r.ground_truth_brand);
-      if (!rawTitle || HARD_SKIP.test(rawTitle) || (brand !== "—" && /\b(amazon|walmart|costco|ebay|aliexpress|temu|shein)\b/i.test(brand))) {
+      if (!rawTitle || HARD_SKIP.test(rawTitle) || (brand !== "—" && /\b(amazon|walmart|costco|ebay|aliexpress|temu|shein|dropship\w*)\b/i.test(brand))) {
         stats.hardSkip++;
         drop("hardSkip", rawTitle);
         continue;

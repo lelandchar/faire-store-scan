@@ -15,7 +15,7 @@ export interface SampleMeta {
   storeType: string;
 }
 
-const SOURCES: CatalogSource[] = ["synthetic", "public", "shopify"];
+const SOURCES: CatalogSource[] = ["shopify", "synthetic", "public"];
 
 function stageLabel(p: PipelineProgress): string {
   switch (p.stage) {

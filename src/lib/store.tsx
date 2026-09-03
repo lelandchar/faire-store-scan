@@ -59,7 +59,7 @@ const initialState: OnboardingState = {
   retrievalStatus: "idle",
   retrievalError: null,
   weights: DEFAULT_WEIGHTS,
-  catalogSource: "synthetic",
+  catalogSource: "shopify",
 };
 
 type Action =
@@ -163,7 +163,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         if (saved.analysisStatus === "analyzing" || saved.analysisStatus === "extracting") saved.analysisStatus = "idle";
         if (saved.retrievalStatus === "running") saved.retrievalStatus = "idle";
         if (!saved.weights) saved.weights = DEFAULT_WEIGHTS;
-        if (!saved.catalogSource) saved.catalogSource = "synthetic";
+        if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.8 };
+        if (!saved.catalogSource) saved.catalogSource = "shopify";
         dispatch({ type: "hydrate", state: saved });
       }
     } catch {
@@ -219,7 +220,16 @@ export function useOnboarding() {
     [state.profile, dispatch],
   );
   const setMode = useCallback((mode: BuyingMode) => dispatch({ type: "patchProfile", patch: { mode } }), [dispatch]);
-  return { state, dispatch, hydrated, setCategoryIntent, toggleStyle, setMode };
+  const setExplore = useCallback(
+    (explore: number) => dispatch({ type: "patchProfile", patch: { explore, mode: modeFromExplore(explore) } }),
+    [dispatch],
+  );
+  const setStrength = useCallback((strength: number) => dispatch({ type: "patchProfile", patch: { strength } }), [dispatch]);
+  return { state, dispatch, hydrated, setCategoryIntent, toggleStyle, setMode, setExplore, setStrength };
+}
+
+export function modeFromExplore(explore: number): BuyingMode {
+  return explore < 0.34 ? "replenish" : explore < 0.67 ? "complement" : "discover";
 }
 
 /** Turn a finished analysis into the editable profile that drives ranking. */
@@ -235,9 +245,12 @@ export function profileFromAnalysis(
     styles: a.styles.filter((s) => s.confidence !== "low").map((s) => s.name),
     materials: a.materials.map((m) => m.name),
     palette: a.palette,
-    priceTier: a.price_position.confidence === "low" ? "unknown" : a.price_position.tier,
+    // Price is not something a camera can read reliably, so it never shapes ranking unless a retailer sets it.
+    priceTier: "unknown",
     complements: a.suggested_complements.map((c) => c.category).filter((c) => !a.categories.some((s) => s.name === c)),
     mode: "complement",
+    explore: 0.5,
+    strength: 0.8,
     vibeWords: a.store_read.vibe_words,
     summary: a.store_read.summary,
   };

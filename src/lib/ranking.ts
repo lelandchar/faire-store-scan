@@ -12,12 +12,15 @@ const SHARE_WEIGHT: Record<Share, number> = {
   trace: 0.3,
 };
 
+// Personalization uses only what the walkthrough and the retailer's own choices
+// tell us. No marketplace popularity signal enters the personalized score; the
+// popularity prior only orders the generic feed that new retailers see today.
 export const WEIGHTS = {
-  category: 0.4,
-  style: 0.2,
+  category: 0.5,
+  style: 0.25,
   material: 0.1,
-  price: 0.1,
-  popularity: 0.1,
+  price: 0.05,
+  popularity: 0,
   novelty: 0.1,
 } as const;
 
@@ -117,7 +120,8 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     };
   }
   if (cat && cat.intent === "more") {
-    categoryScore = SHARE_WEIGHT[cat.share];
+    // Restocking leans harder into the sections the retailer already carries.
+    categoryScore = Math.min(1, SHARE_WEIGHT[cat.share] * (profile.mode === "replenish" ? 1.15 : 1));
     reasons.push({
       kind: "category",
       text: `You carry ${p.category.toLowerCase()}`,
@@ -136,7 +140,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   }
   if (isComplement) {
     const anchor = profile.categories.find((c) => c.share === "dominant" || c.share === "strong");
-    const complementScore = profile.mode === "complement" ? 0.95 : 0.75;
+    const complementScore = profile.mode === "complement" ? 0.95 : profile.mode === "replenish" ? 0.45 : 0.8;
     if (complementScore > categoryScore) categoryScore = complementScore;
     reasons.push({
       kind: "complement",
@@ -183,19 +187,14 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   if (profile.mode === "discover" && p.isNewBrand) {
     noveltyScore = 1;
     reasons.push({ kind: "new", text: "New on Faire, fits your look", weight: WEIGHTS.novelty });
-  } else if (profile.mode === "replenish" && p.isBestseller) {
-    noveltyScore = 0.6;
-    reasons.push({ kind: "popular", text: "Bestseller with stores like yours", weight: WEIGHTS.novelty * 0.6 });
   }
 
-  const pop = popularityScore(p);
   const score =
     WEIGHTS.category * categoryScore +
     WEIGHTS.style * styleScore +
     WEIGHTS.material * materialScore +
     WEIGHTS.price * priceScore +
-    WEIGHTS.novelty * noveltyScore +
-    WEIGHTS.popularity * pop;
+    WEIGHTS.novelty * noveltyScore;
 
   reasons.sort((a, b) => b.weight - a.weight);
   return { score, reasons: reasons.slice(0, 3) };
@@ -248,7 +247,10 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
     if (v !== null && v >= 0.72) reasons.push({ kind: "visual", text: "Looks like what's on your shelves", weight: w.visual * v });
     if (sm !== null && sm >= 0.72) reasons.push({ kind: "semantic", text: "Fits how we read your store", weight: w.semantic * sm });
     reasons.sort((a, b) => b.weight - a.weight);
-    const score = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0);
+    const fusedScore = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0);
+    // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic popularity order.
+    const strength = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;
+    const score = strength * fusedScore + (1 - strength) * popularityScore(t.product);
     return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, visual: v, semantic: sm, fused: score } };
   });
 

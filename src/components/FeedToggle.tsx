@@ -48,7 +48,7 @@ export function FeedToggle({ variant }: { variant: "side" | "floating" }) {
       <p className="text-caption mt-3 leading-snug">
         {hasProfile
           ? on
-            ? "Re-ranked from the walkthrough: what the retailer carries, their style and price point, plus visual matches to their shelves."
+            ? "Ranked only from the walkthrough: what the retailer carries, their style, their goal, and visual matches to their shelves. No popularity signal."
             : "What a brand-new retailer sees today: popularity order, no store context."
           : "No walkthrough yet, so this is the generic feed."}
       </p>
