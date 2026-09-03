@@ -25,9 +25,8 @@ export function DeviceShell({ children }: { children: ReactNode }) {
   if (pathname?.startsWith("/admin")) return <>{children}</>;
   const onAbout = pathname?.startsWith("/about");
   const onFeed = pathname?.startsWith("/home") || pathname?.startsWith("/search");
-  return (
-    <div className="shell">
-      <header className="top-nav">
+  const header = (
+    <header className="top-nav">
         <div className="top-nav__brand">
           <span className="top-nav__mark font-serif" aria-hidden>
             F
@@ -44,6 +43,18 @@ export function DeviceShell({ children }: { children: ReactNode }) {
           </button>
         </nav>
       </header>
+  );
+  if (onAbout) {
+    return (
+      <div className="shell shell--doc">
+        {header}
+        <main className="doc">{children}</main>
+      </div>
+    );
+  }
+  return (
+    <div className="shell">
+      {header}
       <div className="stage">
         <div className="device">
           <StatusBar />

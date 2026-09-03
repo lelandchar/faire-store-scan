@@ -161,7 +161,16 @@ const BOUTIQUE: AnalysisOutput = {
   },
 };
 
+function messageFirst(a: AnalysisOutput): AnalysisOutput {
+  const { store_read, ...rest } = a;
+  return { store_read, ...rest } as AnalysisOutput;
+}
+
 export function pickMock(context: { storeType?: string; storeName?: string; description?: string; sampleSlug?: string }): AnalysisOutput {
+  return messageFirst(pickMockInner(context));
+}
+
+function pickMockInner(context: { storeType?: string; storeName?: string; description?: string; sampleSlug?: string }): AnalysisOutput {
   // The sample slug is the most reliable hint; store type next; free text last.
   const slug = (context.sampleSlug ?? "").toLowerCase();
   if (/book/.test(slug)) return BOOKSHOP;

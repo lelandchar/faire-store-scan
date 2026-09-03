@@ -148,12 +148,13 @@ function PromptSummary({
         </div>
         <div>
           <p className="font-medium text-ink">Decoding</p>
-          <p className="mt-1">
-            Anthropic Messages API, model <Mono>ANALYSIS_MODEL</Mono> (default claude-opus-5), effort <Mono>ANALYSIS_EFFORT</Mono> (default
-            medium), max_tokens 6000, <Mono>output_config.format = zodOutputFormat(AnalysisSchema)</Mono>. Text deltas stream over SSE; the
-            client parses the growing JSON with partial-json so the phone can reveal signals progressively. Mock mode (
-            <Mono>MOCK_ANALYSIS=1</Mono> or no API key) streams a canned analysis picked from the sample slug / store type at roughly model
-            pace.
+          <p>
+            OpenRouter chat completions (OpenAI-compatible) with <Mono>response_format: json_schema</Mono> (strict) and <Mono>stream: true</Mono>. Model from{" "}
+            <Mono>ANALYSIS_MODEL</Mono> (meta/muse-spark-1.3), reasoning effort from <Mono>ANALYSIS_EFFORT</Mono> (xhigh; medium halves the latency). If the
+            configured model is gated, the same request is retried on <Mono>ANALYSIS_FALLBACK_MODEL</Mono> (anthropic/claude-sonnet-5, low effort). The
+            Anthropic SDK path is used instead when only <Mono>ANTHROPIC_API_KEY</Mono> is set. Text deltas stream over SSE; the phone parses the growing JSON
+            with partial-json and reveals the message first, then each section. Near-valid output (an array one item too long) is coerced, not rejected.
+            Mock mode (<Mono>MOCK_ANALYSIS=1</Mono> or no key) streams a canned read.
           </p>
         </div>
       </div>
@@ -192,8 +193,8 @@ export function StageAnalysis({
   return (
     <Card
       step="Stage 2"
-      title="LM store read"
-      subtitle="The frames go to a vision LM with a zod structured-output schema. It returns evidence-cited categories, styles, materials, palette, price position, complements and a summary; the retailer confirms that on the next screen and it becomes the profile that drives tag scoring. This is the only stage that costs a model call."
+      title="Store read: message to the retailer"
+      subtitle="The frames go to Meta Muse Spark 1.3 through OpenRouter with a strict JSON schema. It answers with a message to the retailer first, then evidence-cited categories, styles, materials, complements and notes. The retailer confirms and edits that on the next three screens; only then do embedding and ranking run. This is the only stage that costs a model call."
     >
       <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
         <div className="space-y-4">
@@ -236,6 +237,26 @@ export function StageAnalysis({
             <Placeholder>{status === "extracting" ? "Waiting for frames…" : "Run a sample to populate."}</Placeholder>
           ) : (
             <>
+              <Block title="Message to the retailer">
+                {a.store_read ? (
+                  <div className="text-[12px]">
+                    <p>
+                      <span className="text-muted">type guess </span>
+                      <span className="text-ink">{a.store_read.store_type_guess ?? "—"}</span>
+                    </p>
+                    <p className="mt-1 flex flex-wrap gap-1">
+                      {(a.store_read.vibe_words ?? []).map((w, i) => (
+                        <span key={`${w}-${i}`} className="rounded-full border border-line px-2 py-0.5 text-ink-2">
+                          {w}
+                        </span>
+                      ))}
+                    </p>
+                    <p className="mt-2 max-w-[720px] font-serif text-[15px] leading-[1.45] text-ink">{a.store_read.summary}</p>
+                  </div>
+                ) : (
+                  <Empty />
+                )}
+              </Block>
               <Block title="Categories" count={cats.length}>
                 {cats.length ? (
                   <div className="overflow-x-auto">
@@ -365,26 +386,7 @@ export function StageAnalysis({
                 </Block>
               </div>
 
-              <Block title="Store read">
-                {a.store_read ? (
-                  <div className="text-[12px]">
-                    <p>
-                      <span className="text-muted">type guess </span>
-                      <span className="text-ink">{a.store_read.store_type_guess ?? "—"}</span>
-                    </p>
-                    <p className="mt-1 flex flex-wrap gap-1">
-                      {(a.store_read.vibe_words ?? []).map((w, i) => (
-                        <span key={`${w}-${i}`} className="rounded-full border border-line px-2 py-0.5 text-ink-2">
-                          {w}
-                        </span>
-                      ))}
-                    </p>
-                    <p className="mt-2 max-w-[720px] font-serif text-[15px] leading-[1.45] text-ink">{a.store_read.summary}</p>
-                  </div>
-                ) : (
-                  <Empty />
-                )}
-              </Block>
+
 
               {merch.length > 0 && (
                 <Block title="Merchandising notes" count={merch.length}>

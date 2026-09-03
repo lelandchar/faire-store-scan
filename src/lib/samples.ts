@@ -24,14 +24,6 @@ export const SAMPLE_VIDEOS: { slug: string; name: string; tagline: string; store
     poster: "/samples/videos/home-gift-walkthrough.jpg",
   },
   {
-    slug: "bookshop-video",
-    name: "Paper & Bound",
-    tagline: "Bookshop with a card and gift corner",
-    storeType: "Book Store",
-    file: "/samples/videos/bookshop-walkthrough.mp4",
-    poster: "/samples/videos/bookshop-walkthrough.jpg",
-  },
-  {
     slug: "boutique-video",
     name: "Juniper & June",
     tagline: "Women's apparel & accessories boutique",

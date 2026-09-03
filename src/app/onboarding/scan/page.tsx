@@ -13,7 +13,7 @@ import { loadSampleManifest, samplePhotoUrl, SAMPLE_VIDEOS, type SampleStore } f
 import { useOnboarding } from "@/lib/store";
 
 const TIPS = [
-  { Icon: Camera, text: "Slow pan across your shelves, 10 to 20 seconds" },
+  { Icon: Camera, text: "Slow pan, about 4 feet from your shelves, 10 to 20 seconds" },
   { Icon: Sun, text: "Good light. No need to tidy up first" },
   { Icon: EyeOff, text: "Skip people, screens and receipts" },
 ];

@@ -6,15 +6,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { runAnalysis } from "@/lib/analyze-client";
-import { getCatalog } from "@/lib/catalog";
 import { extractFramesFromVideo, framesFromImages, framesFromUrls } from "@/lib/frames";
 import { takePendingInput, type PendingInput } from "@/lib/pending";
 import { styleLabel } from "@/lib/ranking";
-import { promptsFromAnalysis, runRetrieval } from "@/lib/retrieval";
 import { profileFromAnalysis, useOnboarding } from "@/lib/store";
 import type { Analysis, Frame, Share } from "@/lib/types";
 
-type Phase = "loading" | "extracting" | "analyzing" | "matching" | "done" | "error";
+type Phase = "loading" | "extracting" | "analyzing" | "done" | "error";
 
 const SHARE_LABEL: Record<Share, string> = {
   dominant: "Most of your shelves",
@@ -23,24 +21,23 @@ const SHARE_LABEL: Record<Share, string> = {
   trace: "A hint of it",
 };
 
-function statusFor(a: Partial<Analysis> | null, phase: Phase, catalogSize: number): string {
+function statusFor(a: Partial<Analysis> | null, phase: Phase): string {
   switch (phase) {
     case "loading":
       return "Getting your video ready";
     case "extracting":
       return "Pulling the clearest moments from your video";
-    case "matching":
-      return `Finding products that fit your store across ${catalogSize.toLocaleString()} listings`;
     case "done":
       return "Got it.";
     case "error":
       return "Hmm.";
   }
   if (!a) return "Looking at what's on your shelves";
-  if (a.store_read) return "Almost there";
-  if (a.suggested_complements) return "Finding what would pair well";
+  if (a.suggested_complements) return "Almost there";
   if (a.styles || a.palette) return "Noticing your style";
   if (a.categories) return "Sorting what's on your shelves";
+  if (a.frame_notes) return "Looking at each shelf";
+  if (a.store_read) return "Writing you a note about your store";
   return "Looking at what's on your shelves";
 }
 
@@ -56,7 +53,6 @@ function Stage({ index, title, state, children }: { index: number; title: string
           {state === "done" ? <Check size={13} strokeWidth={3} /> : index}
         </span>
         <h2 className="text-[16px] font-semibold text-ink">{title}</h2>
-        {state === "active" && <span className="pulse-soft ml-1 h-1.5 w-1.5 rounded-full bg-ink" />}
       </div>
       <div className="mt-3">{children}</div>
     </motion.section>
@@ -70,6 +66,13 @@ export default function AnalyzingPage() {
   const [error, setError] = useState<string | null>(null);
   const [candidates, setCandidates] = useState<{ index: number; dataUrl: string; timestampMs: number }[]>([]);
   const [kept, setKept] = useState<number[] | null>(null);
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [scanIdx, setScanIdx] = useState(0);
+  useEffect(() => {
+    if (phase !== "analyzing") return;
+    const t = setInterval(() => setScanIdx((i) => i + 1), 850);
+    return () => clearInterval(t);
+  }, [phase]);
   const started = useRef(false);
   const sentinel = useRef<HTMLDivElement>(null);
 
@@ -123,18 +126,7 @@ export default function AnalyzingPage() {
       });
       dispatch({ type: "setAnalysisStatus", status: "done" });
 
-      setPhase("matching");
-      dispatch({ type: "setRetrievalStatus", status: "running" });
-      try {
-        const retrieval = await runRetrieval({ frames, catalog: state.catalogSource, prompts: promptsFromAnalysis(analysis) });
-        dispatch({ type: "setRetrieval", retrieval });
-        dispatch({ type: "setRetrievalStatus", status: "done" });
-      } catch (e) {
-        dispatch({ type: "setRetrieval", retrieval: null });
-        dispatch({ type: "setRetrievalStatus", status: "error", error: e instanceof Error ? e.message : "Retrieval failed" });
-      }
       setPhase("done");
-      setTimeout(() => router.replace("/onboarding/profile"), 1500);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg);
@@ -160,39 +152,24 @@ export default function AnalyzingPage() {
 
   const a = state.analysis;
   const frames = state.frames;
-  const catalog = getCatalog(state.catalogSource);
-  const status = statusFor(a, phase, catalog.length);
+  const status = statusFor(a, phase);
   const notes = useMemo(
     () => new Map((a?.frame_notes ?? []).filter((n) => n?.frame_id && n?.what_we_saw).map((n) => [n.frame_id, n.what_we_saw])),
     [a?.frame_notes],
   );
-  const noted = frames.filter((f) => notes.has(f.id));
-  const hero = noted.length ? noted[noted.length - 1] : frames[0];
   const cats = (a?.categories ?? []).filter((c) => c?.name);
   const styles = (a?.styles ?? []).filter((s) => s?.name);
   const complements = (a?.suggested_complements ?? []).filter((c) => c?.category);
   const summary = a?.store_read?.summary;
-  const retrieval = state.retrieval;
-  const topMatches = useMemo(() => {
-    if (!retrieval) return [];
-    const ids = new Set<string>();
-    for (const fn of retrieval.frameNeighbors) for (const n of fn.neighbors.slice(0, 2)) ids.add(n.id);
-    return Array.from(ids)
-      .map((id) => catalog.find((p) => p.id === id))
-      .filter((p): p is NonNullable<typeof p> => !!p)
-      .slice(0, 6);
-  }, [retrieval, catalog]);
-
   // Keep the newest information in view as it streams in.
-  const version = `${phase}|${candidates.length}|${kept?.length ?? 0}|${notes.size}|${cats.length}|${styles.length}|${complements.length}|${summary ? 1 : 0}|${topMatches.length}`;
+  const version = `${phase}|${candidates.length}|${kept?.length ?? 0}|${notes.size}|${cats.length}|${styles.length}|${complements.length}|${summary ? 1 : 0}`;
   useEffect(() => {
     const t = setTimeout(() => sentinel.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 120);
     return () => clearTimeout(t);
   }, [version]);
 
   const stage1: "active" | "done" = phase === "loading" || phase === "extracting" ? "active" : "done";
-  const stage2: "active" | "done" | "pending" = phase === "analyzing" ? "active" : phase === "matching" || phase === "done" ? "done" : "pending";
-  const stage3: "active" | "done" | "pending" = phase === "matching" ? "active" : phase === "done" ? "done" : "pending";
+  const stage2: "active" | "done" | "pending" = phase === "analyzing" ? "active" : phase === "done" ? "done" : "pending";
 
   return (
     <div className="flex min-h-full flex-1 flex-col px-6 pb-10 pt-8">
@@ -221,7 +198,10 @@ export default function AnalyzingPage() {
             {candidates.map((c) => {
               const isKept = kept ? kept.includes(c.index) : true;
               return (
-                <motion.div
+                <motion.button
+                  type="button"
+                  aria-label="View frame"
+                  onClick={() => setLightbox(c.dataUrl)}
                   key={c.index}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: kept && !isKept ? 0.3 : 1, scale: 1 }}
@@ -236,47 +216,73 @@ export default function AnalyzingPage() {
                       <Check size={10} strokeWidth={3} />
                     </span>
                   )}
-                </motion.div>
+                </motion.button>
               );
             })}
           </div>
         )}
-        {kept && (
-          <p className="text-caption mt-2">
-            Sampled {candidates.length} moments, kept the {kept.length} clearest. Your video itself never leaves your phone.
-          </p>
-        )}
+        <div className="text-caption mt-2 space-y-0.5">
+          {candidates.length > 0 && (
+            <p>
+              {kept ? `Sampled ${candidates.length} images.` : `Sampling ${candidates.length} images`}
+              {!kept && <span className="pulse-soft">…</span>}
+            </p>
+          )}
+          <AnimatePresence>
+            {kept && (
+              <motion.p key="keep" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
+                Keeping the {kept.length} clearest. Tap any image to look closer. Your video itself never leaves your phone.
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
       </Stage>
 
       {/* Stage 2: the read, streaming in the retailer's language */}
       {stage2 !== "pending" && (
-        <Stage index={2} title="What we can see" state={stage2}>
-          {hero && (
-            <div className="relative overflow-hidden rounded-[var(--radius-lg)] bg-surface-2" style={{ aspectRatio: "16 / 10" }}>
-              <AnimatePresence mode="popLayout">
-                <motion.img
-                  key={hero.id}
-                  src={hero.dataUrl}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
-                />
-              </AnimatePresence>
-              {phase === "analyzing" && !notes.has(hero.id) && (
-                <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-x-0 h-[18%] bg-gradient-to-b from-transparent via-white/45 to-transparent" style={{ animation: "scanline 2.2s ease-in-out infinite" }} />
-                </div>
-              )}
-              <AnimatePresence>
-                {notes.get(hero.id) && (
-                  <motion.div key={`note-${hero.id}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1.5 text-[13px] font-medium text-ink shadow-sm">
-                    We see {notes.get(hero.id)!.charAt(0).toLowerCase() + notes.get(hero.id)!.slice(1)}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+        <Stage index={2} title="A note about your store" state={stage2}>
+          {summary && (
+            <motion.p key="summary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4 font-serif text-[18px] leading-[1.35] text-ink">
+              {summary}
+            </motion.p>
+          )}
+          {frames.length > 0 && (
+            <div className="grid grid-cols-2 gap-2">
+              {frames.map((f, i) => {
+                const scanning = phase === "analyzing" && scanIdx % frames.length === i;
+                const note = notes.get(f.id);
+                return (
+                  <button
+                    key={f.id}
+                    type="button"
+                    aria-label="View frame"
+                    onClick={() => setLightbox(f.dataUrl)}
+                    className={`relative overflow-hidden rounded-[8px] bg-surface-2 transition-shadow ${scanning ? "ring-2 ring-ink" : ""}`}
+                    style={{ aspectRatio: "4 / 3" }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={f.dataUrl} alt="" className="h-full w-full object-cover" />
+                    {scanning && (
+                      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                        <div className="absolute inset-x-0 h-[22%] bg-gradient-to-b from-transparent via-white/55 to-transparent" style={{ animation: "scanline 0.85s ease-in-out infinite" }} />
+                      </div>
+                    )}
+                    <AnimatePresence>
+                      {note && (
+                        <motion.span
+                          key={`note-${f.id}`}
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          className="absolute inset-x-1 bottom-1 truncate rounded-full bg-white/95 px-2 py-1 text-left text-[11px] font-medium text-ink shadow-sm"
+                        >
+                          {note}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </button>
+                );
+              })}
             </div>
           )}
 
@@ -318,41 +324,7 @@ export default function AnalyzingPage() {
                 </div>
               </motion.div>
             )}
-            {summary && (
-              <motion.p key="summary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 font-serif text-[18px] leading-[1.35] text-ink">
-                {summary}
-              </motion.p>
-            )}
           </AnimatePresence>
-        </Stage>
-      )}
-
-      {/* Stage 3: matching to the catalog */}
-      {stage3 !== "pending" && (
-        <Stage index={3} title="Finding products for your store" state={stage3}>
-          <div className="h-1.5 overflow-hidden rounded-full bg-surface-3">
-            <motion.div
-              className="h-full rounded-full bg-ink"
-              initial={{ width: "8%" }}
-              animate={{ width: phase === "done" ? "100%" : ["8%", "70%"] }}
-              transition={phase === "done" ? { duration: 0.4 } : { duration: 3.5, ease: "easeOut" }}
-            />
-          </div>
-          <p className="text-caption mt-2">
-            {phase === "done" && retrieval
-              ? `${retrieval.count.toLocaleString()} products scored against your shelves.`
-              : `Comparing your shelves with ${catalog.length.toLocaleString()} products from independent brands.`}
-          </p>
-          {topMatches.length > 0 && (
-            <div className="mt-3 flex gap-2">
-              {topMatches.map((p, i) => (
-                <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }} className="h-14 w-14 overflow-hidden rounded-[6px] bg-surface-2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.image} alt="" className="h-full w-full object-cover" />
-                </motion.div>
-              ))}
-            </div>
-          )}
         </Stage>
       )}
 
@@ -366,7 +338,31 @@ export default function AnalyzingPage() {
           </Button>
         </div>
       )}
+      {phase === "done" && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="sticky bottom-0 -mx-6 mt-8 border-t border-line bg-white/95 px-6 pb-[max(16px,env(safe-area-inset-bottom))] pt-4 backdrop-blur">
+          <Button onClick={() => router.push("/onboarding/profile")}>Review what we found</Button>
+          <p className="text-caption mt-2 text-center">Next: confirm your assortment, your style, and two dials.</p>
+        </motion.div>
+      )}
       <div ref={sentinel} className="h-1" />
+
+      <AnimatePresence>
+        {lightbox && (
+          <motion.button
+            type="button"
+            aria-label="Close"
+            key="lightbox"
+            onClick={() => setLightbox(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={lightbox} alt="" className="max-h-full max-w-full rounded-[8px] object-contain" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

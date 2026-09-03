@@ -8,7 +8,7 @@ export function StageFrames({ frames, progress }: { frames: Frame[]; progress: {
   return (
     <Card
       step="Stage 1"
-      title="Input frames"
+      title={frames[0]?.source === "photo" ? "Photo processing" : "Video to frames"}
       subtitle="Client-side selection (frames.ts): candidates are sampled uniformly across the clip (up to 16, ~1.5 per second), each scored by the variance of a 3×3 Laplacian over a 96px grayscale copy (sharpness), then bucketed into 8 temporal buckets and the sharpest of each bucket is kept. Frames are resized to ≤1280px and JPEG-encoded at q=0.8; the raw video never leaves the device. Photos skip sampling and are only resized."
     >
       {frames.length === 0 ? (

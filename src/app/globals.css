@@ -106,6 +106,62 @@ body {
 .top-nav {
   display: none;
 }
+/* Full-width document pages (How it works). */
+.shell--doc {
+  padding: 16px 20px 64px;
+}
+.doc {
+  width: 100%;
+  max-width: 760px;
+  color: var(--ink);
+}
+@media (max-width: 899px) {
+  .shell--doc .top-nav {
+    display: flex;
+    height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .shell--doc .top-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+  }
+  .shell--doc .top-nav__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 16px;
+  }
+  .shell--doc .top-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .shell--doc .top-nav__links a {
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .shell--doc .top-nav__restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 28px;
+    padding: 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 12px;
+  }
+}
 .stage {
   position: relative;
   width: 100%;

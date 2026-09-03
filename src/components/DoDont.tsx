@@ -41,10 +41,15 @@ const CARDS: { kind: "do" | "dont"; title: string; body: string; video?: string;
   },
   {
     kind: "do",
-    title: "Or 4 to 6 wide photos",
-    body: "Different corners of the store, not close-ups.",
-    poster: "/samples/home-gift/cover.jpg",
-    photos: ["/samples/home-gift/01.jpg", "/samples/home-gift/02.jpg", "/samples/home-gift/03.jpg", "/samples/home-gift/04.jpg"],
+    title: "Or 4 to 6 photos, about 4 feet from your shelves",
+    body: "",
+    poster: "/samples/videos/home-gift-walkthrough.jpg",
+    photos: [
+      "/samples/videos/home-gift-walkthrough.jpg",
+      "/samples/videos/good-steady-pan.jpg",
+      "/samples/videos/boutique-walkthrough.jpg",
+      "/samples/videos/general-store-walkthrough.jpg",
+    ],
   },
 ];
 
@@ -128,8 +133,7 @@ export function DoDont() {
               {c.kind === "do" ? "Do" : "Don't"}
             </span>
           </div>
-          <p className="mt-2 text-[14px] font-medium text-ink">{c.title}</p>
-          <p className="text-caption">{c.body}</p>
+          <p className="mt-2 text-[13px] font-medium leading-snug text-ink">{c.title}</p>
         </div>
       ))}
       </div>
@@ -138,7 +142,7 @@ export function DoDont() {
           type="button"
           aria-label="Previous"
           onClick={() => scrollBy(-320)}
-          className="absolute -left-3 top-[38%] flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-card)]"
+          className="absolute -left-3 top-[78px] flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-card)]"
         >
           <ChevronLeft size={18} />
         </button>
@@ -148,7 +152,7 @@ export function DoDont() {
           type="button"
           aria-label="Next"
           onClick={() => scrollBy(320)}
-          className="absolute -right-3 top-[38%] flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-card)]"
+          className="absolute -right-3 top-[78px] flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-card)]"
         >
           <ChevronRight size={18} />
         </button>

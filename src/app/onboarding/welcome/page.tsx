@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Store } from "lucide-react";
+import { Palette, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BackChevron } from "@/components/ui/Screen";
 import { Button } from "@/components/ui/Button";
 
 const PROMISES = [
-  { Icon: Store, text: "Products that match what you already sell" },
-  { Icon: Sparkles, text: "Brands that match your style and price point" },
+  { Icon: ShoppingBag, text: "Products that match what you already sell" },
+  { Icon: Palette, text: "Brands that match your style and price point" },
 ];
 
 /** The pitch, in the retailer's language, right before we ask for the walkthrough. */
@@ -38,8 +38,8 @@ export default function WelcomePage() {
           Let&apos;s customize your wholesale storefront.
         </h1>
         <p className="text-body mt-3 rise">
-          Faire has over 11 million products from 140,000 independent brands. Film your shelves for 15 seconds and we&apos;ll find the products that match
-          what you sell.
+          Faire has over 11 million products from 140,000 independent brands. Film your shelves for 15 seconds, and we&apos;ll find products that match your
+          unique taste.
         </p>
 
         {/* The promises arrive one at a time so the screen reads as a sequence, not a wall. */}

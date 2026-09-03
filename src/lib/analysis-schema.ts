@@ -5,6 +5,14 @@ import { CATEGORIES, STYLES } from "./types";
 // reveals signals progressively as they stream in. Cheap per-frame notes
 // come first so the user sees something within a few seconds.
 export const AnalysisSchema = z.object({
+  // The message to the retailer comes first: it is the one thing every retailer reads.
+  store_read: z.object({
+    store_type_guess: z.string().describe("Best short label for the store, e.g. 'Independent bookshop with a stationery corner'."),
+    vibe_words: z.array(z.string()).max(4).describe("2-4 evocative single words, e.g. 'warm', 'literary', 'tactile'."),
+    summary: z
+      .string()
+      .describe("Message to the retailer: two warm, specific sentences addressed to the store owner about what their shelves say about their store. No hedging, no mention of frames or AI."),
+  }),
   frame_notes: z
     .array(
       z.object({
@@ -67,13 +75,6 @@ export const AnalysisSchema = z.object({
     .array(z.object({ category: z.enum(CATEGORIES), reason: z.string() }))
     .max(3)
     .describe("Categories that are NOT well represented but would pair naturally with what is stocked."),
-  store_read: z.object({
-    store_type_guess: z.string().describe("Best short label for the store, e.g. 'Independent bookshop with a stationery corner'."),
-    vibe_words: z.array(z.string()).max(4).describe("2-4 evocative single words, e.g. 'warm', 'literary', 'tactile'."),
-    summary: z
-      .string()
-      .describe("Two warm, specific sentences addressed to the store owner about what their shelves say about their store. No hedging, no mention of frames or AI."),
-  }),
 });
 
 export type AnalysisOutput = z.infer<typeof AnalysisSchema>;

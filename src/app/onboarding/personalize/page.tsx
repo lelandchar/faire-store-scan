@@ -42,7 +42,7 @@ export default function PersonalizePage() {
     <Screen
       back="/onboarding/style"
       footer={
-        <Button onClick={() => router.push("/onboarding/done")}>
+        <Button onClick={() => router.push("/onboarding/building")}>
           Looks right
         </Button>
       }

@@ -1,4 +1,4 @@
-import type { Analysis, Frame } from "./types";
+import type { Analysis, Frame, StoreProfile } from "./types";
 
 // Shared contract between the retrieval route, the store, the ranking fusion
 // and the admin trace view.
@@ -51,6 +51,23 @@ export function promptsFromAnalysis(a: Partial<Analysis>): string[] {
   const mats = (a.materials ?? []).slice(0, 3).map((m) => m.name).join(", ");
   if (mats) prompts.push(`products made of ${mats}`);
   return prompts.slice(0, 8);
+}
+
+/** Prompts from the profile the retailer actually confirmed (their edits win over the raw read). */
+export function promptsFromProfile(profile: StoreProfile, a: Partial<Analysis> | null): string[] {
+  const prompts: string[] = [];
+  const styleWords = profile.styles.slice(0, 2).map((s) => s.replace("-", " ")).join(" ");
+  const storeType = a?.store_read?.store_type_guess?.trim();
+  if (storeType) prompts.push(`a product sold at ${storeType.toLowerCase()}`);
+  for (const c of profile.categories.filter((c) => c.intent !== "skip").slice(0, 5)) {
+    const sig = a?.categories?.find((s) => s.name === c.name);
+    const ex = (sig?.examples ?? []).slice(0, 3).join(", ");
+    prompts.push(`${ex || c.name.toLowerCase()}${styleWords ? `, ${styleWords} style` : ""}`);
+  }
+  for (const c of profile.complements.slice(0, 2)) prompts.push(`${c.toLowerCase()}${styleWords ? `, ${styleWords} style` : ""}`);
+  const mats = profile.materials.slice(0, 3).join(", ");
+  if (mats) prompts.push(`products made of ${mats}`);
+  return prompts.slice(0, 10);
 }
 
 export async function runRetrieval(opts: {
