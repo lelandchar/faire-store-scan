@@ -318,8 +318,10 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
       fusedScore += (buyer - 3) * BUYER_STEP;
       if (buyer >= 4) reasons.push({ kind: "buyer", text: "Rated a strong fit for your store", weight: (buyer - 3) * BUYER_STEP });
     }
-    // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic (random) order.
-    const strength = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;
+    // Personalization strength. The dial's middle should still feel personalized, so the dial
+    // maps onto 0.6..1.0 of the blend with the generic (random) order rather than 0..1.
+    const dial = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;
+    const strength = 0.6 + 0.4 * dial;
     const score = strength * fusedScore + (1 - strength) * genericPrior(t.product);
     return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, parts: t.parts, visual: v, semantic: sm, nn: nnv, centroid: cen, buyer, fused: score } };
   });

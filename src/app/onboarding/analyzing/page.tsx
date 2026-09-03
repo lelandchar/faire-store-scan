@@ -192,6 +192,19 @@ export default function AnalyzingPage() {
     return () => clearTimeout(t);
   }, [kept]);
   const stage2Ref = useRef<HTMLDivElement>(null);
+  const stage3Ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (phase !== "done") return;
+    const t = setTimeout(
+      () =>
+        stage3Ref.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        }),
+      150,
+    );
+    return () => clearTimeout(t);
+  }, [phase]);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scanIdx, setScanIdx] = useState(0);
   const [thinking, setThinking] = useState(0);
@@ -403,7 +416,9 @@ export default function AnalyzingPage() {
   }, [stage2Ready]);
 
   return (
-    <div className="flex min-h-full grow shrink-0 flex-col px-6 pb-24 pt-8">
+    <div
+      className={`flex min-h-full grow shrink-0 flex-col px-6 pt-8 ${phase === "done" ? "pb-0" : "pb-24"}`}
+    >
       <p className="text-caption uppercase tracking-[0.14em]">Store scan</p>
       <h1 className="text-display-sm mt-2">Reading your shelves</h1>
       {/* Status and progress stay pinned while the page auto-scrolls through the stages. */}
@@ -533,17 +548,7 @@ export default function AnalyzingPage() {
       {/* Stage 2: the read, streaming in the retailer's language */}
       {stage2 !== "pending" && (
         <div ref={stage2Ref} className="scroll-mt-[96px]">
-          <Stage index={2} title="A note about your store" state={stage2}>
-            {summary && (
-              <motion.p
-                key="summary"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="mb-4 font-serif text-[18px] leading-[1.35] text-ink"
-              >
-                {summary}
-              </motion.p>
-            )}
+          <Stage index={2} title="Analyzing your images" state={stage2}>
             {frames.length > 0 && (
               <div className="grid grid-cols-2 gap-2">
                 {frames.map((f, i) => {
@@ -588,7 +593,7 @@ export default function AnalyzingPage() {
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-x-1 bottom-1 truncate rounded-full bg-white/95 px-2 py-1 text-left text-[11px] font-medium text-ink shadow-sm"
+                            className="absolute inset-x-1 bottom-1 line-clamp-2 rounded-[6px] bg-white/95 px-2 py-1 text-left text-[11px] font-medium leading-snug text-ink shadow-sm"
                           >
                             {note}
                           </motion.span>
@@ -599,7 +604,24 @@ export default function AnalyzingPage() {
                 })}
               </div>
             )}
+          </Stage>
+        </div>
+      )}
 
+      {/* Stage 3: what the read adds up to, once the images are done */}
+      {phase === "done" && a && (
+        <div ref={stage3Ref} className="scroll-mt-[96px]">
+          <Stage index={3} title="Your store's unique taste" state="done">
+            {summary && (
+              <motion.p
+                key="summary"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="font-serif text-[18px] leading-[1.35] text-ink"
+              >
+                {summary}
+              </motion.p>
+            )}
             <AnimatePresence initial={false}>
               {cats.length > 0 && (
                 <motion.div
@@ -697,6 +719,7 @@ export default function AnalyzingPage() {
           </Button>
         </div>
       )}
+      <div ref={sentinel} className="h-1" />
       {phase === "done" && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -706,12 +729,8 @@ export default function AnalyzingPage() {
           <Button onClick={() => router.push("/onboarding/profile")}>
             Review what we found
           </Button>
-          <p className="text-caption mt-2 text-center">
-            Next: confirm your assortment, your style, and two dials.
-          </p>
         </motion.div>
       )}
-      <div ref={sentinel} className="h-1" />
 
       <AnimatePresence>
         {lightbox && (

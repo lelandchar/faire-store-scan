@@ -35,16 +35,25 @@ export default function StylePage() {
   const { profile, analysis } = state;
   const [adding, setAdding] = useState(false);
 
-  const detected = useMemo(() => (analysis?.styles ?? []).map((s) => s.name), [analysis]);
-  const extra = useMemo(() => (profile?.styles ?? []).filter((s) => !detected.includes(s)), [profile, detected]);
+  const detected = useMemo(
+    () => (analysis?.styles ?? []).map((s) => s.name),
+    [analysis],
+  );
+  const extra = useMemo(
+    () => (profile?.styles ?? []).filter((s) => !detected.includes(s)),
+    [profile, detected],
+  );
   const shown = [...detected, ...extra];
-  const examplesFor = (style: Style) => CATALOG.filter((p) => p.styles.includes(style)).slice(0, 3);
+  const examplesFor = (style: Style) =>
+    CATALOG.filter((p) => p.styles.includes(style)).slice(0, 3);
 
   if (!profile || !analysis) {
     return (
       <Screen back="/onboarding/scan" title="Nothing to show yet">
         <div className="mt-8">
-          <Button onClick={() => router.replace("/onboarding/scan")}>Show us your shelves</Button>
+          <Button onClick={() => router.replace("/onboarding/scan")}>
+            Show us your shelves
+          </Button>
         </div>
       </Screen>
     );
@@ -59,19 +68,14 @@ export default function StylePage() {
         </Button>
       }
     >
-      <p className="text-caption uppercase tracking-[0.14em]">Step 2 of 3 · Your style</p>
-      <h1 className="text-display-sm mt-2 rise">This is the look we&apos;ll shop for</h1>
-      <p className="text-body mt-3 rise">Keep the styles that feel like your store. We&apos;ll lean toward brands that match.</p>
-
-      {profile.vibeWords.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          {profile.vibeWords.map((w) => (
-            <Chip key={w} size="sm" tone="accent">
-              {w}
-            </Chip>
-          ))}
-        </div>
-      )}
+      <p className="text-caption uppercase tracking-[0.14em]">Step 2 of 3</p>
+      <h1 className="text-display-sm mt-2 rise">
+        This is the look we&apos;ll shop for
+      </h1>
+      <p className="text-body mt-3 rise">
+        Keep the styles that feel like your store. We&apos;ll lean toward brands
+        that match.
+      </p>
 
       <div className="mt-6 space-y-3">
         {shown.map((s, i) => {
@@ -91,14 +95,23 @@ export default function StylePage() {
               <div className="flex shrink-0 -space-x-2">
                 {ex.map((p) => (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img key={p.id} src={p.image} alt="" className="h-12 w-12 rounded-[6px] border-2 border-white object-cover shadow-sm" />
+                  <img
+                    key={p.id}
+                    src={p.image}
+                    alt=""
+                    className="h-12 w-12 rounded-[6px] border-2 border-white object-cover shadow-sm"
+                  />
                 ))}
               </div>
               <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-medium capitalize text-ink">{styleLabel(s)}</span>
+                <span className="block text-[15px] font-medium capitalize text-ink">
+                  {styleLabel(s)}
+                </span>
                 <span className="text-caption block">{STYLE_BLURB[s]}</span>
               </span>
-              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${on ? "border-ink bg-ink text-white" : "border-line bg-white"}`}>
+              <span
+                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${on ? "border-ink bg-ink text-white" : "border-line bg-white"}`}
+              >
                 {on && <Check size={13} strokeWidth={3} />}
               </span>
             </motion.button>
@@ -124,14 +137,13 @@ export default function StylePage() {
             ))}
           </div>
         ) : (
-          <button type="button" onClick={() => setAdding(true)} className="text-[13px] text-ink underline underline-offset-4">
+          <button
+            type="button"
+            onClick={() => setAdding(true)}
+            className="text-[13px] text-ink underline underline-offset-4"
+          >
             Add a style
           </button>
-        )}
-        {profile.materials.length > 0 && (
-          <p className="text-caption mt-4">
-            Materials we noticed: <span className="text-ink-2">{profile.materials.join(", ")}</span>
-          </p>
         )}
       </div>
     </Screen>

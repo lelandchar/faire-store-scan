@@ -188,7 +188,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         if (!saved.rerank) saved.rerank = null;
         if (saved.rerankStatus !== "done") saved.rerankStatus = "idle";
         if (!saved.weights || saved.weights.nn === undefined) saved.weights = DEFAULT_WEIGHTS;
-        if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.8 };
+        if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.5 };
         if (!saved.catalogSource || !saved.catalogChosen) saved.catalogSource = "shopify";
         if (saved.embeddingBackend !== "siglip" && saved.embeddingBackend !== "gemini") saved.embeddingBackend = DEFAULT_EMBEDDING_BACKEND;
         dispatch({ type: "hydrate", state: saved });
@@ -280,10 +280,11 @@ export function profileFromAnalysis(
     palette: a.palette,
     // Price is not something a camera can read reliably, so it never shapes ranking unless a retailer sets it.
     priceTier: "unknown",
-    complements: a.suggested_complements.map((c) => c.category).filter((c) => !a.categories.some((s) => s.name === c)),
+    // Suggested complements start off; the retailer opts in on the assortment screen.
+    complements: [],
     mode: "complement",
     explore: 0.5,
-    strength: 0.8,
+    strength: 0.5,
     vibeWords: a.store_read.vibe_words,
     summary: a.store_read.summary,
   };
