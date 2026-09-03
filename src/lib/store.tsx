@@ -20,7 +20,17 @@ export interface OnboardingState {
   analysis: Partial<Analysis> | null;
   analysisStatus: AnalysisStatus;
   analysisError: string | null;
-  analysisMeta: { mock?: boolean; model?: string; ms?: number } | null;
+  analysisMeta: {
+    mock?: boolean;
+    provider?: string;
+    model?: string;
+    configuredModel?: string;
+    effort?: string | null;
+    fallbackReason?: string | null;
+    issues?: string[];
+    usage?: { input: number; output: number };
+    ms?: number;
+  } | null;
   profile: StoreProfile | null;
   personalized: boolean;
   retrieval: RetrievalResult | null;

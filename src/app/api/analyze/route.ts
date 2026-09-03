@@ -146,9 +146,10 @@ export async function POST(req: Request) {
           userContent.push({ type: "text", text: finalInstruction });
           const schema = z.toJSONSchema(AnalysisSchema);
           const effort = process.env.ANALYSIS_EFFORT;
-          const makeBody = (strict: boolean) =>
+          const fallbackEffort = process.env.ANALYSIS_FALLBACK_EFFORT || "low";
+          const makeBody = (strict: boolean, m: string) =>
             JSON.stringify({
-              model,
+              model: m,
               stream: true,
               max_tokens: 6000,
               messages: [
@@ -156,10 +157,14 @@ export async function POST(req: Request) {
                 { role: "user", content: userContent },
               ],
               response_format: { type: "json_schema", json_schema: { name: "store_read", strict, schema } },
-              ...(effort ? { reasoning: { effort } } : {}),
+              // The configured effort belongs to the configured model; the fallback runs lean.
+              ...((m === model ? effort : fallbackEffort) ? { reasoning: { effort: m === model ? effort : fallbackEffort } } : {}),
             });
-          const call = (strict: boolean) =>
-            fetch("https://openrouter.ai/api/v1/chat/completions", {
+          const fallbackModel = process.env.ANALYSIS_FALLBACK_MODEL || "anthropic/claude-sonnet-5";
+          let servedModel = model;
+          let fallbackReason: string | null = null;
+          const attempt = async (m: string, strict: boolean) => {
+            const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
               method: "POST",
               headers: {
                 Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
@@ -167,13 +172,32 @@ export async function POST(req: Request) {
                 "HTTP-Referer": process.env.PUBLIC_URL || "https://web-production-dd80b.up.railway.app",
                 "X-Title": "Store Scan prototype",
               },
-              body: makeBody(strict),
+              body: makeBody(strict, m),
             });
-          let res = await call(true);
+            return r;
+          };
+          let res = await attempt(model, true);
           if (!res.ok && res.status >= 400 && res.status < 500) {
             const errText = await res.text().catch(() => "");
-            console.warn("[analyze] openrouter strict request failed, retrying non-strict:", res.status, errText.slice(0, 300));
-            res = await call(false);
+            let gated = false;
+            try {
+              const j = JSON.parse(errText) as { error?: { message?: string; metadata?: { missing_attestation_types?: string[] } } };
+              gated = res.status === 403 || res.status === 404 || Boolean(j.error?.metadata?.missing_attestation_types?.length);
+              if (gated) fallbackReason = j.error?.message ?? `HTTP ${res.status}`;
+            } catch {
+              gated = res.status === 403 || res.status === 404;
+              if (gated) fallbackReason = errText.slice(0, 200) || `HTTP ${res.status}`;
+            }
+            if (gated && fallbackModel !== model) {
+              // The configured model is not available on this account (e.g. an attestation is pending).
+              console.warn("[analyze] configured model unavailable, falling back:", model, "->", fallbackModel, fallbackReason);
+              servedModel = fallbackModel;
+              res = await attempt(fallbackModel, true);
+              if (!res.ok && res.status >= 400 && res.status < 500) res = await attempt(fallbackModel, false);
+            } else {
+              console.warn("[analyze] openrouter strict request failed, retrying non-strict:", res.status, errText.slice(0, 300));
+              res = await attempt(model, false);
+            }
           }
           if (!res.ok || !res.body) {
             const errText = await res.text().catch(() => "");
@@ -244,7 +268,16 @@ export async function POST(req: Request) {
             console.error("[analyze] final JSON parse failed", e);
           }
           if (finalText !== trimmed) send({ replace: finalText });
-          send({ done: true, usage, model, issues });
+          send({
+            done: true,
+            usage,
+            model: servedModel,
+            configuredModel: model,
+            effort: servedModel === model ? (effort ?? null) : fallbackEffort,
+            fallbackReason,
+            issues,
+            provider: "openrouter",
+          });
           return;
         }
 
@@ -298,6 +331,9 @@ export async function POST(req: Request) {
           done: true,
           usage: { input: final.usage.input_tokens, output: final.usage.output_tokens },
           model: final.model,
+          configuredModel: process.env.ANALYSIS_MODEL || "claude-opus-5",
+          effort: process.env.ANALYSIS_EFFORT || "medium",
+          provider: "anthropic",
         });
       } catch (err) {
         let message = "Something went wrong while reading your store.";

@@ -20,7 +20,7 @@ const STEPS: { title: string; body: string }[] = [
   },
   {
     title: "Read the shelves",
-    body: "Claude looks at the frames and streams back a store read against a strict JSON schema: categories with share and evidence frames, styles, materials, palette, price position, legible brands, merchandising notes, suggested complements, and a warm summary.",
+    body: "A vision model (Meta Muse Spark 1.3 at extra-high effort, with Claude Sonnet 5 as the fallback) looks at the frames and streams back a store read against a strict JSON schema: categories with share and evidence frames, styles, materials, palette, price position, legible brands, merchandising notes, suggested complements, and a warm summary.",
   },
   {
     title: "Confirm and steer",

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { styleLabel } from "@/lib/ranking";
 import type { OnboardingState } from "@/lib/store";
 import { CATEGORIES, STYLES, type Analysis, type CategorySignal, type Frame, type StyleSignal } from "@/lib/types";
+import { modelNote } from "@/lib/model-notes";
 import { Card, Details, KV, Mono, Placeholder, Pre, TD, TH, Thumb, fmtMs, partials } from "./ui";
 
 function readUsage(meta: OnboardingState["analysisMeta"]): { input: number; output: number } | undefined {
@@ -27,6 +28,61 @@ function Evidence({ ids, frameById }: { ids?: string[]; frameById: Map<string, F
         );
       })}
     </span>
+  );
+}
+
+function ModelCard({ id, servedId }: { id?: string | null; servedId?: string | null }) {
+  const note = modelNote(id);
+  const served = servedId && servedId !== id ? modelNote(servedId) : undefined;
+  if (!note) return null;
+  const row = (n: NonNullable<ReturnType<typeof modelNote>>, tag: string) => (
+    <div className="rounded-[var(--radius)] border border-line bg-surface-2/60 p-3">
+      <p className="text-[11px] uppercase tracking-[0.1em] text-muted">{tag}</p>
+      <p className="mt-1 text-[14px] font-medium text-ink">
+        {n.label} <span className="text-muted">· {n.vendor}</span>
+      </p>
+      <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[12px]">
+        {n.intelligence !== undefined && (
+          <>
+            <dt className="text-muted">Intelligence index</dt>
+            <dd className="font-mono text-ink">{n.intelligence}</dd>
+          </>
+        )}
+        {n.speedTps !== undefined && (
+          <>
+            <dt className="text-muted">Speed</dt>
+            <dd className="font-mono text-ink">{n.speedTps} t/s</dd>
+          </>
+        )}
+        {n.context && (
+          <>
+            <dt className="text-muted">Context</dt>
+            <dd className="font-mono text-ink">{n.context}</dd>
+          </>
+        )}
+        {n.inputPerM !== undefined && (
+          <>
+            <dt className="text-muted">Price in / out</dt>
+            <dd className="font-mono text-ink">
+              ${n.inputPerM} / ${n.outputPerM} per 1M
+            </dd>
+          </>
+        )}
+        {n.inputs && (
+          <>
+            <dt className="text-muted">Inputs</dt>
+            <dd className="text-ink">{n.inputs}</dd>
+          </>
+        )}
+      </dl>
+      {n.note && <p className="mt-2 text-[12px] leading-snug text-ink-2">{n.note}</p>}
+    </div>
+  );
+  return (
+    <div className="space-y-2">
+      {row(note, "Configured model")}
+      {served && row(served, "Served this run")}
+    </div>
   );
 }
 
@@ -143,7 +199,10 @@ export function StageAnalysis({
         <div className="space-y-4">
           <KV
             items={[
-              { k: "Model", v: <Mono>{model}</Mono> },
+              { k: "Provider", v: <Mono>{meta?.mock ? "mock" : (meta?.provider ?? "—")}</Mono> },
+              { k: "Configured", v: <Mono>{meta?.configuredModel ?? "—"}{meta?.effort ? ` · effort ${meta.effort}` : ""}</Mono> },
+              { k: "Served by", v: <Mono className={meta?.fallbackReason ? "text-orange" : ""}>{model}</Mono> },
+              ...(meta?.fallbackReason ? [{ k: "Fallback", v: <span className="text-[12px] text-orange">{meta.fallbackReason}</span> }] : []),
               { k: "Latency", v: <Mono>{fmtMs(meta?.ms)}</Mono> },
               {
                 k: "Tokens",
@@ -168,6 +227,7 @@ export function StageAnalysis({
               { k: "Sample slug", v: <Mono>{context.sampleSlug ?? "—"}</Mono> },
             ]}
           />
+          <ModelCard id={meta?.configuredModel ?? meta?.model} servedId={meta?.model} />
           <PromptSummary frames={frames} context={context} />
         </div>
 

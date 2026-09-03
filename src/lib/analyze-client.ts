@@ -4,7 +4,12 @@ import type { Analysis, Frame } from "./types";
 
 export interface AnalyzeMeta {
   mock?: boolean;
+  provider?: string;
   model?: string;
+  configuredModel?: string;
+  effort?: string | null;
+  fallbackReason?: string | null;
+  issues?: string[];
   usage?: { input: number; output: number };
 }
 
@@ -49,11 +54,16 @@ export async function runAnalysis(opts: {
         status?: string;
         done?: boolean;
         mock?: boolean;
+        provider?: string;
         model?: string;
+        configuredModel?: string;
+        effort?: string | null;
+        fallbackReason?: string | null;
+        issues?: string[];
         usage?: { input: number; output: number };
       };
       if (evt.error) throw new Error(evt.error);
-      if (evt.status === "started") opts.onMeta?.({ mock: evt.mock });
+      if (evt.status === "started") opts.onMeta?.({ mock: evt.mock, provider: evt.provider });
       if (evt.delta) {
         text += evt.delta;
         try {
@@ -63,7 +73,17 @@ export async function runAnalysis(opts: {
         }
       }
       if (evt.replace) text = evt.replace;
-      if (evt.done) opts.onMeta?.({ mock: evt.mock, model: evt.model, usage: evt.usage });
+      if (evt.done)
+        opts.onMeta?.({
+          mock: evt.mock,
+          provider: evt.provider,
+          model: evt.model,
+          configuredModel: evt.configuredModel,
+          effort: evt.effort,
+          fallbackReason: evt.fallbackReason,
+          issues: evt.issues,
+          usage: evt.usage,
+        });
     }
   }
   let raw: unknown;
