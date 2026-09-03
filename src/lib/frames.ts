@@ -240,7 +240,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 export async function framesFromImages(files: File[], opts: ExtractOptions = {}): Promise<Frame[]> {
   const { maxEdge, quality, count } = { ...DEFAULTS, ...opts };
   const frames: Frame[] = [];
-  const limited = files.slice(0, Math.max(count, 8));
+  const limited = files.slice(0, Math.max(count, 10));
   for (let i = 0; i < limited.length; i++) {
     const url = URL.createObjectURL(limited[i]);
     try {

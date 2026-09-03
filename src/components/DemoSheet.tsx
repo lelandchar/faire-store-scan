@@ -29,7 +29,7 @@ export function FileDropPanel({ kind, onFiles, onBack }: { kind: OwnKind; onFile
   const isPhotos = kind === "photos";
   const copy =
     kind === "photos"
-      ? { title: "Drag and drop 4 to 6 photos here", hint: "Wide shots, about 4 feet from your shelves", cta: "Choose photos", Icon: Images }
+      ? { title: "Drag and drop 4 to 10 photos here", hint: "Wide shots, about 4 feet from your shelves", cta: "Choose photos", Icon: Images }
       : kind === "record"
         ? { title: "Record a walkthrough", hint: "On a phone this opens the camera. On a computer, pick a video you already have.", cta: "Open camera or choose a video", Icon: Camera }
         : { title: "Drag and drop a video here", hint: "10 to 20 seconds works best. MP4 or MOV, any phone is fine.", cta: "Choose a video", Icon: Upload };
@@ -156,7 +156,7 @@ function SheetContent({
           <p className="text-caption px-2 pt-3 uppercase tracking-[0.1em]">Use your own</p>
           <Row onClick={() => setView("record")} title="Record a video now" meta="Opens your camera" icon={<Camera size={20} strokeWidth={1.75} />} />
           <Row onClick={() => setView("video")} title="Upload a video" meta="Drag and drop, or choose a file" icon={<Upload size={20} strokeWidth={1.75} />} />
-          <Row onClick={() => setView("photos")} title="Upload photos" meta="4 to 6 wide shots of your store" icon={<Images size={20} strokeWidth={1.75} />} />
+          <Row onClick={() => setView("photos")} title="Upload photos" meta="4 to 10 wide shots of your store" icon={<Images size={20} strokeWidth={1.75} />} />
         </div>
       )}
     </>

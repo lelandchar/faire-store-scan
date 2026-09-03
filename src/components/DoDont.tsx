@@ -34,7 +34,7 @@ const CARDS: { kind: "do" | "dont"; title: string; body: string; video?: string;
   },
   {
     kind: "do",
-    title: "Or 4 to 6 photos, about 4 feet from your shelves",
+    title: "Or 4 to 10 photos, about 4 feet from your shelves",
     body: "",
     poster: "/samples/videos/home-gift-walkthrough.jpg",
     photos: [
@@ -110,10 +110,12 @@ export function DoDont() {
             {c.video ? (
               <video className="h-full w-full object-cover" src={c.video} poster={c.poster} muted loop playsInline preload="metadata" draggable={false} />
             ) : (
-              <div className="grid h-full w-full grid-cols-2 gap-0.5 bg-white">
-                {c.photos?.map((p) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={p} src={p} alt="" draggable={false} className="h-full w-full object-cover" />
+              <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-0.5 bg-white">
+                {c.photos?.slice(0, 4).map((p) => (
+                  <div key={p} className="min-h-0 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p} alt="" draggable={false} className="h-full w-full object-cover" />
+                  </div>
                 ))}
               </div>
             )}
