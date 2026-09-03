@@ -16,14 +16,6 @@ export interface SampleStore {
 /** Seedance-generated walkthrough clips (checked into /public/samples/videos). */
 export const SAMPLE_VIDEOS: { slug: string; name: string; tagline: string; storeType: string; file: string; poster: string }[] = [
   {
-    slug: "bookshop-video",
-    name: "Paper & Bound",
-    tagline: "Bookshop with a stationery corner",
-    storeType: "Book Store",
-    file: "/samples/videos/bookshop-walkthrough.mp4",
-    poster: "/samples/videos/bookshop-walkthrough.jpg",
-  },
-  {
     slug: "home-gift-video",
     name: "Hearth & Hollow",
     tagline: "Home, kitchen & gift boutique",
@@ -32,20 +24,28 @@ export const SAMPLE_VIDEOS: { slug: string; name: string; tagline: string; store
     poster: "/samples/videos/home-gift-walkthrough.jpg",
   },
   {
-    slug: "boutique-video",
-    name: "Juniper & June",
-    tagline: "Apparel boutique (real footage)",
-    storeType: "Apparel Boutique",
-    file: "/samples/boutique/walkthrough.mp4",
-    poster: "/samples/boutique/walkthrough.jpg",
+    slug: "bookshop-video",
+    name: "Paper & Bound",
+    tagline: "Bookshop with a card and gift corner",
+    storeType: "Book Store",
+    file: "/samples/videos/bookshop-walkthrough.mp4",
+    poster: "/samples/videos/bookshop-walkthrough.jpg",
   },
   {
-    slug: "home-gift-video-2",
-    name: "Hearth & Ember Home",
-    tagline: "Ceramics table (real footage)",
-    storeType: "Home Decor Store",
-    file: "/samples/home-gift/walkthrough.mp4",
-    poster: "/samples/home-gift/walkthrough.jpg",
+    slug: "boutique-video",
+    name: "Juniper & June",
+    tagline: "Women's apparel & accessories boutique",
+    storeType: "Apparel Boutique",
+    file: "/samples/videos/boutique-walkthrough.mp4",
+    poster: "/samples/videos/boutique-walkthrough.jpg",
+  },
+  {
+    slug: "general-store-video",
+    name: "Fern & Fig General",
+    tagline: "Neighborhood general store & pantry",
+    storeType: "General Store",
+    file: "/samples/videos/general-store-walkthrough.mp4",
+    poster: "/samples/videos/general-store-walkthrough.jpg",
   },
 ];
 

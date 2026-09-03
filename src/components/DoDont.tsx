@@ -1,7 +1,7 @@
 "use client";
 
-import { Check, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const CARDS: { kind: "do" | "dont"; title: string; body: string; video?: string; poster: string; photos?: string[] }[] = [
   {
@@ -48,9 +48,18 @@ const CARDS: { kind: "do" | "dont"; title: string; body: string; video?: string;
   },
 ];
 
-/** Horizontal do / don't carousel with muted looping clips. */
+/** Horizontal do / don't carousel with muted looping clips. Scrolls by touch, wheel, mouse drag, or the edge arrows. */
 export function DoDont() {
   const ref = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const [edge, setEdge] = useState<{ start: boolean; end: boolean }>({ start: true, end: false });
+
+  const updateEdges = () => {
+    const el = ref.current;
+    if (!el) return;
+    setEdge({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 });
+  };
+
   // Only play clips that are on screen; phones don't love five videos at once.
   useEffect(() => {
     const root = ref.current;
@@ -67,20 +76,46 @@ export function DoDont() {
       { root, threshold: 0.6 },
     );
     vids.forEach((v) => io.observe(v));
+    updateEdges();
     return () => io.disconnect();
   }, []);
+
+  const scrollBy = (dx: number) => ref.current?.scrollBy({ left: dx, behavior: "smooth" });
+
   return (
-    <div ref={ref} className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none]" style={{ touchAction: "pan-x pan-y", overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch" }}>
+    <div className="relative">
+      <div
+        ref={ref}
+        className="-mx-6 flex cursor-grab gap-3 overflow-x-auto px-6 pb-2 active:cursor-grabbing [scrollbar-width:none]"
+        style={{ touchAction: "pan-x pan-y", overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch" }}
+        onScroll={updateEdges}
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse" || !ref.current) return;
+          drag.current = { x: e.clientX, left: ref.current.scrollLeft, moved: false };
+        }}
+        onPointerMove={(e) => {
+          if (!drag.current || !ref.current) return;
+          const dx = e.clientX - drag.current.x;
+          if (Math.abs(dx) > 3) drag.current.moved = true;
+          ref.current.scrollLeft = drag.current.left - dx;
+        }}
+        onPointerUp={() => {
+          drag.current = null;
+        }}
+        onPointerLeave={() => {
+          drag.current = null;
+        }}
+      >
       {CARDS.map((c) => (
         <div key={c.title} className="w-[150px] shrink-0">
           <div className="relative overflow-hidden rounded-[var(--radius-lg)] bg-surface-2" style={{ aspectRatio: "4 / 5" }}>
             {c.video ? (
-              <video className="h-full w-full object-cover" src={c.video} poster={c.poster} muted loop playsInline preload="metadata" />
+              <video className="h-full w-full object-cover" src={c.video} poster={c.poster} muted loop playsInline preload="metadata" draggable={false} />
             ) : (
               <div className="grid h-full w-full grid-cols-2 gap-0.5 bg-white">
                 {c.photos?.map((p) => (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img key={p} src={p} alt="" className="h-full w-full object-cover" />
+                  <img key={p} src={p} alt="" draggable={false} className="h-full w-full object-cover" />
                 ))}
               </div>
             )}
@@ -97,6 +132,27 @@ export function DoDont() {
           <p className="text-caption">{c.body}</p>
         </div>
       ))}
+      </div>
+      {!edge.start && (
+        <button
+          type="button"
+          aria-label="Previous"
+          onClick={() => scrollBy(-320)}
+          className="absolute -left-3 top-[38%] flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-card)]"
+        >
+          <ChevronLeft size={18} />
+        </button>
+      )}
+      {!edge.end && (
+        <button
+          type="button"
+          aria-label="Next"
+          onClick={() => scrollBy(320)}
+          className="absolute -right-3 top-[38%] flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-card)]"
+        >
+          <ChevronRight size={18} />
+        </button>
+      )}
     </div>
   );
 }

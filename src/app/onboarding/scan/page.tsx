@@ -108,7 +108,6 @@ export default function ScanPage() {
         <input ref={photosRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => onFiles(e.target.files)} />
       </div>
 
-      <p className="text-caption mt-4">Your video stays on your phone. We only send a handful of still frames, and you can delete them anytime.</p>
 
       <Link href="/home" className="mt-4 block py-3 text-center text-[14px] text-muted underline underline-offset-4">
         Skip for now

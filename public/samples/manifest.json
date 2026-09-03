@@ -87,17 +87,7 @@
         "sourceUrl": "https://www.pexels.com/photo/11949990/",
         "license": "Pexels License"
       }
-    ],
-    "video": {
-      "file": "walkthrough.mp4",
-      "credit": "MART PRODUCTION",
-      "sourceUrl": "https://www.pexels.com/video/7668419/",
-      "license": "Pexels License",
-      "durationSeconds": 15.5,
-      "width": 2732,
-      "height": 1440,
-      "note": "Slow pan across a table of handmade ceramics inside a shop (racks visible behind); not a full room walkthrough."
-    }
+    ]
   },
   {
     "slug": "boutique",
@@ -138,20 +128,10 @@
       },
       {
         "file": "06.jpg",
-        "credit": "Yasemin Aydoğdu",
+        "credit": "Yasemin Aydo\u011fdu",
         "sourceUrl": "https://www.pexels.com/photo/14789188/",
         "license": "Pexels License"
       }
-    ],
-    "video": {
-      "file": "walkthrough.mp4",
-      "credit": "Ron Lach",
-      "sourceUrl": "https://www.pexels.com/video/8322393/",
-      "license": "Pexels License",
-      "durationSeconds": 18.8,
-      "width": 1080,
-      "height": 2048,
-      "note": "Vertical (phone-style) slow shot of clothing racks in a boutique; no people."
-    }
+    ]
   }
 ]

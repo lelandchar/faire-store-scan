@@ -191,6 +191,10 @@ const MAP = [
   ["Office Supplies > General Office Supplies > Laminating*", null],
   ["Office Supplies > General Office Supplies > Binding Supplies", null],
   ["Office Supplies > General Office Supplies > Paper Products > Printer & Copier Paper", null],
+  ["Office Supplies > General Office Supplies > Paper Products > Receipt*", null],
+  ["Office Supplies > General Office Supplies > Paper Products > Blank ID Cards", null],
+  ["Office Supplies > General Office Supplies > Correction*", null],
+  ["Office Supplies > Filing & Organization > Card Files", null],
   ["Office Supplies", "Stationery & paper"],
   ["Arts & Entertainment > Party & Celebration > Gift Giving > Greeting & Note Cards", "Stationery & paper"],
   ["Arts & Entertainment > Party & Celebration > Gift Giving > Gift Wrapping", "Stationery & paper"],
@@ -199,10 +203,15 @@ const MAP = [
   ["Arts & Entertainment > Hobbies & Creative Arts > Arts & Crafts > Art & Crafting Materials > Art & Craft Paper", "Stationery & paper"],
   ["Arts & Entertainment > Hobbies & Creative Arts > Arts & Crafts > Art & Crafting Materials > Craft Paint, Ink & Glaze", "Stationery & paper"],
   ["Arts & Entertainment > Hobbies & Creative Arts > Arts & Crafts > Art & Crafting Tools > Art Brushes", "Stationery & paper"],
+  ["Media > Books > Audiobooks", null],
+  ["Media > Books > E-books", null],
   ["Media > Books", "Books & journals"],
 
   // --- Apparel / Jewelry & accessories ---
   ["Apparel & Accessories > Clothing > Baby & Toddler Clothing", "Kids & baby"],
+  ["Apparel & Accessories > Clothing > Lingerie", null],
+  ["Apparel & Accessories > Clothing > Underwear*", null],
+  ["Apparel & Accessories > Clothing > Socks", "Apparel"],
   ["Apparel & Accessories > Clothing > Underwear & Socks > Socks", "Apparel"],
   ["Apparel & Accessories > Clothing > Underwear & Socks > Hosiery", "Apparel"],
   ["Apparel & Accessories > Clothing > Underwear & Socks", null],
@@ -211,6 +220,8 @@ const MAP = [
   ["Apparel & Accessories > Shoes", "Apparel"],
   ["Apparel & Accessories > Clothing Accessories > Baby & Toddler Clothing Accessories", "Kids & baby"],
   ["Apparel & Accessories > Clothing Accessories > Sunglasses", "Jewelry & accessories"],
+  ["Apparel & Accessories > Clothing Accessories > Hair Accessories > Wig*", null],
+  ["Apparel & Accessories > Clothing Accessories > Hair Accessories > Hair Extensions*", null],
   ["Apparel & Accessories > Clothing Accessories > Hair Accessories", "Jewelry & accessories"],
   ["Apparel & Accessories > Clothing Accessories > Maternity Belts", null],
   ["Apparel & Accessories > Clothing Accessories", "Apparel"],
@@ -304,6 +315,16 @@ function mapCategory(pathStr) {
   return undefined;
 }
 
+// Parts / refills / deep "X Accessories" leaves (pizza-cutter stands, pot lids, window hooks...) are
+// dropped in every category; "Hair Accessories" / "Home Fragrance Accessories" style nodes stay.
+const PARTS_RX = /\b(Replacement Parts|Replacement Heads|Refills?|Cartridges|Spare Parts|Accessory Mounts|Lids|Stands)\b/;
+function isPartsLeaf(pathStr) {
+  if (PARTS_RX.test(pathStr)) return true;
+  const parts = pathStr.split(" > ");
+  const leaf = parts[parts.length - 1];
+  return parts.length >= 4 && /\bAccessories$/.test(leaf) && !/^(Hair|Bath|Bathroom|Kitchen|Pet|Baby|Jewelry|Costume) /.test(leaf);
+}
+
 // Subcategory fallbacks for paths whose leaf is the generic node itself.
 const FALLBACK_SUB = {
   "Home decor": "Home accents",
@@ -347,6 +368,58 @@ function subcategoryFor(category, pathStr) {
     return FALLBACK_SUB[category];
   }
   return humanizeLeaf(leaf);
+}
+
+// ---------------------------------------------------------------------------
+// Title-keyword overrides (as in the ABO build): candles / home fragrance and
+// notebooks / journals are thin in the Google taxonomy, so matching titles that
+// landed in neighbouring categories are re-routed.
+// ---------------------------------------------------------------------------
+
+const RXO = {
+  candle: /\b(candles?|tealights?|tea lights?|wax melts?|wax tarts?|diffusers?|reed diffuser|incense|potpourri|room spray|air freshener|perfume|eau de (parfum|toilette|cologne)|cologne|fragrance mist|body mist|aromatherapy)\b/i,
+  candleHolder: /\b(candle ?holders?|candlesticks?|candle stands?|candelabras?|tealight (holders?|globes?|lanterns?)|candle (lanterns?|globes?|sconces?)|hurricanes?|votive holders?|candle snuffers?|wick trimmers?)\b/i,
+  lightNeg: /\b(chandelier|pendant|ceiling|fixture|lamp|bulbs?|electric|led|flameless|battery)\b/i,
+  book: /\b(notebooks?|journals?|planners?|diary|diaries|sketchbooks?|sketch book|notepads?|note pad|composition book|guest book|address book|memo book|cookbook|books?)\b/i,
+  bookNeg: /\b(bookshelf|bookshelves|bookcase|bookcases|bookends?|book\s?shelf|book\s?case|book\s?end|bookmarks?|book light|book stand|book display|book rack|book art|e-?books?|kindle|book reader|book holder|notebook computer|laptop|checkbook|passbook|book bag|bookbag|steno|backpack|bundle|kit|book cover|book sleeve|audiobook)\b/i,
+};
+const SUB = {
+  "Candles & fragrance": [
+    [/\b(candle)/i, "Candles"],
+    [/\b(diffuser)/i, "Diffusers"],
+    [/\b(perfume|eau de|cologne|fragrance mist|body mist)\b/i, "Perfume"],
+    [/\b(wax melt|wax tart)/i, "Wax melts"],
+    [/\b(incense)/i, "Incense"],
+    [/\b(essential oil|aromatherapy)/i, "Essential oils"],
+    [/\b(room spray|air freshener|freshener|deodorizer|odor)/i, "Room fragrance"],
+    [/\b(potpourri|sachet)/i, "Potpourri"],
+  ],
+  "Books & journals": [
+    [/\b(journal)s?\b/i, "Journals"],
+    [/\b(planner)s?\b/i, "Planners"],
+    [/\b(diary|diaries)\b/i, "Journals"],
+    [/\b(sketch ?book)s?\b/i, "Sketchbooks"],
+    [/\b(notepad|note pad|memo)s?\b/i, "Notepads"],
+    [/\b(notebook|composition book)s?\b/i, "Notebooks"],
+    [/\b(guest book|address book|cookbook|book)s?\b/i, "Books"],
+  ],
+};
+function deriveSub(category, title) {
+  for (const [rx, label] of SUB[category] || []) if (rx.test(title)) return label;
+  return FALLBACK_SUB[category];
+}
+const CANDLE_FROM = new Set(["Home decor", "Kitchen & tabletop", "Bath & body", "Garden & outdoor", "Stationery & paper", "Jewelry & accessories", "Apparel"]);
+const BOOK_FROM = new Set(["Stationery & paper", "Home decor", "Kitchen & tabletop"]);
+/** Returns [category, subcategory] after keyword overrides. */
+function applyOverrides(category, subcategory, title) {
+  if (CANDLE_FROM.has(category) && !RXO.lightNeg.test(title)) {
+    if (RXO.candleHolder.test(title)) return ["Candles & fragrance", "Candle holders", true];
+    if (RXO.candle.test(title)) return ["Candles & fragrance", deriveSub("Candles & fragrance", title), true];
+  }
+  if (BOOK_FROM.has(category) && RXO.book.test(title) && !RXO.bookNeg.test(title)) {
+    return ["Books & journals", deriveSub("Books & journals", title), true];
+  }
+  return [category, subcategory, false];
 }
 
 // ---------------------------------------------------------------------------
@@ -447,6 +520,7 @@ function normalizeText(s) {
     .replace(/<[^>]+>/g, " ")
     .replace(/[™®©℠]/g, "")
     .replace(/[‘’]/g, "'")
+    .replace(/[–—]/g, "-")
     .replace(/[“”]/g, '"')
     .replace(/[   ]/g, " ")
     .replace(/\s+/g, " ")
@@ -938,7 +1012,12 @@ async function main() {
   console.log(`Fetched ${offsets.length - missing} pages (${fromNetwork} from network, ${offsets.length - missing - fromNetwork} cached${missing ? `, ${missing} missing (--cached-only)` : ""}); ${total} rows; ${rl.hits429} rate-limit hits`);
 
   // 2. Rows -> candidates.
-  const stats = { rows: 0, secondhand: 0, unmapped: 0, skippedByRule: 0, hardSkip: 0, nonEnglish: 0, catSkip: 0, noImage: 0, smallImage: 0, badName: 0, dupe: 0 };
+  const stats = { rows: 0, secondhand: 0, unmapped: 0, skippedByRule: 0, hardSkip: 0, nonEnglish: 0, catSkip: 0, noImage: 0, smallImage: 0, badName: 0, dupe: 0, overridden: 0 };
+  const dropSamples = {};
+  const drop = (reason, text) => {
+    if (!process.env.DEBUG_DROPS) return;
+    (dropSamples[reason] ||= []).length < 14 && dropSamples[reason].push(text);
+  };
   const unmapped = new Map();
   const candidates = [];
   const seenTitle = new Set();
@@ -956,14 +1035,14 @@ async function main() {
         stats.unmapped++;
         continue;
       }
-      const category = mapCategory(pathStr);
-      if (category === undefined) {
+      const category0 = mapCategory(pathStr);
+      if (category0 === undefined) {
         stats.unmapped++;
         const k2 = pathStr.split(" > ").slice(0, 2).join(" > ");
         unmapped.set(k2, (unmapped.get(k2) || 0) + 1);
         continue;
       }
-      if (category === null) {
+      if (category0 === null || isPartsLeaf(pathStr)) {
         stats.skippedByRule++;
         continue;
       }
@@ -971,17 +1050,22 @@ async function main() {
       const brand = normalizeBrand(r.ground_truth_brand);
       if (!rawTitle || HARD_SKIP.test(rawTitle) || (brand !== "—" && /\b(amazon|walmart|costco|ebay|aliexpress|temu|shein)\b/i.test(brand))) {
         stats.hardSkip++;
+        drop("hardSkip", rawTitle);
         continue;
       }
       const desc = normalizeText(r.product_description);
       if (!looksEnglish(rawTitle, desc)) {
         stats.nonEnglish++;
+        drop("nonEnglish", rawTitle);
         continue;
       }
       const strippedTitle = stripBrand(rawTitle, brand);
+      const [category, subcategory, overridden] = applyOverrides(category0, subcategoryFor(category0, pathStr), strippedTitle);
+      if (overridden) stats.overridden++;
       const catSkip = CAT_SKIP[category];
       if (catSkip && catSkip(strippedTitle)) {
         stats.catSkip++;
+        drop("catSkip", rawTitle);
         continue;
       }
       const img = r.product_image;
@@ -996,6 +1080,7 @@ async function main() {
       const name = cleanName(rawTitle, brand);
       if (name.length < 8 || name.length > 70 || !/[a-z]/i.test(name) || !nameLooksReal(name) || !/^[\x20-\x7e]+$/.test(name)) {
         stats.badName++;
+        drop("badName", `${rawTitle}  =>  ${name}`);
         continue;
       }
       // Dedupe: normalised title, and brand + first three words.
@@ -1011,7 +1096,6 @@ async function main() {
       seenTitle.add(normTitle);
       seenBrandKey.add(brandKey);
 
-      const subcategory = subcategoryFor(category, pathStr);
       const consumable = category === "Food & drink" || category === "Bath & body";
       const text = [strippedTitle, desc.slice(0, 600)].join(" ");
       const materials = consumable
@@ -1035,7 +1119,8 @@ async function main() {
     }
   }
   console.log(`Scanned ${stats.rows} rows -> ${candidates.length} unique candidates`);
-  console.log(`  dropped: secondhand ${stats.secondhand}, unmapped taxonomy ${stats.unmapped}, skipped-by-rule ${stats.skippedByRule}, hard-skip ${stats.hardSkip}, non-English ${stats.nonEnglish}, category filter ${stats.catSkip}, no image ${stats.noImage}, tiny image ${stats.smallImage}, bad name ${stats.badName}, duplicate ${stats.dupe}`);
+  console.log(`  dropped: secondhand ${stats.secondhand}, unmapped taxonomy ${stats.unmapped}, skipped-by-rule ${stats.skippedByRule}, hard-skip ${stats.hardSkip}, non-English ${stats.nonEnglish}, category filter ${stats.catSkip}, no image ${stats.noImage}, tiny image ${stats.smallImage}, bad name ${stats.badName}, duplicate ${stats.dupe}; keyword overrides applied: ${stats.overridden}`);
+  if (process.env.DEBUG_DROPS) for (const [k, v] of Object.entries(dropSamples)) console.log(`  [${k}]\n     ` + v.join("\n     "));
   if (DRY) {
     const top = [...unmapped.entries()].sort((a, b) => b[1] - a[1]).slice(0, 25);
     console.log("Top unmapped 2-level paths:");

@@ -165,7 +165,7 @@ export function pickMock(context: { storeType?: string; storeName?: string; desc
   // The sample slug is the most reliable hint; store type next; free text last.
   const slug = (context.sampleSlug ?? "").toLowerCase();
   if (/book/.test(slug)) return BOOKSHOP;
-  if (/home|gift|kitchen/.test(slug)) return HOME_GIFT;
+  if (/home|gift|kitchen|general|pantry/.test(slug)) return HOME_GIFT;
   if (/boutique|apparel/.test(slug)) return BOUTIQUE;
   const type = (context.storeType ?? "").toLowerCase();
   if (/apparel|clothing|fashion/.test(type)) return BOUTIQUE;
