@@ -14,7 +14,7 @@ import { personalize, rankGeneric, styleLabel, type Ranked, type TagWeights } fr
 import { DEFAULT_WEIGHTS, promptsFromProfile, type FusionWeights } from "../../src/lib/retrieval";
 import { rerankProducts } from "../../src/lib/rerank-server";
 import { DEFAULT_SCORING_OPTIONS } from "../../src/lib/retrieval";
-import { computeScores, decodeVectors, type ScoringOptions, type VectorIndex } from "../../src/lib/scoring";
+import { computeScores, decodeVectors, nearestNeighborScores, type NNOptions, type QueryVec, type ScoringOptions, type VectorIndex } from "../../src/lib/scoring";
 import type { Analysis, Product, StoreProfile } from "../../src/lib/types";
 
 const ROOT = process.cwd();
@@ -50,6 +50,8 @@ interface Variant {
   appIndex?: boolean;
   /** Run the buyer's-eye rerank (src/lib/rerank-server.ts) over the top 60 before judging. */
   rerank?: boolean;
+  /** Retrieval v2: nearest neighbours from shelf/brief/wish queries, fused by rank. */
+  nn?: NNOptions;
   /** Drop products whose semantic score is in the bottom share of the catalog even when their category matches. */
   floor?: number;
 }
@@ -69,6 +71,11 @@ const VARIANTS: Record<string, Variant> = {
   siglip3img: { ...base, name: "siglip3img", encoder: "siglip-b16", scoring: { visual: "max", semantic: "max", imageShare: 0.75 }, prompts: "v3", fusion: { tag: 0.4, visual: 0.15, semantic: 0.45 }, tagWeights: { style: 0.08, category: 0.6 } },
   app: { ...base, name: "app", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: DEFAULT_WEIGHTS },
   apprerank: { ...base, name: "apprerank", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: DEFAULT_WEIGHTS, rerank: true },
+  nn: { ...base, name: "nn", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: { tag: 0.4, visual: 0, semantic: 0, nn: 0.45, centroid: 0.15 }, tagWeights: { style: 0.08, category: 0.6 }, nn: {} },
+  nnmix: { ...base, name: "nnmix", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: { tag: 0.4, visual: 0.1, semantic: 0.2, nn: 0.3, centroid: 0 }, tagWeights: { style: 0.08, category: 0.6 }, nn: {} },
+  nnimg: { ...base, name: "nnimg", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: { tag: 0.4, visual: 0, semantic: 0, nn: 0.45, centroid: 0.15 }, tagWeights: { style: 0.08, category: 0.6 }, nn: { imageShare: 0.8 } },
+  nnlight: { ...base, name: "nnlight", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: { tag: 0.25, visual: 0, semantic: 0, nn: 0.6, centroid: 0.15 }, tagWeights: { style: 0.08, category: 0.6 }, nn: {} },
+  nnrerank: { ...base, name: "nnrerank", encoder: "siglip-b16", appIndex: true, scoring: DEFAULT_SCORING_OPTIONS, prompts: "app", fusion: { tag: 0.4, visual: 0, semantic: 0, nn: 0.45, centroid: 0.15 }, tagWeights: { style: 0.08, category: 0.6 }, nn: {}, rerank: true },
   siglip3top2: { ...base, name: "siglip3top2", encoder: "siglip-b16", scoring: { visual: "top2", semantic: "top2", imageShare: 0.75 }, prompts: "v3", fusion: { tag: 0.4, visual: 0.15, semantic: 0.45 }, tagWeights: { style: 0.08, category: 0.6 } },
 };
 
@@ -231,7 +238,7 @@ async function main() {
     for (const run of runs) {
       let ranked: Ranked[];
       if (isGeneric || !index || !enc) {
-        ranked = rankGeneric(catalog).map((p, i) => ({ product: p, score: 1, components: { tag: 0, parts: { category: 0, style: 0, material: 0, price: 0, novelty: 0 }, visual: null, semantic: null, buyer: null, fused: 0 }, reasons: [], genericRank: i + 1, personalizedRank: i + 1, delta: 0 }));
+        ranked = rankGeneric(catalog).map((p, i) => ({ product: p, score: 1, components: { tag: 0, parts: { category: 0, style: 0, material: 0, price: 0, novelty: 0 }, visual: null, semantic: null, nn: null, centroid: null, buyer: null, fused: 0 }, reasons: [], genericRank: i + 1, personalizedRank: i + 1, delta: 0 }));
       } else {
         const fkey = `${v.encoder}|${run.slug}`;
         if (!frameCache.has(fkey)) frameCache.set(fkey, await enc.embedImages(run.frames.map((f) => path.join(RUNS, f.file))));
@@ -239,6 +246,22 @@ async function main() {
         const prompts = v.prompts === "v3" ? promptsV3(run.profile, run.analysis) : v.prompts === "v2" ? promptsV2(run.profile, run.analysis) : promptsFromProfile(run.profile, run.analysis);
         const promptVecs = await enc.embedTexts(prompts);
         const scores = computeScores(index, frameVecs, promptVecs, v.scoring);
+        if (v.nn) {
+          // Frame-note prompts stand in for the wishlist until the store read produces one.
+          const briefCount = prompts.filter((p) => / sold at a /.test(p)).length;
+          const queries: QueryVec[] = [
+            ...frameVecs.map((vec) => ({ kind: "shelf" as const, vec })),
+            ...promptVecs.map((vec, i) => ({ kind: i < briefCount ? ("brief" as const) : ("wish" as const), vec })),
+          ];
+          const nnScores = nearestNeighborScores(index, queries, v.nn);
+          for (const id of index.ids) {
+            const s = scores[id];
+            if (s) {
+              s.nn = nnScores.nn[id];
+              s.centroid = nnScores.centroid[id];
+            }
+          }
+        }
         ranked = personalize(catalog, run.profile, { scores, weights: v.fusion, tagWeights: v.tagWeights }).filter((r) => r.score >= 0);
         if (v.rerank) {
           process.env.OPENROUTER_API_KEY ??= await envKey();

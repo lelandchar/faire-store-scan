@@ -3,7 +3,7 @@ import path from "node:path";
 import { z } from "zod";
 import { embedImages, embedTexts, EMBEDDING_DIM, EMBEDDING_MODEL } from "@/lib/embeddings";
 import { DEFAULT_SCORING_OPTIONS, type CatalogSource, type RetrievalResult } from "@/lib/retrieval";
-import { computeScores, decodeVectors, dot, meanVector, type VectorIndex } from "@/lib/scoring";
+import { computeScores, DEFAULT_NN, decodeVectors, dot, meanVector, nearestNeighborScores, type QueryVec, type VectorIndex } from "@/lib/scoring";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -12,6 +12,7 @@ const RequestSchema = z.object({
   frames: z.array(z.object({ id: z.string().regex(/^f\d{1,2}$/), dataUrl: z.string().startsWith("data:image/jpeg;base64,") })).min(1).max(16),
   catalog: z.enum(["synthetic", "public", "shopify"]).default("synthetic"),
   prompts: z.array(z.string().max(200)).max(16).default([]),
+  briefCount: z.number().int().min(0).max(16).optional(),
   scoring: z
     .object({
       visual: z.enum(["mean", "max", "top2"]).optional(),
@@ -71,6 +72,22 @@ export async function POST(req: Request) {
 
     const scoring = { ...DEFAULT_SCORING_OPTIONS, ...(body.scoring ?? {}) };
     const scores = computeScores(index, frameVecs, promptVecs, scoring);
+    // Retrieval v2: every frame and prompt is its own nearest-neighbour query; reciprocal rank
+    // fusion combines them, and the centroid of all queries is the store embedding.
+    const briefCount = body.briefCount ?? promptVecs.length;
+    const queries: QueryVec[] = [
+      ...frameVecs.map((vec) => ({ kind: "shelf" as const, vec })),
+      ...promptVecs.map((vec, i) => ({ kind: i < briefCount ? ("brief" as const) : ("wish" as const), vec })),
+    ];
+    const nnOpts = { imageShare: 0.8 };
+    const nnScores = nearestNeighborScores(index, queries, nnOpts);
+    for (const id of index.ids) {
+      const s = scores[id];
+      if (s) {
+        s.nn = nnScores.nn[id];
+        s.centroid = nnScores.centroid[id];
+      }
+    }
     const frameNeighbors = body.frames.map((f, fi) => {
       const sims = index.ids.map((id, i) => ({ id, score: dot(index.image[i], frameVecs[fi]) }));
       sims.sort((a, b) => b.score - a.score);
@@ -93,6 +110,15 @@ export async function POST(req: Request) {
       storeVectorPreview: Array.from(storeVisual.subarray(0, 8)).map((x) => Number(x.toFixed(4))),
       prompts: body.prompts,
       scoring,
+      nn: {
+        shelves: frameVecs.length,
+        briefs: Math.min(briefCount, promptVecs.length),
+        wishes: Math.max(0, promptVecs.length - briefCount),
+        k: DEFAULT_NN.k,
+        rrfK: DEFAULT_NN.rrfK,
+        imageShare: nnOpts.imageShare,
+        kindWeights: DEFAULT_NN.kindWeights,
+      },
       scores,
       frameNeighbors,
       frameVectorPreviews: body.frames.map((f, i) => ({ frameId: f.id, preview: Array.from(frameVecs[i].subarray(0, 8)).map((x) => Number(x.toFixed(4))) })),

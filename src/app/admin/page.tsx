@@ -26,7 +26,7 @@ const STAGES = [
   ["stage-6", "Feed"],
 ] as const;
 
-function hasChannel(catalog: Product[], scores: Record<string, ProductScores> | undefined, key: "visual" | "semantic"): boolean {
+function hasChannel(catalog: Product[], scores: Record<string, ProductScores> | undefined, key: keyof ProductScores): boolean {
   if (!scores) return false;
   return catalog.some((p) => {
     const v = scores[p.id]?.[key];
@@ -55,6 +55,8 @@ export default function AdminPage() {
   );
   const hasVisual = useMemo(() => hasChannel(catalog, scores, "visual"), [catalog, scores]);
   const hasSemantic = useMemo(() => hasChannel(catalog, scores, "semantic"), [catalog, scores]);
+  const hasNN = useMemo(() => hasChannel(catalog, scores, "nn"), [catalog, scores]);
+  const hasCentroid = useMemo(() => hasChannel(catalog, scores, "centroid"), [catalog, scores]);
 
   const run = useCallback(
     async (input: PipelineInput, label: string, sample?: SampleMeta) => {
@@ -102,7 +104,7 @@ export default function AdminPage() {
           <p className="text-caption uppercase tracking-[0.14em]">Store Scan · pipeline trace</p>
           <h1 className="font-serif text-[36px] leading-[1.15] text-ink">End-to-end trace view</h1>
           <p className="text-body mt-1 max-w-[780px]">
-            Every stage of the cold-start pipeline, inspectable: input frames → LM store read → SigLIP retrieval → weighted fusion → a
+            Every stage of the cold-start pipeline, inspectable: input frames → LM store read → SigLIP nearest-neighbour retrieval (every frame and prompt is a query, fused by rank) → weighted fusion → a
             buyer&apos;s-eye rerank by the LM → the feed the retailer sees. Re-run it on canned inputs here; the phone views share this state.
           </p>
         </div>
@@ -169,6 +171,8 @@ export default function AdminPage() {
             ranked={ranked}
             hasVisual={hasVisual}
             hasSemantic={hasSemantic}
+            hasNN={hasNN}
+            hasCentroid={hasCentroid}
             profile={state.profile}
             onIntent={setCategoryIntent}
             catalogLabel={CATALOG_LABEL[state.catalogSource]}

@@ -15,7 +15,7 @@ export interface SampleMeta {
   storeType: string;
 }
 
-const SOURCES: CatalogSource[] = ["shopify", "synthetic", "public"];
+const SOURCES: CatalogSource[] = ["shopify"];
 
 function stageLabel(p: PipelineProgress): string {
   switch (p.stage) {
@@ -73,8 +73,11 @@ export function RunControls({
   const shopifyUnavailable = shopifyCatalog.length === 0 || shopifyCatalog === getCatalog("synthetic");
 
   const onFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
+    const list = Array.from(e.target.files ?? []);
     e.target.value = "";
+    takeFiles(list);
+  };
+  const takeFiles = (files: File[]) => {
     if (!files.length) return;
     const videos = files.filter((f) => f.type.startsWith("video/"));
     const images = files.filter((f) => f.type.startsWith("image/"));
@@ -128,11 +131,16 @@ export function RunControls({
         ))}
         {samples.length === 0 && <span className="text-caption">Loading sample manifest…</span>}
         <label
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            if (!busy) takeFiles(Array.from(e.dataTransfer.files));
+          }}
           className={`inline-flex h-8 cursor-pointer items-center rounded-[var(--radius)] border border-dashed border-line bg-white px-3 text-[13px] text-ink-2 hover:bg-surface-2 ${
             busy ? "pointer-events-none opacity-50" : ""
           }`}
         >
-          Upload video or photos
+          Upload or drop a video or photos
           <input type="file" accept="video/*,image/*" multiple className="sr-only" disabled={busy} onChange={onFiles} />
         </label>
         <Btn disabled={busy} onClick={onReset} className="ml-auto" title="dispatch resetScan">

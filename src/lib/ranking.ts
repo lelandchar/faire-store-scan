@@ -60,6 +60,9 @@ export interface RankComponents {
   /** min-max normalized visual similarity across the catalog, or null without embeddings */
   visual: number | null;
   semantic: number | null;
+  /** retrieval v2 channels (null when the retrieval did not compute them) */
+  nn: number | null;
+  centroid: number | null;
   /** buyer's-eye fit 1..5 from the LM rerank, or null when this product was not reviewed */
   buyer: number | null;
   fused: number;
@@ -261,12 +264,14 @@ function minMax(values: (number | null)[]): (number | null)[] {
   return values.map((v) => (v === null ? null : (v - lo) / span));
 }
 
-export function effectiveWeights(weights: FusionWeights | undefined, hasVisual: boolean, hasSemantic: boolean): FusionWeights {
-  const w = { ...(weights ?? DEFAULT_WEIGHTS) };
+export function effectiveWeights(weights: FusionWeights | undefined, hasVisual: boolean, hasSemantic: boolean, hasNN = false, hasCentroid = false): Required<FusionWeights> {
+  const w = { nn: 0, centroid: 0, ...(weights ?? DEFAULT_WEIGHTS) };
   if (!hasVisual) w.visual = 0;
   if (!hasSemantic) w.semantic = 0;
-  const sum = w.tag + w.visual + w.semantic || 1;
-  return { tag: w.tag / sum, visual: w.visual / sum, semantic: w.semantic / sum };
+  if (!hasNN) w.nn = 0;
+  if (!hasCentroid) w.centroid = 0;
+  const sum = w.tag + w.visual + w.semantic + w.nn + w.centroid || 1;
+  return { tag: w.tag / sum, visual: w.visual / sum, semantic: w.semantic / sum, nn: w.nn / sum, centroid: w.centroid / sum };
 }
 
 export function personalize(catalog: Product[], profile: StoreProfile, opts: RankOptions = {}): Ranked[] {
@@ -278,26 +283,35 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
   const scores = opts.scores ?? {};
   const visualRaw = catalog.map((p) => scores[p.id]?.visual ?? null);
   const semanticRaw = catalog.map((p) => scores[p.id]?.semantic ?? null);
+  const nnRaw = catalog.map((p) => scores[p.id]?.nn ?? null);
+  const centroidRaw = catalog.map((p) => scores[p.id]?.centroid ?? null);
   const hasVisual = visualRaw.some((v) => v !== null);
   const hasSemantic = semanticRaw.some((v) => v !== null);
+  const hasNN = nnRaw.some((v) => v !== null);
+  const hasCentroid = centroidRaw.some((v) => v !== null);
   const visualN = minMax(visualRaw);
   const semanticN = minMax(semanticRaw);
-  const w = effectiveWeights(opts.weights, hasVisual, hasSemantic);
+  const nnN = minMax(nnRaw);
+  const centroidN = minMax(centroidRaw);
+  const w = effectiveWeights(opts.weights, hasVisual, hasSemantic, hasNN, hasCentroid);
 
   const fused = tagScored.map((t, i) => {
     const tag = Math.max(0, t.score);
     const v = visualN[i];
     const sm = semanticN[i];
     const reasons = [...t.reasons];
+    const nnv = nnN[i];
+    const cen = centroidN[i];
     const fit = opts.rerank?.[t.product.id];
     const buyer = typeof fit === "number" ? fit : null;
     if (t.score < 0) {
-      return { ...t, reasons, components: { tag: -1, parts: t.parts, visual: v, semantic: sm, buyer, fused: -1 } };
+      return { ...t, reasons, components: { tag: -1, parts: t.parts, visual: v, semantic: sm, nn: nnv, centroid: cen, buyer, fused: -1 } };
     }
     if (v !== null && v >= 0.72) reasons.push({ kind: "visual", text: "Looks like what's on your shelves", weight: w.visual * v });
     if (sm !== null && sm >= 0.72) reasons.push({ kind: "semantic", text: "Fits how we read your store", weight: w.semantic * sm });
+    if (nnv !== null && nnv >= 0.6 && w.nn > 0) reasons.push({ kind: "semantic", text: "A close match to your shelves and your brief", weight: w.nn * nnv });
     reasons.sort((a, b) => b.weight - a.weight);
-    let fusedScore = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0);
+    let fusedScore = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0) + w.nn * (nnv ?? 0) + w.centroid * (cen ?? 0);
     if (buyer !== null) {
       // The buyer's-eye review re-orders the reviewed set: a strong fit rises, a poor one drops
       // below unreviewed candidates.
@@ -307,7 +321,7 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
     // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic (random) order.
     const strength = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;
     const score = strength * fusedScore + (1 - strength) * genericPrior(t.product);
-    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, parts: t.parts, visual: v, semantic: sm, buyer, fused: score } };
+    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, parts: t.parts, visual: v, semantic: sm, nn: nnv, centroid: cen, buyer, fused: score } };
   });
 
   const ordered = stableSort(fused, (s) => s.score, (s) => s.product.id);

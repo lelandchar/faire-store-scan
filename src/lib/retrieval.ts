@@ -11,6 +11,10 @@ export interface ProductScores {
   visual: number;
   /** blend of cosine(product image, store text) and cosine(product text, store text); null when no prompts */
   semantic: number | null;
+  /** retrieval v2: reciprocal-rank-fused nearest-neighbour score over shelf, brief and wishlist queries (0..1) */
+  nn?: number | null;
+  /** retrieval v2: cosine to the centroid of all store queries (0..1, min-max) */
+  centroid?: number | null;
 }
 
 export interface RetrievalResult {
@@ -22,6 +26,8 @@ export interface RetrievalResult {
   storeVectorPreview: number[];
   prompts: string[];
   scoring?: ScoringOptions;
+  /** retrieval v2 settings and query counts */
+  nn?: { shelves: number; briefs: number; wishes: number; k: number; rrfK: number; imageShare: number; kindWeights: Record<"shelf" | "brief" | "wish", number> };
   scores: Record<string, ProductScores>;
   frameNeighbors: { frameId: string; neighbors: { id: string; score: number }[] }[];
   frameVectorPreviews: { frameId: string; preview: number[] }[];
@@ -31,6 +37,9 @@ export interface FusionWeights {
   tag: number;
   visual: number;
   semantic: number;
+  /** retrieval v2 channels (0 when absent) */
+  nn?: number;
+  centroid?: number;
 }
 
 /**
@@ -38,7 +47,7 @@ export interface FusionWeights {
  * (six captured demos, Sonnet-judged top 20): semantic matching on per-category prompts
  * carries most of the within-category ordering; the shelf frames are a weaker signal.
  */
-export const DEFAULT_WEIGHTS: FusionWeights = { tag: 0.4, visual: 0.15, semantic: 0.45 };
+export const DEFAULT_WEIGHTS: FusionWeights = { tag: 0.4, visual: 0, semantic: 0, nn: 0.45, centroid: 0.15 };
 export const DEFAULT_SCORING_OPTIONS: ScoringOptions = { visual: "top2", semantic: "top2", imageShare: 0.75 };
 
 export interface PromptInput {
@@ -108,6 +117,8 @@ export async function runRetrieval(opts: {
       frames: opts.frames.map((f) => ({ id: f.id, dataUrl: f.dataUrl })),
       catalog: opts.catalog,
       prompts: opts.prompts,
+      // Prompts are ordered brief-first by buildPrompts; the rest are concrete things seen on the shelves.
+      briefCount: opts.prompts.filter((p) => / sold at a /.test(p)).length,
       scoring: opts.scoring ?? DEFAULT_SCORING_OPTIONS,
     }),
     signal: opts.signal,

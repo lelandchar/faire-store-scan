@@ -13,7 +13,7 @@ const INTENTS: { value: CategoryIntent; label: string }[] = [
   { value: "skip", label: "Not for me" },
 ];
 
-const CHANNELS = ["tag", "visual", "semantic"] as const;
+const CHANNELS = ["tag", "nn", "centroid", "visual", "semantic"] as const;
 
 export function StageFusion({
   weights,
@@ -21,6 +21,8 @@ export function StageFusion({
   ranked,
   hasVisual,
   hasSemantic,
+  hasNN,
+  hasCentroid,
   profile,
   onIntent,
   catalogLabel,
@@ -31,17 +33,20 @@ export function StageFusion({
   ranked: Ranked[] | null;
   hasVisual: boolean;
   hasSemantic: boolean;
+  hasNN?: boolean;
+  hasCentroid?: boolean;
   profile: StoreProfile | null;
   onIntent: (name: Category, intent: CategoryIntent) => void;
   catalogLabel: string;
   catalogCount: number;
 }) {
-  const eff = effectiveWeights(weights, hasVisual, hasSemantic);
+  const eff = effectiveWeights(weights, hasVisual, hasSemantic, hasNN, hasCentroid);
+  const has: Record<(typeof CHANNELS)[number], boolean> = { tag: true, visual: hasVisual, semantic: hasSemantic, nn: !!hasNN, centroid: !!hasCentroid };
   return (
     <Card
       step="Stage 4"
       title="Fusion & ranking"
-      subtitle="personalize(catalog, profile, { scores, weights }) in ranking.ts. The tag channel is a transparent linear score over the confirmed profile; visual and semantic are the min–max normalized embedding scores from Stage 3. Everything here is deterministic, so every row can carry a reason the retailer can read."
+      subtitle="personalize(catalog, profile, { scores, weights }) in ranking.ts. The tag channel is a transparent linear score over the confirmed profile; nn is the rank-fused nearest-neighbour score and centroid the cosine to the store embedding from Stage 3 (visual and semantic are the older single-vector channels, weighted 0 by default). Everything here is deterministic, so every row can carry a reason the retailer can read."
     >
       <div className="grid gap-6 md:grid-cols-2">
         <div>
@@ -50,7 +55,7 @@ export function StageFusion({
           </p>
           <div className="max-w-[420px] space-y-2">
             {CHANNELS.map((k) => {
-              const available = k === "tag" || (k === "visual" ? hasVisual : hasSemantic);
+              const available = has[k];
               return (
                 <label key={k} className="grid grid-cols-[72px_1fr_44px_72px] items-center gap-2 text-[13px]">
                   <span className={available ? "text-ink" : "text-muted line-through"}>{k}</span>
@@ -59,12 +64,12 @@ export function StageFusion({
                     min={0}
                     max={1}
                     step={0.05}
-                    value={weights[k]}
+                    value={weights[k] ?? 0}
                     onChange={(e) => onWeights({ ...weights, [k]: Number(e.target.value) })}
                     style={{ accentColor: "var(--ink)" }}
                     aria-label={`${k} weight`}
                   />
-                  <Mono>{weights[k].toFixed(2)}</Mono>
+                  <Mono>{(weights[k] ?? 0).toFixed(2)}</Mono>
                   <Mono className={available ? "text-ink-2" : "text-muted"} title="effective (renormalized) weight">
                     → {eff[k].toFixed(3)}
                   </Mono>

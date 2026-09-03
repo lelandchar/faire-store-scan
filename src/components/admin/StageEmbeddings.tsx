@@ -29,7 +29,7 @@ function stats(scores: RetrievalResult["scores"], key: "visual" | "semantic") {
 }
 
 const SUBTITLE =
-  "Frames and the prompts are embedded with SigLIP base (patch16, 224px; transformers.js, int8 ONNX on CPU); every product image and product text in the catalog was embedded offline into a 768-d index. visual = mean of the two best cosine(product image, frame) values. semantic = mean over the two best prompts of ¾·cosine(product image, prompt) + ¼·cosine(product text, prompt). Prompts are matched one at a time so a candle can match the candle prompt without being diluted by the apparel prompt. Chosen on the offline evaluation in scripts/eval (six demos, Sonnet-judged top 20, clean catalog): SigLIP + per-prompt matching scored 3.28 vs 3.02 for CLIP ViT-B/32 with mean vectors.";
+  "Retrieval v2. Every product gets one vector in SigLIP's joint image-text space: 0.8 × its photo embedding + 0.2 × its listing-text embedding, normalized (index precomputed offline, 768-d). The store is a set of queries in the same space: each kept frame (shelf), each per-category brief prompt (examples the model saw, the look, the store type), and each shelf note (wish). Every query retrieves its 150 nearest products; reciprocal rank fusion (k = 40, shelf weight 0.6, brief and wish 1.0) combines the lists so a product that sits close to several queries rises without any one channel's scale dominating. The centroid of all queries is the store embedding; its cosine is a dense prior for products no query reached. Both are min–max normalized before fusion. Chosen on the offline evaluation in scripts/eval (six demos, Sonnet-judged top 20): 3.51 versus 3.10 for the previous mean-vector scoring on the same run.";
 
 export function StageEmbeddings({
   retrieval,

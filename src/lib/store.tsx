@@ -182,7 +182,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         if (saved.retrievalStatus === "running") saved.retrievalStatus = "idle";
         if (!saved.rerank) saved.rerank = null;
         if (saved.rerankStatus !== "done") saved.rerankStatus = "idle";
-        if (!saved.weights) saved.weights = DEFAULT_WEIGHTS;
+        if (!saved.weights || saved.weights.nn === undefined) saved.weights = DEFAULT_WEIGHTS;
         if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.8 };
         if (!saved.catalogSource || !saved.catalogChosen) saved.catalogSource = "shopify";
         dispatch({ type: "hydrate", state: saved });
