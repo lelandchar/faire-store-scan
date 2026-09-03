@@ -14,6 +14,17 @@ const BLOCK = [
   /\bbutcher paper\b/i, /\bgermination\b/i, /\bfeeder dome\b/i,
 ];
 
+// Some seller names arrive URL-encoded ("LaJol%C3%ADeMuse"); decode and tidy them.
+for (const p of cat) {
+  if (typeof p.brand === "string" && /%[0-9A-Fa-f]{2}/.test(p.brand)) {
+    try {
+      p.brand = decodeURIComponent(p.brand);
+    } catch {
+      /* leave as is */
+    }
+  }
+  if (typeof p.brand === "string") p.brand = p.brand.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim() || "—";
+}
 const before = cat.length;
 const kept = cat.filter((p) => !BLOCK.some((re) => re.test(`${p.name} ${p.subcategory ?? ""}`)));
 fs.writeFileSync(file, JSON.stringify(kept));
