@@ -9,13 +9,16 @@ import { runAnalysis } from "@/lib/analyze-client";
 import { extractFramesFromVideo, framesFromImages, framesFromUrls } from "@/lib/frames";
 import { takePendingInput, type PendingInput } from "@/lib/pending";
 import { styleLabel } from "@/lib/ranking";
+import { promptsFromAnalysis, runRetrieval } from "@/lib/retrieval";
+import { getCatalog } from "@/lib/catalog";
 import { profileFromAnalysis, useOnboarding } from "@/lib/store";
 import type { Analysis, Frame } from "@/lib/types";
 
-type Phase = "extracting" | "analyzing" | "done" | "error";
+type Phase = "extracting" | "analyzing" | "matching" | "done" | "error";
 
-function statusFor(a: Partial<Analysis> | null, phase: Phase, extract: { done: number; total: number } | null): string {
+function statusFor(a: Partial<Analysis> | null, phase: Phase, extract: { done: number; total: number } | null, catalogSize: number): string {
   if (phase === "extracting") return extract ? `Picking the sharpest frames · ${extract.done}/${extract.total}` : "Picking the sharpest frames";
+  if (phase === "matching") return `Matching your shelves to ${catalogSize.toLocaleString()} products`;
   if (phase === "done") return "Got it.";
   if (phase === "error") return "Hmm.";
   if (!a) return "Looking at your shelves";
@@ -93,6 +96,19 @@ export default function AnalyzingPage() {
         }),
       });
       dispatch({ type: "setAnalysisStatus", status: "done" });
+
+      // Embedding retrieval: frames + the LM's read → nearest catalog products.
+      setPhase("matching");
+      dispatch({ type: "setRetrievalStatus", status: "running" });
+      try {
+        const retrieval = await runRetrieval({ frames, catalog: state.catalogSource, prompts: promptsFromAnalysis(analysis) });
+        dispatch({ type: "setRetrieval", retrieval });
+        dispatch({ type: "setRetrievalStatus", status: "done" });
+      } catch (e) {
+        // The tag-based ranking still works without embeddings; don't block the retailer.
+        dispatch({ type: "setRetrieval", retrieval: null });
+        dispatch({ type: "setRetrievalStatus", status: "error", error: e instanceof Error ? e.message : "Retrieval failed" });
+      }
       setPhase("done");
       setTimeout(() => router.replace("/onboarding/profile"), 1300);
     } catch (e) {
@@ -108,7 +124,7 @@ export default function AnalyzingPage() {
   const notes = useMemo(() => new Map((a?.frame_notes ?? []).filter((n) => n?.frame_id && n?.what_we_saw).map((n) => [n.frame_id, n.what_we_saw])), [a?.frame_notes]);
   const noted = frames.filter((f) => notes.has(f.id));
   const hero = noted.length ? noted[noted.length - 1] : frames[0];
-  const status = statusFor(a, phase, state.extractProgress);
+  const status = statusFor(a, phase, state.extractProgress, getCatalog(state.catalogSource).length);
 
   const chips: { key: string; label: string; kind: "category" | "style" | "material" | "brand" | "price" }[] = [];
   for (const c of a?.categories ?? []) if (c?.name) chips.push({ key: `c-${c.name}`, label: c.name, kind: "category" });
@@ -132,7 +148,7 @@ export default function AnalyzingPage() {
             className={phase === "done" ? "text-ink" : "text-muted"}
           >
             {status}
-            {phase === "analyzing" || phase === "extracting" ? <span className="pulse-soft">…</span> : null}
+            {phase === "analyzing" || phase === "extracting" || phase === "matching" ? <span className="pulse-soft">…</span> : null}
           </motion.span>
         </AnimatePresence>
         {phase === "done" && (

@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
+import { DEFAULT_WEIGHTS, type CatalogSource, type FusionWeights, type RetrievalResult } from "./retrieval";
 import type { Analysis, BuyingMode, Category, CategoryIntent, Frame, StoreProfile, Style } from "./types";
 
 export type StoreTypeChoice = "physical" | "online" | "popup" | "none";
@@ -22,6 +23,11 @@ export interface OnboardingState {
   analysisMeta: { mock?: boolean; model?: string; ms?: number } | null;
   profile: StoreProfile | null;
   personalized: boolean;
+  retrieval: RetrievalResult | null;
+  retrievalStatus: "idle" | "running" | "done" | "error";
+  retrievalError: string | null;
+  weights: FusionWeights;
+  catalogSource: CatalogSource;
 }
 
 const initialState: OnboardingState = {
@@ -39,6 +45,11 @@ const initialState: OnboardingState = {
   analysisMeta: null,
   profile: null,
   personalized: true,
+  retrieval: null,
+  retrievalStatus: "idle",
+  retrievalError: null,
+  weights: DEFAULT_WEIGHTS,
+  catalogSource: "synthetic",
 };
 
 type Action =
@@ -55,6 +66,10 @@ type Action =
   | { type: "setProfile"; profile: StoreProfile | null }
   | { type: "patchProfile"; patch: Partial<StoreProfile> }
   | { type: "setPersonalized"; value: boolean }
+  | { type: "setRetrieval"; retrieval: RetrievalResult | null }
+  | { type: "setRetrievalStatus"; status: OnboardingState["retrievalStatus"]; error?: string | null }
+  | { type: "setWeights"; weights: FusionWeights }
+  | { type: "setCatalogSource"; source: CatalogSource }
   | { type: "resetScan" }
   | { type: "reset" };
 
@@ -86,6 +101,14 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
       return state.profile ? { ...state, profile: { ...state.profile, ...action.patch } } : state;
     case "setPersonalized":
       return { ...state, personalized: action.value };
+    case "setRetrieval":
+      return { ...state, retrieval: action.retrieval };
+    case "setRetrievalStatus":
+      return { ...state, retrievalStatus: action.status, retrievalError: action.error ?? null };
+    case "setWeights":
+      return { ...state, weights: action.weights };
+    case "setCatalogSource":
+      return { ...state, catalogSource: action.source };
     case "resetScan":
       return {
         ...state,
@@ -98,6 +121,9 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
         analysisError: null,
         analysisMeta: null,
         profile: null,
+        retrieval: null,
+        retrievalStatus: "idle",
+        retrievalError: null,
       };
     case "reset":
       return initialState;
@@ -107,26 +133,37 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
 const STORAGE_KEY = "store-scan-state-v1";
 const MAX_PERSISTED_FRAME_BYTES = 3_500_000;
 
-const Ctx = createContext<{ state: OnboardingState; dispatch: (a: Action) => void } | null>(null);
+const Ctx = createContext<{ state: OnboardingState; dispatch: (a: Action) => void; hydrated: boolean } | null>(null);
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [hydrated, setHydrated] = useState(false);
+  const hydratedRef = useRef(false);
 
+  // Read persisted state exactly once (StrictMode runs effects twice in dev),
+  // and never write to storage until that read has happened.
   useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
         const saved = JSON.parse(raw) as Partial<OnboardingState>;
         // Never resume mid-analysis; the stream is gone.
         if (saved.analysisStatus === "analyzing" || saved.analysisStatus === "extracting") saved.analysisStatus = "idle";
+        if (saved.retrievalStatus === "running") saved.retrievalStatus = "idle";
+        if (!saved.weights) saved.weights = DEFAULT_WEIGHTS;
+        if (!saved.catalogSource) saved.catalogSource = "synthetic";
         dispatch({ type: "hydrate", state: saved });
       }
     } catch {
       /* ignore */
     }
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     try {
       const frameBytes = state.frames.reduce((n, f) => n + f.dataUrl.length, 0);
       const toSave = { ...state, frames: frameBytes < MAX_PERSISTED_FRAME_BYTES ? state.frames : [] };
@@ -134,16 +171,16 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     } catch {
       /* quota or private mode: fine */
     }
-  }, [state]);
+  }, [state, hydrated]);
 
-  const value = useMemo(() => ({ state, dispatch }), [state]);
+  const value = useMemo(() => ({ state, dispatch, hydrated }), [state, hydrated]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
 export function useOnboarding() {
   const ctx = useContext(Ctx);
   if (!ctx) throw new Error("useOnboarding must be used within OnboardingProvider");
-  const { state, dispatch } = ctx;
+  const { state, dispatch, hydrated } = ctx;
   const setCategoryIntent = useCallback(
     (name: Category, intent: CategoryIntent) => {
       if (!state.profile) return;
@@ -166,7 +203,7 @@ export function useOnboarding() {
     [state.profile, dispatch],
   );
   const setMode = useCallback((mode: BuyingMode) => dispatch({ type: "patchProfile", patch: { mode } }), [dispatch]);
-  return { state, dispatch, setCategoryIntent, toggleStyle, setMode };
+  return { state, dispatch, hydrated, setCategoryIntent, toggleStyle, setMode };
 }
 
 /** Turn a finished analysis into the editable profile that drives ranking. */

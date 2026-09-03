@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "embed": "node scripts/embed-catalog.mjs",
+    "warm-models": "node scripts/warm-models.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.123.0",

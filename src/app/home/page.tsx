@@ -1,13 +1,13 @@
 "use client";
 
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Camera, MessageCircle, Search, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Confetti } from "@/components/Confetti";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
-import { CATALOG } from "@/lib/catalog";
+import { getCatalog } from "@/lib/catalog";
 import { buildModules, orderCategories, personalize, rankGeneric, type Ranked } from "@/lib/ranking";
 import { useOnboarding } from "@/lib/store";
 import { CATEGORIES, type Category } from "@/lib/types";
@@ -15,11 +15,16 @@ import { CATEGORIES, type Category } from "@/lib/types";
 const PAGE = 24;
 
 export default function HomePage() {
-  const { state, dispatch } = useOnboarding();
+  const { state, dispatch, hydrated } = useOnboarding();
   const profile = state.profile;
   const personalized = state.personalized && !!profile;
-  const generic = useMemo(() => rankGeneric(CATALOG), []);
-  const ranked = useMemo(() => (profile ? personalize(CATALOG, profile) : null), [profile]);
+  const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
+  const generic = useMemo(() => rankGeneric(catalog), [catalog]);
+  const scores = state.retrieval && state.retrieval.catalog === state.catalogSource ? state.retrieval.scores : undefined;
+  const ranked = useMemo(
+    () => (profile ? personalize(catalog, profile, { scores, weights: state.weights }) : null),
+    [catalog, profile, scores, state.weights],
+  );
   const [hidden, setHidden] = useState<Set<string>>(new Set());
   const [limit, setLimit] = useState(PAGE);
   const [why, setWhy] = useState<Ranked | null>(null);
@@ -54,6 +59,8 @@ export default function HomePage() {
     setToast(msg);
     setTimeout(() => setToast(null), 1800);
   };
+
+  if (!hydrated) return <div className="min-h-full flex-1" />;
 
   return (
     <div className="relative flex min-h-full flex-1 flex-col">
@@ -95,10 +102,10 @@ export default function HomePage() {
       </div>
 
       {/* Category tiles */}
-      <div className="mt-1 overflow-x-auto px-4 [scrollbar-width:none]">
+      <div className="mt-1 shrink-0 overflow-x-auto px-4 [scrollbar-width:none]">
         <div className="grid grid-flow-col grid-rows-2 gap-2" style={{ gridAutoColumns: "170px" }}>
           {cats.map((c) => (
-            <motion.button layout key={c} type="button" className="flex h-[72px] items-center justify-between overflow-hidden rounded-[var(--radius)] bg-warm pl-3">
+            <motion.button key={c} type="button" className="flex h-[72px] items-center justify-between overflow-hidden rounded-[var(--radius)] bg-warm pl-3">
               <span className="text-left text-[14px] font-medium leading-tight text-ink">{c}</span>
               {tileImage(c) && (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -118,8 +125,8 @@ export default function HomePage() {
               {m.subtitle && <p className="text-caption mt-0.5">{m.subtitle}</p>}
             </div>
             <div className="mt-3 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
-              {m.items.map((r) => (
-                <ProductCard key={r.product.id} compact item={{ product: r.product, ranked: r }} personalized onWhy={setWhy} />
+              {m.items.map((r, i) => (
+                <ProductCard key={r.product.id} compact index={i} item={{ product: r.product, ranked: r }} personalized onWhy={setWhy} />
               ))}
             </div>
           </motion.section>
@@ -130,13 +137,11 @@ export default function HomePage() {
       <section className="mt-7 px-4 pb-6">
         <h2 className="text-[19px] font-semibold text-ink">Ideas for you</h2>
         {personalized && profile && <p className="text-caption mt-0.5">Every card below was shaped by your walkthrough. It keeps learning as you browse.</p>}
-        <LayoutGroup>
-          <motion.div layout className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6">
-            {feed.slice(0, limit).map((item) => (
-              <ProductCard key={item.product.id} item={item} personalized={personalized} onWhy={setWhy} />
-            ))}
-          </motion.div>
-        </LayoutGroup>
+        <div key={personalized ? "p" : "g"} className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6">
+          {feed.slice(0, limit).map((item, i) => (
+            <ProductCard key={item.product.id} item={item} index={i} personalized={personalized} onWhy={setWhy} />
+          ))}
+        </div>
         {limit < feed.length && (
           <button type="button" onClick={() => setLimit((l) => l + PAGE)} className="mt-6 h-11 w-full rounded-[var(--radius)] border border-ink text-[14px] font-medium text-ink">
             See more

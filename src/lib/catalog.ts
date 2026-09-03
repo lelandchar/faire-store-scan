@@ -1,7 +1,19 @@
-import raw from "../../data/catalog.json";
+import rawSynthetic from "../../data/catalog.json";
+import rawPublic from "../../data/catalog-public.json";
+import type { CatalogSource } from "./retrieval";
 import type { Product } from "./types";
 
-export const CATALOG: Product[] = raw as Product[];
+export const CATALOG: Product[] = rawSynthetic as Product[];
+export const CATALOG_PUBLIC: Product[] = rawPublic as Product[];
+
+export function getCatalog(source: CatalogSource): Product[] {
+  return source === "public" && CATALOG_PUBLIC.length > 0 ? CATALOG_PUBLIC : CATALOG;
+}
+
+export const CATALOG_LABEL: Record<CatalogSource, string> = {
+  synthetic: "Synthetic Faire-style catalog",
+  public: "Public product dataset",
+};
 
 export const STORE_CATEGORIES = [
   "Apparel Boutique",

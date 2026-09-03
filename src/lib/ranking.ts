@@ -1,3 +1,4 @@
+import { DEFAULT_WEIGHTS, type FusionWeights, type ProductScores } from "./retrieval";
 import type { Category, Product, Share, StoreProfile, Style } from "./types";
 
 // Deterministic, explainable re-ranking. This is intentionally a transparent
@@ -28,6 +29,8 @@ export type ReasonKind =
   | "price"
   | "new"
   | "popular"
+  | "visual"
+  | "semantic"
   | "skip";
 
 export interface Reason {
@@ -36,9 +39,19 @@ export interface Reason {
   weight: number;
 }
 
+export interface RankComponents {
+  /** deterministic tag score, ~0..1 */
+  tag: number;
+  /** min-max normalized visual similarity across the catalog, or null without embeddings */
+  visual: number | null;
+  semantic: number | null;
+  fused: number;
+}
+
 export interface Ranked {
   product: Product;
   score: number;
+  components: RankComponents;
   reasons: Reason[];
   genericRank: number;
   personalizedRank: number;
@@ -107,7 +120,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     categoryScore = SHARE_WEIGHT[cat.share];
     reasons.push({
       kind: "category",
-      text: `Your shelves already lean ${p.category.toLowerCase()}`,
+      text: `You carry ${p.category.toLowerCase()}`,
       weight: WEIGHTS.category * categoryScore,
     });
   } else if (cat && cat.intent === "stocked") {
@@ -116,7 +129,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     if (profile.mode === "replenish") {
       reasons.push({
         kind: "category",
-        text: `Restock candidate for your ${p.category.toLowerCase()} section`,
+        text: `Restock for your ${p.category.toLowerCase()} section`,
         weight: WEIGHTS.category * categoryScore,
       });
     }
@@ -127,9 +140,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     if (complementScore > categoryScore) categoryScore = complementScore;
     reasons.push({
       kind: "complement",
-      text: anchor
-        ? `Pairs with your ${anchor.name.toLowerCase()}`
-        : `A natural next category for your store`,
+      text: anchor ? `Pairs with your ${anchor.name.toLowerCase()}` : `A natural next category`,
       weight: WEIGHTS.category * complementScore,
     });
   }
@@ -152,7 +163,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   if (matHits.length) {
     reasons.push({
       kind: "material",
-      text: `You already carry ${prettyList(matHits)}`,
+      text: `You stock ${prettyList(matHits)}`,
       weight: WEIGHTS.material * materialScore,
     });
   }
@@ -171,10 +182,10 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   let noveltyScore = 0;
   if (profile.mode === "discover" && p.isNewBrand) {
     noveltyScore = 1;
-    reasons.push({ kind: "new", text: "New brand on Faire for a store like yours", weight: WEIGHTS.novelty });
+    reasons.push({ kind: "new", text: "New on Faire, fits your look", weight: WEIGHTS.novelty });
   } else if (profile.mode === "replenish" && p.isBestseller) {
     noveltyScore = 0.6;
-    reasons.push({ kind: "popular", text: "Proven bestseller with retailers like you", weight: WEIGHTS.novelty * 0.6 });
+    reasons.push({ kind: "popular", text: "Bestseller with stores like yours", weight: WEIGHTS.novelty * 0.6 });
   }
 
   const pop = popularityScore(p);
@@ -190,13 +201,63 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   return { score, reasons: reasons.slice(0, 3) };
 }
 
-export function personalize(catalog: Product[], profile: StoreProfile): Ranked[] {
+export interface RankOptions {
+  scores?: Record<string, ProductScores>;
+  weights?: FusionWeights;
+}
+
+function minMax(values: (number | null)[]): (number | null)[] {
+  const nums = values.filter((v): v is number => v !== null);
+  if (!nums.length) return values;
+  const lo = Math.min(...nums);
+  const hi = Math.max(...nums);
+  const span = hi - lo || 1;
+  return values.map((v) => (v === null ? null : (v - lo) / span));
+}
+
+export function effectiveWeights(weights: FusionWeights | undefined, hasVisual: boolean, hasSemantic: boolean): FusionWeights {
+  const w = { ...(weights ?? DEFAULT_WEIGHTS) };
+  if (!hasVisual) w.visual = 0;
+  if (!hasSemantic) w.semantic = 0;
+  const sum = w.tag + w.visual + w.semantic || 1;
+  return { tag: w.tag / sum, visual: w.visual / sum, semantic: w.semantic / sum };
+}
+
+export function personalize(catalog: Product[], profile: StoreProfile, opts: RankOptions = {}): Ranked[] {
   const generic = rankGeneric(catalog);
   const genericRank = new Map(generic.map((p, i) => [p.id, i + 1]));
-  const scored = catalog.map((product) => ({ product, ...scoreProduct(product, profile) }));
-  const ordered = stableSort(scored, (s) => s.score, (s) => s.product.id);
+  const tagScored = catalog.map((product) => ({ product, ...scoreProduct(product, profile) }));
+
+  const scores = opts.scores ?? {};
+  const visualRaw = catalog.map((p) => scores[p.id]?.visual ?? null);
+  const semanticRaw = catalog.map((p) => scores[p.id]?.semantic ?? null);
+  const hasVisual = visualRaw.some((v) => v !== null);
+  const hasSemantic = semanticRaw.some((v) => v !== null);
+  const visualN = minMax(visualRaw);
+  const semanticN = minMax(semanticRaw);
+  const w = effectiveWeights(opts.weights, hasVisual, hasSemantic);
+
+  const fused = tagScored.map((t, i) => {
+    const tag = Math.max(0, t.score);
+    const v = visualN[i];
+    const sm = semanticN[i];
+    const reasons = [...t.reasons];
+    if (t.score < 0) {
+      return { ...t, reasons, components: { tag: -1, visual: v, semantic: sm, fused: -1 } };
+    }
+    if (v !== null && v >= 0.72) reasons.push({ kind: "visual", text: "Looks like what's on your shelves", weight: w.visual * v });
+    if (sm !== null && sm >= 0.72) reasons.push({ kind: "semantic", text: "Fits how we read your store", weight: w.semantic * sm });
+    reasons.sort((a, b) => b.weight - a.weight);
+    const score = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0);
+    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, visual: v, semantic: sm, fused: score } };
+  });
+
+  const ordered = stableSort(fused, (s) => s.score, (s) => s.product.id);
   return ordered.map((s, i) => ({
-    ...s,
+    product: s.product,
+    score: s.score,
+    components: s.components,
+    reasons: s.reasons,
     genericRank: genericRank.get(s.product.id) ?? 0,
     personalizedRank: i + 1,
     delta: (genericRank.get(s.product.id) ?? 0) - (i + 1),

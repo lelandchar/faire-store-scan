@@ -16,17 +16,19 @@ export function ProductCard({
   personalized,
   onWhy,
   compact = false,
+  index = 0,
 }: {
   item: FeedItem;
   personalized: boolean;
   onWhy?: (r: Ranked) => void;
   compact?: boolean;
+  index?: number;
 }) {
   const p = item.product;
   const r = item.ranked;
   const topReason = personalized && r && r.reasons.length ? r.reasons[0] : null;
   return (
-    <motion.div layout="position" transition={{ type: "spring", stiffness: 300, damping: 30 }} className={compact ? "w-[156px] shrink-0" : ""}>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.04, ease: [0.2, 0.7, 0.2, 1] }} className={compact ? "w-[156px] shrink-0" : ""}>
       <div className="relative overflow-hidden rounded-[var(--radius)] bg-surface-2" style={{ aspectRatio: "1" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-cover" />

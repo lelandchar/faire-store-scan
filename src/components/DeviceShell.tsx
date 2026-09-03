@@ -14,6 +14,8 @@ const STEPS = [
 
 export function DeviceShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  // The engineer/admin trace view is a full-width page, not a phone screen.
+  if (pathname?.startsWith("/admin")) return <>{children}</>;
   return (
     <div className="shell">
       <aside className="side-panel w-[360px] shrink-0 self-center text-ink">
@@ -50,6 +52,10 @@ export function DeviceShell({ children }: { children: ReactNode }) {
           <p>
             <Link href="/about" className="underline underline-offset-2">
               How it works
+            </Link>{" "}
+            ·{" "}
+            <Link href="/admin" className="underline underline-offset-2">
+              Engineer view
             </Link>{" "}
             · built by Leland Char
           </p>

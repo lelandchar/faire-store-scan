@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 .env.local
 .cache/
+shots/
+.playwright-mcp/
+
+# transformers.js model cache (see src/lib/embeddings.ts, TRANSFORMERS_CACHE_DIR)
+/.cache/
