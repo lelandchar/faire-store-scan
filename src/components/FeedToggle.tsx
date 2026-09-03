@@ -49,7 +49,7 @@ export function FeedToggle({ variant }: { variant: "side" | "floating" }) {
       <p className="text-caption mt-3 leading-snug">
         {hasProfile
           ? on
-            ? "Ranked only from the walkthrough: what the retailer carries, their look, their goal, how each product matches the shelves and the brief, and a buyer's-eye review. No popularity signal."
+            ? "Ranked only from the walkthrough: what the retailer carries, their look, their goal, how each product matches the shelves and the brief, and a second pass by the model. No popularity signal."
             : "The blank slate a brand-new retailer starts from: a random order over the catalog, no store context."
           : "No walkthrough yet, so this is a random order over the catalog."}
       </p>

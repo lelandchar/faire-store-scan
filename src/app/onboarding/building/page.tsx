@@ -41,10 +41,10 @@ export default function BuildingPage() {
       dispatch({ type: "setRetrievalStatus", status: "running" });
       dispatch({ type: "setRerank", rerank: null });
       try {
-        const retrieval = await runRetrieval({ frames, catalog: state.catalogSource, prompts: promptsFromProfile(profile, analysis) });
+        const retrieval = await runRetrieval({ frames, catalog: state.catalogSource, prompts: promptsFromProfile(profile, analysis), backend: state.embeddingBackend });
         dispatch({ type: "setRetrieval", retrieval });
         dispatch({ type: "setRetrievalStatus", status: "done" });
-        // A buyer's-eye pass over the top candidates: the LM looks at the products themselves.
+        // LLM reranking pass over the top candidates: the model looks at the products themselves.
         setPhase("review");
         dispatch({ type: "setRerankStatus", status: "running" });
         try {
@@ -60,7 +60,9 @@ export default function BuildingPage() {
           dispatch({ type: "setRerankStatus", status: "error", error: e instanceof Error ? e.message : "Review failed" });
         }
         setPhase("done");
-        setTimeout(() => router.replace("/onboarding/done"), 1100);
+        // Rebuilds triggered from the feed (switching the retrieval method) return there instead of the Congratulations screen.
+        const back = new URLSearchParams(window.location.search).get("return");
+        setTimeout(() => router.replace(back === "home" || back === "search" ? `/${back}` : "/onboarding/done"), 1100);
       } catch (e) {
         const msg = e instanceof Error ? e.message : "Matching failed";
         dispatch({ type: "setRetrieval", retrieval: null });
@@ -92,7 +94,7 @@ export default function BuildingPage() {
         {phase === "done"
           ? "Ready."
           : phase === "review"
-            ? `Giving the top ${RERANK_CANDIDATES} picks a buyer's-eye review`
+            ? `Running a second pass on the top ${RERANK_CANDIDATES} picks`
             : `Matching your shelves and your choices against ${catalog.length.toLocaleString()} products from independent brands`}
         {(phase === "running" || phase === "review") && <span className="pulse-soft">…</span>}
       </p>

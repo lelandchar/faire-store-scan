@@ -1,5 +1,5 @@
 /**
- * Server side of the buyer's-eye rerank. The top candidates (thumbnail + listing line)
+ * Server side of the LLM rerank. The top candidates (thumbnail + listing line)
  * and a brief of the confirmed store go to a vision LM, which rates each product's fit
  * 1..5. Same provider rules as /api/analyze: OpenRouter when a key is present, the
  * Anthropic SDK when only that key is present, otherwise a deterministic mock.
@@ -63,7 +63,7 @@ function hashFit(seed: string): number {
 
 function parseRatings(text: string, products: Product[]): Record<string, number> {
   const m = /\{[\s\S]*\}/.exec(text);
-  if (!m) throw new Error("The reviewer returned no JSON.");
+  if (!m) throw new Error(`The reviewer returned no JSON: ${JSON.stringify(text.slice(0, 240))}`);
   const parsed = JSON.parse(m[0]) as { ratings?: { n: number; fit: number }[] };
   const fits: Record<string, number> = {};
   for (const r of parsed.ratings ?? []) {
@@ -111,12 +111,11 @@ export async function rerankProducts(opts: { catalog: CatalogSource; profile: St
   }
 
   const key = process.env.OPENROUTER_API_KEY!;
-  // The reviewer defaults to Sonnet 5: a 20-image batch answers in ~5 s against ~23 s for
-  // Muse Spark at low effort, and the review is a judgment call over thumbnails rather than
-  // the detailed read the walkthrough needs. RERANK_MODEL overrides.
-  const configured = process.env.RERANK_MODEL || "anthropic/claude-sonnet-5";
+  // Default reviewer: Qwen3.8-Flash with thinking off (a 20-image batch answers in ~7 s, versus
+  // ~5 s for Sonnet 5 and ~23 s for Muse Spark at low effort). RERANK_MODEL overrides.
+  const configured = process.env.RERANK_MODEL || "qwen/qwen3.8-flash";
   const effort = process.env.RERANK_EFFORT || "low";
-  const fallback = process.env.ANALYSIS_FALLBACK_MODEL || "anthropic/claude-sonnet-5";
+  const fallback = process.env.ANALYSIS_FALLBACK_MODEL || "qwen/qwen3.8-flash";
   // Providers cap images per request (Muse Spark: 50) and the smaller the batch the faster
   // the answer, so the candidates go out as parallel batches of 20.
   const BATCH = 20;
@@ -125,7 +124,8 @@ export async function rerankProducts(opts: { catalog: CatalogSource; profile: St
     batches.push({ products: products.slice(i, i + BATCH), lines: lines.slice(i, i + BATCH), thumbs: thumbs.slice(i, i + BATCH) });
   }
   const call = async (model: string, b: (typeof batches)[number]) => {
-    const claude = /claude/i.test(model);
+    // Only Muse Spark benefits from a thinking budget here; Claude and Qwen answer best with thinking off.
+    const claude = !/muse/i.test(model);
     const content: unknown[] = [{ type: "text", text: `${INSTRUCTIONS(b.products.length)}\n\n${brief}` }];
     b.products.forEach((p, i) => {
       // Numbered within the batch: the answer's "n" indexes this batch, not the full list.
@@ -151,14 +151,19 @@ export async function rerankProducts(opts: { catalog: CatalogSource; profile: St
   const runBatch = async (b: (typeof batches)[number]): Promise<Record<string, number>> => {
     let model = configured;
     let lastStatus = 0;
+    let lastBody = "";
     for (let attempt = 0; attempt < 4; attempt++) {
       const res = await call(model, b);
       if (res.ok) {
-        const j = (await res.json()) as { choices?: { message?: { content?: string | null } }[] };
+        const j = (await res.json()) as { choices?: { finish_reason?: string; message?: { content?: string | null; reasoning?: string | null } }[] };
         servedModel = model;
-        return parseRatings(j.choices?.[0]?.message?.content ?? "", b.products);
+        const choice = j.choices?.[0];
+        const content = choice?.message?.content ?? "";
+        if (!content.trim()) throw new Error(`The reviewer returned no answer (finish=${choice?.finish_reason ?? "?"}, reasoning=${(choice?.message?.reasoning ?? "").length} chars).`);
+        return parseRatings(content, b.products);
       }
       lastStatus = res.status;
+      lastBody = await res.text().catch(() => "");
       const gated = res.status === 403 || res.status === 404;
       const busy = res.status === 429 || res.status >= 500;
       if ((gated || (busy && attempt >= 1)) && model !== fallback) {
@@ -172,7 +177,7 @@ export async function rerankProducts(opts: { catalog: CatalogSource; profile: St
       }
       break;
     }
-    throw new Error(`The buyer's-eye review failed (${lastStatus}).`);
+    throw new Error(`The LLM rerank failed (${lastStatus}): ${lastBody.slice(0, 200)}`);
   };
   const parts = await Promise.all(batches.map(runBatch));
   const fits: Record<string, number> = Object.assign({}, ...parts);

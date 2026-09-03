@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import type { RerankResult } from "./rerank";
-import { DEFAULT_WEIGHTS, type CatalogSource, type FusionWeights, type RetrievalResult } from "./retrieval";
+import { DEFAULT_EMBEDDING_BACKEND, DEFAULT_WEIGHTS, type CatalogSource, type EmbeddingBackend, type FusionWeights, type RetrievalResult } from "./retrieval";
 import type { Analysis, BuyingMode, Category, CategoryIntent, Frame, StoreProfile, Style } from "./types";
 
 export type StoreTypeChoice = "physical" | "online" | "popup" | "none";
@@ -43,6 +43,7 @@ export interface OnboardingState {
   retrievalError: string | null;
   weights: FusionWeights;
   catalogSource: CatalogSource;
+  embeddingBackend: EmbeddingBackend;
   /** True once someone picked a catalog in the trace view; otherwise the default can move with deploys. */
   catalogChosen: boolean;
 }
@@ -69,6 +70,7 @@ const initialState: OnboardingState = {
   retrievalError: null,
   weights: DEFAULT_WEIGHTS,
   catalogSource: "shopify",
+  embeddingBackend: DEFAULT_EMBEDDING_BACKEND,
   catalogChosen: false,
 };
 
@@ -90,6 +92,7 @@ type Action =
   | { type: "setRetrievalStatus"; status: OnboardingState["retrievalStatus"]; error?: string | null }
   | { type: "setRerank"; rerank: RerankResult | null }
   | { type: "setRerankStatus"; status: OnboardingState["rerankStatus"]; error?: string | null }
+  | { type: "setEmbeddingBackend"; backend: EmbeddingBackend }
   | { type: "setWeights"; weights: FusionWeights }
   | { type: "setCatalogSource"; source: CatalogSource }
   | { type: "resetScan" }
@@ -131,6 +134,8 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
       return { ...state, rerank: action.rerank };
     case "setRerankStatus":
       return { ...state, rerankStatus: action.status, rerankError: action.error ?? null };
+    case "setEmbeddingBackend":
+      return { ...state, embeddingBackend: action.backend };
     case "setWeights":
       return { ...state, weights: action.weights };
     case "setCatalogSource":
@@ -185,6 +190,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         if (!saved.weights || saved.weights.nn === undefined) saved.weights = DEFAULT_WEIGHTS;
         if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.8 };
         if (!saved.catalogSource || !saved.catalogChosen) saved.catalogSource = "shopify";
+        if (saved.embeddingBackend !== "siglip" && saved.embeddingBackend !== "gemini") saved.embeddingBackend = DEFAULT_EMBEDDING_BACKEND;
         dispatch({ type: "hydrate", state: saved });
       }
     } catch {

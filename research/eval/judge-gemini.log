@@ -1,0 +1,27 @@
+objc[62146]: Class GNotificationCenterDelegate is implemented in both /Users/lelandchar/Faire personalization prototype/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.6.dylib (0x147af5a58) and /Users/lelandchar/Faire personalization prototype/node_modules/@huggingface/transformers/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib (0x148c71978). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+[encoders] siglip-b16 (Xenova/siglip-base-patch16-224) loaded in 281 ms
+nnimg       bookshop             carry  85%  comp  15%  off   0%  cats 4/4   fit 3.20  fit>=4 50%  junk 6/20
+nnimg       boutique-video       carry  68%  comp  33%  off   0%  cats 3/4   fit 3.85  fit>=4 75%  junk 2/20
+nnimg       boutique             carry  88%  comp  13%  off   0%  cats 3/3   fit 2.70  fit>=4 35%  junk 1/20
+nnimg       general-store-video  carry  63%  comp  35%  off   3%  cats 3/5   fit 3.60  fit>=4 60%  junk 3/20
+nnimg       home-gift-video      carry  85%  comp  15%  off   0%  cats 4/4   fit 3.35  fit>=4 50%  junk 3/20
+nnimg       home-gift            carry 100%  comp   0%  off   0%  cats 3/6   fit 4.35  fit>=4 85%  junk 0/20
+nnimg       MEAN                 carry  81%  comp  18%  off   0%  fit 3.51  fit>=4 59%  junk 15
+gemini      bookshop             carry  88%  comp  13%  off   0%  cats 3/4   fit 3.30  fit>=4 50%  junk 4/20
+gemini      boutique-video       carry  50%  comp  45%  off   5%  cats 4/4   fit 3.60  fit>=4 55%  junk 1/20
+gemini      boutique             carry  85%  comp  13%  off   3%  cats 3/3   fit 2.95  fit>=4 35%  junk 2/20
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+gemini      general-store-video  carry  75%  comp  25%  off   0%  cats 4/5   fit 3.85  fit>=4 60%  junk 1/20
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+gemini      home-gift-video      carry  80%  comp  20%  off   0%  cats 4/4   fit 3.30  fit>=4 55%  junk 3/20
+gemini      home-gift            carry  98%  comp   3%  off   0%  cats 4/6   fit 4.20  fit>=4 80%  junk 0/20
+gemini      MEAN                 carry  79%  comp  20%  off   1%  fit 3.53  fit>=4 56%  junk 11
+geminimix   bookshop             carry  85%  comp  15%  off   0%  cats 3/4   fit 3.10  fit>=4 40%  junk 6/20
+geminimix   boutique-video       carry  48%  comp  53%  off   0%  cats 3/4   fit 3.40  fit>=4 50%  junk 2/20
+geminimix   boutique             carry  90%  comp  10%  off   0%  cats 3/3   fit 2.95  fit>=4 35%  junk 1/20
+geminimix   general-store-video  carry  80%  comp  20%  off   0%  cats 4/5   fit 3.70  fit>=4 55%  junk 1/20
+geminimix   home-gift-video      carry  83%  comp  18%  off   0%  cats 4/4   fit 3.10  fit>=4 50%  junk 4/20
+[gemini] 429 on a batch of 7; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+geminimix   home-gift            carry  98%  comp   3%  off   0%  cats 2/6   fit 4.10  fit>=4 75%  junk 1/20
+geminimix   MEAN                 carry  80%  comp  20%  off   0%  fit 3.39  fit>=4 51%  junk 15
+wrote /Users/lelandchar/Faire personalization prototype/research/eval/results-nnimg+gemini+geminimix.md

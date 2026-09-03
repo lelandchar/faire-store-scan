@@ -19,7 +19,7 @@ function Bar({ label, value, max, display }: { label: string; value: number; max
   );
 }
 
-/** Ranking breakdown for the hovered feed card: tag parts, embedding matches, the buyer's-eye fit, and the fused score. */
+/** Ranking breakdown for the hovered feed card: tag parts, embedding matches, the second-pass fit, and the fused score. */
 export function RankInspector() {
   const { item, total } = useInspect();
   const { state } = useOnboarding();
@@ -50,14 +50,14 @@ export function RankInspector() {
         <Bar label="Materials" value={parts.material} max={WEIGHTS.material} display={parts.material.toFixed(2)} />
         <Bar label="Nearest-neighbour match" value={c.nn ?? 0} max={1} display={c.nn === null ? "n/a" : c.nn.toFixed(2)} />
         <Bar label="Store centroid" value={c.centroid ?? 0} max={1} display={c.centroid === null ? "n/a" : c.centroid.toFixed(2)} />
-        <Bar label="Buyer's-eye fit" value={c.buyer === null ? 0 : c.buyer - 1} max={4} display={c.buyer === null ? "not reviewed" : `${c.buyer} / 5`} />
+        <Bar label="Second-pass fit" value={c.buyer === null ? 0 : c.buyer - 1} max={4} display={c.buyer === null ? "not reviewed" : `${c.buyer} / 5`} />
       </div>
       <p className="mt-3 font-mono text-[11px] leading-relaxed text-ink-2">
         fused {c.fused.toFixed(3)} = {w.tag.toFixed(2)}·tag {c.tag.toFixed(2)} + {w.nn.toFixed(2)}·nn {(c.nn ?? 0).toFixed(2)} + {w.centroid.toFixed(2)}·centroid{" "}
         {(c.centroid ?? 0).toFixed(2)}
         {w.visual > 0 ? ` + ${w.visual.toFixed(2)}·visual ${(c.visual ?? 0).toFixed(2)}` : ""}
         {w.semantic > 0 ? ` + ${w.semantic.toFixed(2)}·text ${(c.semantic ?? 0).toFixed(2)}` : ""}
-        {c.buyer !== null ? ` ${buyerShift >= 0 ? "+" : "−"} ${Math.abs(buyerShift).toFixed(2)} buyer` : ""}
+        {c.buyer !== null ? ` ${buyerShift >= 0 ? "+" : "−"} ${Math.abs(buyerShift).toFixed(2)} rerank` : ""}
       </p>
       {item.reasons.length > 0 && (
         <ul className="mt-2 space-y-1">

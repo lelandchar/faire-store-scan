@@ -22,8 +22,8 @@ const STEPS: { title: string; body: string }[] = [
     body: "The frames and the confirmed choices are turned into vectors with an open-source image-and-text model (SigLIP) and compared with every product in the catalog, which was embedded the same way. Each product also gets a plain score from the confirmed choices: category fit, style, materials, and the buying goal.",
   },
   {
-    title: "A buyer's-eye review",
-    body: "The sixty best candidates go back to a vision model together with a short brief of the store. It looks at each product the way a wholesale buyer would and rates the fit from one to five; strong fits rise and poor ones drop below products it did not review.",
+    title: "A second pass",
+    body: "The sixty best candidates go back to a vision model together with a short brief of the store. It looks at each product against that brief and rates the fit from one to five; strong fits rise and poor ones drop below products it did not review.",
   },
   {
     title: "Build the storefront",

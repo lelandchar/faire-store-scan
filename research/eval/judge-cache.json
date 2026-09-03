@@ -3403,5 +3403,370 @@
   "fit": 4,
   "junk": false,
   "why": "Boho decorative bell with natural wood beads fits perfectly"
+ },
+ "bookshop|69furu|shp-0867": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic mass-market kid's craft kit, off literary/vintage aesthetic"
+ },
+ "bookshop|69furu|shp-0974": {
+  "fit": 4,
+  "junk": false,
+  "why": "Charming wood flower press fits literary, natural, gift aesthetic"
+ },
+ "bookshop|69furu|shp-1011": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic bulk cardstock, no branding, poor listing quality"
+ },
+ "bookshop|69furu|shp-0277": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural stone bookends, perfect for book-focused shop decor"
+ },
+ "bookshop|69furu|shp-1071": {
+  "fit": 1,
+  "junk": true,
+  "why": "Odd AI-generated cat art print, off-brand and low quality"
+ },
+ "bookshop|69furu|shp-0070": {
+  "fit": 5,
+  "junk": false,
+  "why": "Beautifully illustrated atlas book, ideal literary gift item"
+ },
+ "bookshop|69furu|shp-0327": {
+  "fit": 3,
+  "junk": false,
+  "why": "Plain wood frames fit decor, but generic and pricey"
+ },
+ "bookshop|69furu|shp-2532": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cocktail bitters plausible under food/drink, but niche fit"
+ },
+ "boutique-video|1fhpjpo|shp-1725": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral tones, fits jewelry/accessories wall nicely"
+ },
+ "boutique-video|1fhpjpo|shp-1720": {
+  "fit": 3,
+  "junk": false,
+  "why": "Simple scrunchie, fits but overpriced for category"
+ },
+ "boutique-video|1fhpjpo|shp-0353": {
+  "fit": 2,
+  "junk": false,
+  "why": "Mass-market bath mat, not matching boutique aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-0135": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural organic decor orbs match rustic coastal look"
+ },
+ "boutique-video|1fhpjpo|shp-0190": {
+  "fit": 4,
+  "junk": false,
+  "why": "Cozy neutral sherpa blanket fits cable-knit coastal vibe"
+ },
+ "boutique-video|1fhpjpo|shp-0247": {
+  "fit": 4,
+  "junk": false,
+  "why": "Rustic tassel decor complements woven natural aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1516": {
+  "fit": 2,
+  "junk": false,
+  "why": "Kids leggings brand, unclear fit for adult boutique"
+ },
+ "boutique-video|1fhpjpo|shp-1741": {
+  "fit": 2,
+  "junk": true,
+  "why": "Logo-pattern bag resembles designer clone, risky knockoff"
+ },
+ "boutique-video|1fhpjpo|shp-1286": {
+  "fit": 3,
+  "junk": false,
+  "why": "Niche craft cookbook, stretch for apparel-focused store"
+ },
+ "boutique|19tqing|shp-1011": {
+  "fit": 1,
+  "junk": true,
+  "why": "Craft cardstock supply, not boutique apparel/gift item"
+ },
+ "boutique|19tqing|shp-1619": {
+  "fit": 3,
+  "junk": false,
+  "why": "Stylish shoe but store not focused on footwear"
+ },
+ "boutique|19tqing|shp-1516": {
+  "fit": 2,
+  "junk": false,
+  "why": "Kids leggings, not core women's apparel focus"
+ },
+ "boutique|19tqing|shp-1725": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral tones, easy gifting accessory, fits jewelry wall"
+ },
+ "boutique|19tqing|shp-1720": {
+  "fit": 3,
+  "junk": false,
+  "why": "Denim scrunchie, okay but pricey for category"
+ },
+ "boutique|19tqing|shp-1729": {
+  "fit": 3,
+  "junk": false,
+  "why": "Trendy bag, could fit but style unclear"
+ },
+ "boutique|19tqing|shp-1332": {
+  "fit": 3,
+  "junk": false,
+  "why": "Trendy sandal clone, decent colors but generic look"
+ },
+ "boutique|19tqing|shp-2777": {
+  "fit": 3,
+  "junk": false,
+  "why": "Linen pouch fits aesthetic, but kids category stretch"
+ },
+ "boutique|19tqing|shp-1488": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural boho hat fits look nicely"
+ },
+ "boutique|19tqing|shp-0031": {
+  "fit": 1,
+  "junk": false,
+  "why": "Bedskirt not aligned with boutique apparel/gift focus"
+ },
+ "boutique|19tqing|shp-1349": {
+  "fit": 2,
+  "junk": false,
+  "why": "Niche maternity item, low brand appeal"
+ },
+ "boutique|19tqing|shp-1638": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty hijab magnets, off-brand, poor fit"
+ },
+ "general-store-video|sthzki|shp-0837": {
+  "fit": 5,
+  "junk": false,
+  "why": "Simmer pot potpourri fits farmhouse pantry aesthetic perfectly"
+ },
+ "general-store-video|sthzki|shp-1897": {
+  "fit": 2,
+  "junk": false,
+  "why": "Beard balm off-category, weak fit despite rustic branding"
+ },
+ "general-store-video|sthzki|shp-2539": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artisanal vinegar tonic fits pantry food & drink well"
+ },
+ "general-store-video|sthzki|shp-0082": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute farmhouse decor but generic mass-market truck plaque style"
+ },
+ "general-store-video|sthzki|shp-0798": {
+  "fit": 3,
+  "junk": false,
+  "why": "Gold clashes with enamel/wood look, though tabletop category fits"
+ },
+ "general-store-video|sthzki|shp-2588": {
+  "fit": 4,
+  "junk": false,
+  "why": "Gourmet jarred sauce fits pantry preserves wall nicely"
+ },
+ "general-store-video|sthzki|shp-0818": {
+  "fit": 3,
+  "junk": false,
+  "why": "Natural wood diffuser fits look, niche fragrance item"
+ },
+ "general-store-video|sthzki|shp-2393": {
+  "fit": 5,
+  "junk": false,
+  "why": "Pancake mix is quintessential farmhouse pantry staple item"
+ },
+ "home-gift-video|1emhj4e|shp-0837": {
+  "fit": 4,
+  "junk": false,
+  "why": "Cozy simmer potpourri fits amber/cottagecore gift aesthetic well"
+ },
+ "home-gift-video|1emhj4e|shp-1011": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk raw cardstock, generic craft supply not boutique gift"
+ },
+ "home-gift-video|1emhj4e|shp-0900": {
+  "fit": 1,
+  "junk": true,
+  "why": "Craft glaze supply for potters, not a retail gift item"
+ },
+ "home-gift-video|1emhj4e|shp-0994": {
+  "fit": 2,
+  "junk": false,
+  "why": "Pretty vellum but niche scrapbook supply, weak fit"
+ },
+ "home-gift-video|1emhj4e|shp-0818": {
+  "fit": 4,
+  "junk": false,
+  "why": "Wood diffuser cube matches natural minimalist fragrance aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-3771": {
+  "fit": 3,
+  "junk": false,
+  "why": "Garden kit aligns with considered category, terracotta fits look"
+ },
+ "home-gift-video|1emhj4e|shp-0811": {
+  "fit": 5,
+  "junk": false,
+  "why": "Classic glass taper holder, perfect rustic tabletop decor fit"
+ },
+ "home-gift-video|1emhj4e|shp-0808": {
+  "fit": 4,
+  "junk": false,
+  "why": "On-trend simmer pot, cottagecore gift-ready fragrance item"
+ },
+ "home-gift-video|1emhj4e|shp-0820": {
+  "fit": 3,
+  "junk": false,
+  "why": "Nice candle but ornate glass jar less minimalist rustic"
+ },
+ "home-gift|fp0m5d|shp-0135": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural organic texture fits earthy, boho, neutral aesthetic perfectly"
+ },
+ "home-gift|fp0m5d|shp-0079": {
+  "fit": 4,
+  "junk": false,
+  "why": "Dried floral stem suits natural boho look, nice gift accent"
+ },
+ "home-gift|fp0m5d|shp-0153": {
+  "fit": 4,
+  "junk": false,
+  "why": "Pampas dried bouquet aligns with boho neutral decor trend"
+ },
+ "home-gift|fp0m5d|shp-0190": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cozy sherpa blanket fits textiles but bedding-branded, less boutique feel"
+ },
+ "home-gift|fp0m5d|shp-0818": {
+  "fit": 4,
+  "junk": false,
+  "why": "Wood fragrance cube matches natural materials and gift-ready fragrance category"
+ },
+ "home-gift|fp0m5d|shp-0247": {
+  "fit": 4,
+  "junk": false,
+  "why": "Tasseled natural tassel accent fits boho textile decor nicely"
+ },
+ "bookshop|69furu|shp-2552": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic bulk coffee bag, no brand identity or charm"
+ },
+ "bookshop|69furu|shp-0956": {
+  "fit": 4,
+  "junk": false,
+  "why": "Playful pattern pencil fits stationery core well"
+ },
+ "bookshop|69furu|shp-0110": {
+  "fit": 3,
+  "junk": false,
+  "why": "Artistic nautical print could suit natural, literary decor corner"
+ },
+ "boutique-video|1fhpjpo|shp-1332": {
+  "fit": 2,
+  "junk": true,
+  "why": "Obvious Hermes clone sandals, off-brand knockoff risk"
+ },
+ "boutique-video|1fhpjpo|shp-0153": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural pampas fits coastal rustic neutral aesthetic well"
+ },
+ "boutique-video|1fhpjpo|shp-0079": {
+  "fit": 3,
+  "junk": false,
+  "why": "Simple dried branch decor, fits look but niche"
+ },
+ "boutique|19tqing|shp-1741": {
+  "fit": 1,
+  "junk": true,
+  "why": "Looks like designer logo knockoff, brand risk for boutique"
+ },
+ "boutique|19tqing|shp-1483": {
+  "fit": 4,
+  "junk": false,
+  "why": "On-trend denim fits apparel-dominant, minimalist boho aesthetic"
+ },
+ "boutique|19tqing|shp-1864": {
+  "fit": 3,
+  "junk": false,
+  "why": "Fine jewelry piece, but niche body-jewelry category, price high"
+ },
+ "general-store-video|sthzki|shp-0106": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural stone bowl fits farmhouse decor, though it's a jewelry dish"
+ },
+ "general-store-video|sthzki|shp-0729": {
+  "fit": 3,
+  "junk": false,
+  "why": "Fits kitchen but colors/print clash with farmhouse palette"
+ },
+ "general-store-video|sthzki|shp-2474": {
+  "fit": 3,
+  "junk": false,
+  "why": "Pantry staple fits food category, less visually distinctive"
+ },
+ "general-store-video|sthzki|shp-2520": {
+  "fit": 5,
+  "junk": false,
+  "why": "Charming wrapped candy, perfect farmhouse pantry impulse buy"
+ },
+ "home-gift-video|1emhj4e|shp-0079": {
+  "fit": 4,
+  "junk": false,
+  "why": "Dried florals fit cottagecore decor aesthetic well"
+ },
+ "home-gift-video|1emhj4e|shp-0712": {
+  "fit": 2,
+  "junk": false,
+  "why": "Industrial cast iron clashes with curated artisan stoneware look"
+ },
+ "home-gift-video|1emhj4e|shp-0261": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural dried greenery suits rustic gift-ready shelves"
+ },
+ "home-gift-video|1emhj4e|shp-2086": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural loofah fits considered bath & body expansion nicely"
+ },
+ "home-gift-video|1emhj4e|shp-0153": {
+  "fit": 5,
+  "junk": false,
+  "why": "Pampas bouquet is quintessential cottagecore decor natural fit"
+ },
+ "home-gift-video|1emhj4e|shp-0768": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market novelty mug clashes with artisan handmade aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0321": {
+  "fit": 4,
+  "junk": false,
+  "why": "Faux greenery fits boho/Scandi living-green aesthetic well"
+ },
+ "home-gift|fp0m5d|shp-0118": {
+  "fit": 2,
+  "junk": true,
+  "why": "Plasticky novelty tray, clashes with earthy curated aesthetic"
  }
 }

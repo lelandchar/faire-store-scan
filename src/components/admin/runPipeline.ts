@@ -2,7 +2,7 @@ import { runAnalysis } from "@/lib/analyze-client";
 import { extractFramesFromVideo, framesFromImages, framesFromUrls } from "@/lib/frames";
 import { personalize } from "@/lib/ranking";
 import { RERANK_CANDIDATES, runRerank } from "@/lib/rerank";
-import { promptsFromAnalysis, runRetrieval, type CatalogSource } from "@/lib/retrieval";
+import { promptsFromAnalysis, runRetrieval, type CatalogSource, type EmbeddingBackend } from "@/lib/retrieval";
 import { getCatalog } from "@/lib/catalog";
 import { profileFromAnalysis, type useOnboarding } from "@/lib/store";
 import type { Frame } from "@/lib/types";
@@ -46,6 +46,7 @@ export interface PipelineContext {
   storeCategory: string | null;
   description: string;
   catalogSource: CatalogSource;
+  embeddingBackend: EmbeddingBackend;
 }
 
 export async function runPipeline(opts: {
@@ -126,7 +127,7 @@ export async function runPipeline(opts: {
     dispatch({ type: "setRerank", rerank: null });
     let retrieval: Awaited<ReturnType<typeof runRetrieval>> | null = null;
     try {
-      retrieval = await runRetrieval({ frames, catalog: ctx.catalogSource, prompts: promptsFromAnalysis(analysis), signal });
+      retrieval = await runRetrieval({ frames, catalog: ctx.catalogSource, prompts: promptsFromAnalysis(analysis), backend: ctx.embeddingBackend, signal });
       dispatch({ type: "setRetrieval", retrieval });
       dispatch({ type: "setRetrievalStatus", status: "done" });
     } catch (e) {
@@ -136,7 +137,7 @@ export async function runPipeline(opts: {
     }
     timings.matchMs = Math.round(performance.now() - t1);
 
-    // --- Stage 4: buyer's-eye rerank of the top candidates --------------------
+    // --- Stage 4: LLM rerank of the top candidates ---------------------------
     emit("reranking");
     dispatch({ type: "setRerankStatus", status: "running" });
     const t2 = performance.now();

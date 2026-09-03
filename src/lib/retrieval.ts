@@ -6,6 +6,14 @@ import type { Analysis, Frame, StoreProfile } from "./types";
 
 export type CatalogSource = "synthetic" | "public" | "shopify";
 
+/** Which embedding space the retrieval runs in. Both are kept so the two can be compared live. */
+export type EmbeddingBackend = "siglip" | "gemini";
+export const EMBEDDING_BACKEND_LABEL: Record<EmbeddingBackend, string> = {
+  siglip: "SigLIP (local, open source)",
+  gemini: "Gemini Embedding 2 (hosted, OpenRouter)",
+};
+export const DEFAULT_EMBEDDING_BACKEND: EmbeddingBackend = "siglip";
+
 export interface ProductScores {
   /** cosine(product image, mean of frame image embeddings) */
   visual: number;
@@ -19,6 +27,7 @@ export interface ProductScores {
 
 export interface RetrievalResult {
   catalog: CatalogSource;
+  backend?: EmbeddingBackend;
   model: string;
   dim: number;
   count: number;
@@ -108,6 +117,7 @@ export async function runRetrieval(opts: {
   catalog: CatalogSource;
   prompts: string[];
   scoring?: ScoringOptions;
+  backend?: EmbeddingBackend;
   signal?: AbortSignal;
 }): Promise<RetrievalResult> {
   const res = await fetch("/api/retrieve", {
@@ -116,6 +126,7 @@ export async function runRetrieval(opts: {
     body: JSON.stringify({
       frames: opts.frames.map((f) => ({ id: f.id, dataUrl: f.dataUrl })),
       catalog: opts.catalog,
+      backend: opts.backend ?? DEFAULT_EMBEDDING_BACKEND,
       prompts: opts.prompts,
       // Prompts are ordered brief-first by buildPrompts; the rest are concrete things seen on the shelves.
       briefCount: opts.prompts.filter((p) => / sold at a /.test(p)).length,

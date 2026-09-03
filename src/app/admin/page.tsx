@@ -22,7 +22,7 @@ const STAGES = [
   ["stage-2", "Store read"],
   ["stage-3", "Embeddings"],
   ["stage-4", "Fusion"],
-  ["stage-5", "Buyer's eye"],
+  ["stage-5", "Second pass"],
   ["stage-6", "Feed"],
 ] as const;
 
@@ -69,6 +69,7 @@ export default function AdminPage() {
         storeCategory: state.storeCategory,
         description: state.description,
         catalogSource: state.catalogSource,
+        embeddingBackend: state.embeddingBackend,
       };
       if (sample) {
         // Mirror the scan screen in a fresh session: the sample's identity becomes the store's,
@@ -86,7 +87,7 @@ export default function AdminPage() {
         setBusy(false);
       }
     },
-    [busy, dispatch, state.storeName, state.storeCategory, state.description, state.catalogSource],
+    [busy, dispatch, state.storeName, state.storeCategory, state.description, state.catalogSource, state.embeddingBackend],
   );
 
   const reset = useCallback(() => {
@@ -104,8 +105,8 @@ export default function AdminPage() {
           <p className="text-caption uppercase tracking-[0.14em]">Store Scan · pipeline trace</p>
           <h1 className="font-serif text-[36px] leading-[1.15] text-ink">End-to-end trace view</h1>
           <p className="text-body mt-1 max-w-[780px]">
-            Every stage of the cold-start pipeline, inspectable: input frames → LM store read → SigLIP nearest-neighbour retrieval (every frame and prompt is a query, fused by rank) → weighted fusion → a
-            buyer&apos;s-eye rerank by the LM → the feed the retailer sees. Re-run it on canned inputs here; the phone views share this state.
+            Every stage of the cold-start pipeline, inspectable: input frames → LM store read → SigLIP nearest-neighbour retrieval (every frame and prompt is a query, fused by rank) → weighted fusion → an
+            LLM-based second pass → the feed the retailer sees. Re-run it on canned inputs here; the phone views share this state.
           </p>
         </div>
         <nav className="flex flex-wrap gap-x-4 text-[13px]">
@@ -131,6 +132,7 @@ export default function AdminPage() {
           onRun={run}
           onReset={reset}
           onCatalogChange={setCatalog}
+          onBackendChange={(backend) => dispatch({ type: "setEmbeddingBackend", backend })}
         />
 
         <div id="stage-1" className="scroll-mt-[200px]">
@@ -203,7 +205,7 @@ export default function AdminPage() {
                   Embeddings are real SigLIP base vectors (transformers.js, int8 ONNX on CPU). The catalog index is precomputed by{" "}
                   <Mono>scripts/embed-catalog.mjs</Mono>; frame and prompt vectors are computed per run.
                 </li>
-                <li>The buyer&apos;s-eye rerank is a second live vision-LM call over the top 60 candidates (thumbnails + the confirmed brief).</li>
+                <li>The LLM-based second pass is a second live vision-LM call over the top 60 candidates (thumbnails + the confirmed brief).</li>
                 <li>Fusion, normalization, reasons and the generic/personalized rank deltas are computed exactly as shown (ranking.ts) and drive the phone feed.</li>
               </ul>
             </div>

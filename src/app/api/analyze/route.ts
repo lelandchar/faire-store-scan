@@ -21,7 +21,7 @@ function pickProvider(): Provider {
 
 /** Model id for OpenRouter: accept bare Anthropic ids and prefix them. */
 function openRouterModel(): string {
-  const m = process.env.OPENROUTER_MODEL || process.env.ANALYSIS_MODEL || "anthropic/claude-sonnet-5";
+  const m = process.env.OPENROUTER_MODEL || process.env.ANALYSIS_MODEL || "meta/muse-spark-1.3";
   return m.includes("/") ? m : `anthropic/${m}`;
 }
 
@@ -184,7 +184,7 @@ export async function POST(req: Request) {
               // The configured effort belongs to the configured model; the fallback runs lean.
               ...((m === model ? effort : fallbackEffort) ? { reasoning: { effort: m === model ? effort : fallbackEffort } } : {}),
             });
-          const fallbackModel = process.env.ANALYSIS_FALLBACK_MODEL || "anthropic/claude-sonnet-5";
+          const fallbackModel = process.env.ANALYSIS_FALLBACK_MODEL || "qwen/qwen3.8-flash";
           let servedModel = model;
           let fallbackReason: string | null = null;
           const attempt = async (m: string, strict: boolean) => {

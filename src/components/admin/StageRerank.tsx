@@ -25,8 +25,8 @@ export function StageRerank({
   return (
     <Card
       step="Stage 5"
-      title="Buyer's-eye rerank"
-      subtitle="The top 60 candidates from fusion go back to the vision LM with a brief of the confirmed store (note, categories, look, materials, buying goal) and a 192px thumbnail each. It rates every product 1–5 the way a wholesale buyer would; the fused score shifts by 0.15 per point away from 3, so a 5 gains 0.30 and a 1 loses 0.30. Unreviewed products keep their fused score, which puts a poorly reviewed product below the best unreviewed ones. Three batches of 20 run in parallel. The reviewer defaults to Claude Sonnet 5 (about 5 s per batch versus 23 s for Muse Spark at low effort; RERANK_MODEL overrides), with the same fallback rules as the store read; the mock rates deterministically. On the offline evaluation this is the step that lifts the judged fit of the top 20 the most."
+      title="LLM-based second pass"
+      subtitle="The top 60 candidates from fusion go back to the vision LM with a brief of the confirmed store (note, categories, look, materials, buying goal) and a 192px thumbnail each. It rates every product 1–5 for fit with the store; the fused score shifts by 0.15 per point away from 3, so a 5 gains 0.30 and a 1 loses 0.30. Unreviewed products keep their fused score, which puts a poorly reviewed product below the best unreviewed ones. Three batches of 20 run in parallel. The reranker defaults to Qwen3.8-Flash with thinking off (about 7 s per batch of 20; Sonnet 5 takes 5 s and Muse Spark 23 s; RERANK_MODEL overrides), with the same fallback rules as the store read; the mock rates deterministically. On the offline evaluation this is the step that lifts the judged fit of the top 20 the most."
     >
       <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
         <div className="space-y-4">
@@ -52,7 +52,7 @@ export function StageRerank({
         </div>
         <div className="min-w-0">
           {!rows.length ? (
-            <Placeholder>{status === "running" ? "The reviewer is looking at the top candidates…" : "Run a sample to populate."}</Placeholder>
+            <Placeholder>{status === "running" ? "The reranker is scoring the top candidates…" : "Run a sample to populate."}</Placeholder>
           ) : (
             <div className="max-h-[520px] overflow-auto rounded-[6px] border border-line">
               <table className="w-full border-collapse text-[12px]">

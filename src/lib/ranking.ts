@@ -63,7 +63,7 @@ export interface RankComponents {
   /** retrieval v2 channels (null when the retrieval did not compute them) */
   nn: number | null;
   centroid: number | null;
-  /** buyer's-eye fit 1..5 from the LM rerank, or null when this product was not reviewed */
+  /** LLM-rerank fit 1..5, or null when this product was not reviewed */
   buyer: number | null;
   fused: number;
 }
@@ -243,7 +243,7 @@ export function scoreProduct(p: Product, profile: StoreProfile, W: TagWeights = 
   return { score, reasons: reasons.slice(0, 3), parts };
 }
 
-/** Score shift per point of buyer's-eye fit away from neutral (3): a 5 gains +0.3, a 1 loses 0.3. */
+/** Score shift per point of LLM-rerank fit away from neutral (3): a 5 gains +0.3, a 1 loses 0.3. */
 export const BUYER_STEP = 0.15;
 
 export interface RankOptions {
@@ -313,10 +313,10 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
     reasons.sort((a, b) => b.weight - a.weight);
     let fusedScore = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0) + w.nn * (nnv ?? 0) + w.centroid * (cen ?? 0);
     if (buyer !== null) {
-      // The buyer's-eye review re-orders the reviewed set: a strong fit rises, a poor one drops
+      // The LLM rerank re-orders the reviewed set: a strong fit rises, a poor one drops
       // below unreviewed candidates.
       fusedScore += (buyer - 3) * BUYER_STEP;
-      if (buyer >= 4) reasons.push({ kind: "buyer", text: "Passed a buyer's-eye check for your store", weight: (buyer - 3) * BUYER_STEP });
+      if (buyer >= 4) reasons.push({ kind: "buyer", text: "Rated a strong fit for your store", weight: (buyer - 3) * BUYER_STEP });
     }
     // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic (random) order.
     const strength = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;

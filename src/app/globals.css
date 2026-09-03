@@ -424,3 +424,26 @@ body {
     top: 64px;
   }
 }
+
+/* Retrieval method switch in the top bar (desktop). */
+.top-nav__select {
+  display: none;
+}
+@media (min-width: 900px) {
+  .top-nav__select {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .top-nav__select select {
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 13px;
+  }
+}

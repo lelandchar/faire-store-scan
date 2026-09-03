@@ -1,0 +1,27 @@
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[embed gemini] 64/2016 images, 11 s
+[embed gemini] 384/2016 images, 40 s
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 8000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[embed gemini] 704/2016 images, 87 s
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 8000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[embed gemini] 1024/2016 images, 136 s
+[embed gemini] 1344/2016 images, 165 s
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 8000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[embed gemini] 1664/2016 images, 212 s
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[embed gemini] 1984/2016 images, 256 s
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 4000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[gemini] 429 on a batch of 8; retrying in 8000 ms: {"error":{"message":"HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource exhausted. Please try again later. Please refer to https://clo
+[embed gemini] wrote /Users/lelandchar/Faire personalization prototype/data/embeddings/catalog-shopify.gemini.json (2016 x 768) in 373 s

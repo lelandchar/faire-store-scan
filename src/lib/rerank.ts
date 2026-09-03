@@ -1,4 +1,4 @@
-// Client contract for the buyer's-eye rerank: a vision LM looks at the top candidates
+// Client contract for the LLM rerank: a vision LM looks at the top candidates
 // from retrieval + fusion and rates how well each fits the confirmed store.
 import type { CatalogSource } from "./retrieval";
 import type { StoreProfile } from "./types";

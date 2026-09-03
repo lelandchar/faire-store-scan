@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent } from "react";
 import { CATALOG_LABEL, getCatalog } from "@/lib/catalog";
-import type { CatalogSource } from "@/lib/retrieval";
+import { EMBEDDING_BACKEND_LABEL, type CatalogSource, type EmbeddingBackend } from "@/lib/retrieval";
 import { loadSampleManifest, samplePhotoUrl, SAMPLE_VIDEOS, type SampleStore } from "@/lib/samples";
 import type { OnboardingState } from "@/lib/store";
 import type { PipelineInput, PipelineProgress } from "./runPipeline";
@@ -44,6 +44,7 @@ export function RunControls({
   onRun,
   onReset,
   onCatalogChange,
+  onBackendChange,
 }: {
   state: OnboardingState;
   busy: boolean;
@@ -52,6 +53,7 @@ export function RunControls({
   onRun: (input: PipelineInput, label: string, sample?: SampleMeta) => void;
   onReset: () => void;
   onCatalogChange: (source: CatalogSource) => void;
+  onBackendChange: (backend: EmbeddingBackend) => void;
 }) {
   const [samples, setSamples] = useState<SampleStore[]>([]);
 
@@ -148,6 +150,16 @@ export function RunControls({
         </Btn>
       </div>
 
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-3">
+        <span className="text-caption uppercase tracking-[0.14em]">Embeddings</span>
+        {(["siglip", "gemini"] as EmbeddingBackend[]).map((b) => (
+          <label key={b} className={`inline-flex items-center gap-1.5 text-[13px] text-ink ${busy ? "opacity-50" : "cursor-pointer"}`}>
+            <input type="radio" name="backend" value={b} checked={state.embeddingBackend === b} disabled={busy} onChange={() => onBackendChange(b)} style={{ accentColor: "var(--ink)" }} />
+            {EMBEDDING_BACKEND_LABEL[b]}
+          </label>
+        ))}
+        <span className="text-caption">Both indexes are precomputed; the choice applies to the next run.</span>
+      </div>
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-3">
         <span className="text-caption uppercase tracking-[0.14em]">Catalog</span>
         {SOURCES.map((src) => {

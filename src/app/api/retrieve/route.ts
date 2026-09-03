@@ -2,7 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 import { embedImages, embedTexts, EMBEDDING_DIM, EMBEDDING_MODEL } from "@/lib/embeddings";
-import { DEFAULT_SCORING_OPTIONS, type CatalogSource, type RetrievalResult } from "@/lib/retrieval";
+import { embedImagesGemini, embedTextsGemini } from "@/lib/embeddings-gemini";
+import { DEFAULT_SCORING_OPTIONS, type CatalogSource, type EmbeddingBackend, type RetrievalResult } from "@/lib/retrieval";
 import { computeScores, DEFAULT_NN, decodeVectors, dot, meanVector, nearestNeighborScores, type QueryVec, type VectorIndex } from "@/lib/scoring";
 
 export const runtime = "nodejs";
@@ -10,7 +11,8 @@ export const maxDuration = 120;
 
 const RequestSchema = z.object({
   frames: z.array(z.object({ id: z.string().regex(/^f\d{1,2}$/), dataUrl: z.string().startsWith("data:image/jpeg;base64,") })).min(1).max(16),
-  catalog: z.enum(["synthetic", "public", "shopify"]).default("synthetic"),
+  catalog: z.enum(["synthetic", "public", "shopify"]).default("shopify"),
+  backend: z.enum(["siglip", "gemini"]).default("siglip"),
   prompts: z.array(z.string().max(200)).max(16).default([]),
   briefCount: z.number().int().min(0).max(16).optional(),
   scoring: z
@@ -30,13 +32,20 @@ const FILES: Record<CatalogSource, string> = {
   shopify: "catalog-shopify.json",
 };
 
-const g = globalThis as unknown as { __indexCache?: Map<CatalogSource, { mtime: number; index: Promise<Index> }> };
+const g = globalThis as unknown as { __indexCache?: Map<string, { mtime: number; index: Promise<Index> }> };
 g.__indexCache ??= new Map();
 
-async function loadIndex(source: CatalogSource): Promise<Index> {
-  const file = path.join(process.cwd(), "data", "embeddings", FILES[source]);
+/** The Gemini index exists for the Shopify catalog only; other catalogs fall back to the local space. */
+function indexFile(source: CatalogSource, backend: EmbeddingBackend): string {
+  if (backend === "gemini" && source === "shopify") return "catalog-shopify.gemini.json";
+  return FILES[source];
+}
+
+async function loadIndex(source: CatalogSource, backend: EmbeddingBackend = "siglip"): Promise<Index> {
+  const file = path.join(process.cwd(), "data", "embeddings", indexFile(source, backend));
+  const cacheKey = `${source}:${backend}`;
   const mtime = (await fs.stat(file)).mtimeMs;
-  const cached = g.__indexCache!.get(source);
+  const cached = g.__indexCache!.get(cacheKey);
   if (cached && cached.mtime === mtime) return cached.index;
   const p = (async () => {
     const raw = JSON.parse(await fs.readFile(file, "utf8")) as { model: string; dim: number; ids: string[]; image: string; text: string };
@@ -45,8 +54,8 @@ async function loadIndex(source: CatalogSource): Promise<Index> {
     if (image.length !== raw.ids.length) throw new Error(`Embedding index ${file} is inconsistent (${image.length} vectors for ${raw.ids.length} ids)`);
     return { model: raw.model, dim: raw.dim, ids: raw.ids, image, text };
   })();
-  g.__indexCache!.set(source, { mtime, index: p });
-  p.catch(() => g.__indexCache!.delete(source));
+  g.__indexCache!.set(cacheKey, { mtime, index: p });
+  p.catch(() => g.__indexCache!.delete(cacheKey));
   return p;
 }
 
@@ -59,15 +68,16 @@ export async function POST(req: Request) {
   }
   const t0 = performance.now();
   try {
-    const index = await loadIndex(body.catalog);
+    const backend: EmbeddingBackend = body.backend === "gemini" && body.catalog === "shopify" ? "gemini" : "siglip";
+    const index = await loadIndex(body.catalog, backend);
     if (index.ids.length === 0) return Response.json({ error: `The ${body.catalog} catalog has no embeddings yet.` }, { status: 503 });
     const tLoad = performance.now();
 
-    const frameVecs = await embedImages(body.frames.map((f) => f.dataUrl));
+    const frameVecs = backend === "gemini" ? await embedImagesGemini(body.frames.map((f) => f.dataUrl)) : await embedImages(body.frames.map((f) => f.dataUrl));
     const tImg = performance.now();
     const storeVisual = meanVector(frameVecs);
 
-    const promptVecs = body.prompts.length ? await embedTexts(body.prompts) : [];
+    const promptVecs = body.prompts.length ? (backend === "gemini" ? await embedTextsGemini(body.prompts) : await embedTexts(body.prompts)) : [];
     const tTxt = performance.now();
 
     const scoring = { ...DEFAULT_SCORING_OPTIONS, ...(body.scoring ?? {}) };
@@ -97,6 +107,7 @@ export async function POST(req: Request) {
 
     const result: RetrievalResult = {
       catalog: body.catalog,
+      backend,
       model: index.model || EMBEDDING_MODEL,
       dim: index.dim || EMBEDDING_DIM,
       count: index.ids.length,
