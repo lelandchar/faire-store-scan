@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { runAnalysis } from "@/lib/analyze-client";
-import { extractFramesFromVideo, framesFromImages, framesFromUrls } from "@/lib/frames";
+import {
+  extractFramesFromVideo,
+  framesFromImages,
+  framesFromUrls,
+} from "@/lib/frames";
 import { takePendingInput, type PendingInput } from "@/lib/pending";
 import { styleLabel } from "@/lib/ranking";
 import { profileFromAnalysis, useOnboarding } from "@/lib/store";
@@ -23,6 +27,9 @@ const SHARE_LABEL: Record<Share, string> = {
 
 /** One sweep per frame; slow enough to read as "looking", not "flashing". */
 const SWEEP_MS = 1700;
+/** Reveal pace for sampled frames and the pause between the selection and the note stage. */
+const REVEAL_MS = 110;
+const STAGE_PAUSE_MS = 1400;
 
 const THINKING_STEPS = [
   "Looking at what's on your shelves",
@@ -42,7 +49,11 @@ function readDurations(): number[] {
   try {
     const raw = localStorage.getItem(DURATIONS_KEY);
     const arr: unknown = raw ? JSON.parse(raw) : [];
-    return Array.isArray(arr) ? arr.filter((n): n is number => typeof n === "number" && n > 3000 && n < 600_000) : [];
+    return Array.isArray(arr)
+      ? arr.filter(
+          (n): n is number => typeof n === "number" && n > 3000 && n < 600_000,
+        )
+      : [];
   } catch {
     return [];
   }
@@ -62,10 +73,16 @@ function humanDuration(ms: number): string {
 /** Reaches 90% at the expected time, then creeps toward 97% so a slow run never looks stuck. */
 function progressFor(elapsedMs: number, expectedMs: number): number {
   const t = elapsedMs / Math.max(1000, expectedMs);
-  return t <= 1 ? 90 * t : Math.min(97, 90 + 7 * (1 - Math.exp(-(t - 1) * 1.4)));
+  return t <= 1
+    ? 90 * t
+    : Math.min(97, 90 + 7 * (1 - Math.exp(-(t - 1) * 1.4)));
 }
 
-function statusFor(a: Partial<Analysis> | null, phase: Phase, thinkingChars = 0): string {
+function statusFor(
+  a: Partial<Analysis> | null,
+  phase: Phase,
+  thinkingChars = 0,
+): string {
   switch (phase) {
     case "loading":
       return "Getting your video ready";
@@ -76,7 +93,12 @@ function statusFor(a: Partial<Analysis> | null, phase: Phase, thinkingChars = 0)
     case "error":
       return "Hmm.";
   }
-  if (!a) return thinkingChars > 0 ? THINKING_STEPS[Math.min(THINKING_STEPS.length - 1, Math.floor(thinkingChars / 2500))] : "Looking at what's on your shelves";
+  if (!a)
+    return thinkingChars > 0
+      ? THINKING_STEPS[
+          Math.min(THINKING_STEPS.length - 1, Math.floor(thinkingChars / 2500))
+        ]
+      : "Looking at what's on your shelves";
   if (a.suggested_complements) return "Almost there";
   if (a.styles || a.palette) return "Noticing your style";
   if (a.categories) return "Sorting what's on your shelves";
@@ -85,13 +107,32 @@ function statusFor(a: Partial<Analysis> | null, phase: Phase, thinkingChars = 0)
   return "Looking at what's on your shelves";
 }
 
-function Stage({ index, title, state, children }: { index: number; title: string; state: "active" | "done" | "pending"; children?: ReactNode }) {
+function Stage({
+  index,
+  title,
+  state,
+  children,
+}: {
+  index: number;
+  title: string;
+  state: "active" | "done" | "pending";
+  children?: ReactNode;
+}) {
   return (
-    <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }} className="mt-7">
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }}
+      className="mt-7"
+    >
       <div className="flex items-center gap-2.5">
         <span
           className={`flex h-6 w-6 items-center justify-center rounded-full border text-[12px] ${
-            state === "done" ? "border-success bg-success text-white" : state === "active" ? "border-ink bg-ink text-white" : "border-line text-muted"
+            state === "done"
+              ? "border-success bg-success text-white"
+              : state === "active"
+                ? "border-ink bg-ink text-white"
+                : "border-line text-muted"
           }`}
         >
           {state === "done" ? <Check size={13} strokeWidth={3} /> : index}
@@ -108,8 +149,48 @@ export default function AnalyzingPage() {
   const { state, dispatch } = useOnboarding();
   const [phase, setPhase] = useState<Phase>("loading");
   const [error, setError] = useState<string | null>(null);
-  const [candidates, setCandidates] = useState<{ index: number; dataUrl: string; timestampMs: number }[]>([]);
+  const [candidates, setCandidates] = useState<
+    { index: number; dataUrl: string; timestampMs: number }[]
+  >([]);
   const [kept, setKept] = useState<number[] | null>(null);
+  // Frames decode faster than the eye can follow; reveal them at a steady pace and give the
+  // selection a beat before the note stage slides into view.
+  const revealQueue = useRef<
+    { index: number; dataUrl: string; timestampMs: number }[]
+  >([]);
+  const draining = useRef(false);
+  const revealNext = () => {
+    const next = revealQueue.current.shift();
+    if (!next) {
+      draining.current = false;
+      return;
+    }
+    draining.current = true;
+    setCandidates((prev) => [...prev, next]);
+    setTimeout(revealNext, REVEAL_MS);
+  };
+  const enqueueCandidate = (c: {
+    index: number;
+    dataUrl: string;
+    timestampMs: number;
+  }) => {
+    revealQueue.current.push(c);
+    if (!draining.current) revealNext();
+  };
+  const settleSelection = (idx: number[]) => {
+    if (revealQueue.current.length || draining.current) {
+      setTimeout(() => settleSelection(idx), 120);
+      return;
+    }
+    setKept(idx);
+  };
+  const [stage2Ready, setStage2Ready] = useState(false);
+  useEffect(() => {
+    if (!kept) return;
+    const t = setTimeout(() => setStage2Ready(true), STAGE_PAUSE_MS);
+    return () => clearTimeout(t);
+  }, [kept]);
+  const stage2Ref = useRef<HTMLDivElement>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scanIdx, setScanIdx] = useState(0);
   const [thinking, setThinking] = useState(0);
@@ -127,7 +208,10 @@ export default function AnalyzingPage() {
   const [expected, setExpected] = useState(DEFAULT_EXPECTED_MS);
   useEffect(() => {
     if (phase === "done" || phase === "error") return;
-    const t = setInterval(() => setElapsed(performance.now() - runStart.current), 200);
+    const t = setInterval(
+      () => setElapsed(performance.now() - runStart.current),
+      200,
+    );
     return () => clearInterval(t);
   }, [phase]);
 
@@ -144,26 +228,38 @@ export default function AnalyzingPage() {
       dispatch({ type: "setProfile", profile: null });
       dispatch({ type: "setRetrieval", retrieval: null });
       dispatch({ type: "setRetrievalStatus", status: "idle" });
-      const onCandidate = (c: { index: number; dataUrl: string; timestampMs: number }) => setCandidates((prev) => [...prev, c]);
-      const onSelected = (idx: number[]) => setKept(idx);
+      const onCandidate = enqueueCandidate;
+      const onSelected = settleSelection;
       let frames: Frame[] = [];
       if (input.kind === "video") {
         setPhase("extracting");
-        frames = await extractFramesFromVideo(input.file, { onCandidate, onSelected });
+        frames = await extractFramesFromVideo(input.file, {
+          onCandidate,
+          onSelected,
+        });
       } else if (input.kind === "photos") {
         setPhase("extracting");
-        frames = await framesFromImages(input.files, { onCandidate, onSelected });
+        frames = await framesFromImages(input.files, {
+          onCandidate,
+          onSelected,
+        });
       } else if (input.kind === "sample-photos") {
         setPhase("extracting");
         frames = await framesFromUrls(input.urls, { onCandidate, onSelected });
       } else {
         setPhase("loading");
         const blob = await (await fetch(input.url)).blob();
-        const file = new File([blob], "sample.mp4", { type: blob.type || "video/mp4" });
+        const file = new File([blob], "sample.mp4", {
+          type: blob.type || "video/mp4",
+        });
         setPhase("extracting");
-        frames = await extractFramesFromVideo(file, { onCandidate, onSelected });
+        frames = await extractFramesFromVideo(file, {
+          onCandidate,
+          onSelected,
+        });
       }
-      if (!frames.length) throw new Error("We couldn't find usable frames in that walkthrough.");
+      if (!frames.length)
+        throw new Error("We couldn't find usable frames in that walkthrough.");
       dispatch({ type: "setFrames", frames });
 
       setPhase("analyzing");
@@ -179,22 +275,33 @@ export default function AnalyzingPage() {
         },
         onPartial: (p) => dispatch({ type: "setAnalysis", analysis: p }),
         onMeta: (m) => {
-          dispatch({ type: "setAnalysisMeta", meta: { ...m, ms: Math.round(performance.now() - t0) } });
+          dispatch({
+            type: "setAnalysisMeta",
+            meta: { ...m, ms: Math.round(performance.now() - t0) },
+          });
           // First runs on this device: trust the server's median plus the time frames already took.
-          if (m.p50Ms && localSamples.current < 2) setExpected(performance.now() - runStart.current + m.p50Ms);
+          if (m.p50Ms && localSamples.current < 2)
+            setExpected(performance.now() - runStart.current + m.p50Ms);
         },
         onThinking: (chars) => setThinking(chars),
       });
       dispatch({ type: "setAnalysis", analysis });
       dispatch({
         type: "setProfile",
-        profile: profileFromAnalysis(analysis, { storeName: state.storeName, storeType: state.storeCategory ?? "", description: state.description }),
+        profile: profileFromAnalysis(analysis, {
+          storeName: state.storeName,
+          storeType: state.storeCategory ?? "",
+          description: state.description,
+        }),
       });
       dispatch({ type: "setAnalysisStatus", status: "done" });
       const total = Math.round(performance.now() - runStart.current);
       setElapsed(total);
       try {
-        localStorage.setItem(DURATIONS_KEY, JSON.stringify([...readDurations(), total].slice(-12)));
+        localStorage.setItem(
+          DURATIONS_KEY,
+          JSON.stringify([...readDurations(), total].slice(-12)),
+        );
       } catch {
         /* private mode */
       }
@@ -213,7 +320,11 @@ export default function AnalyzingPage() {
     started.current = true;
     const input = takePendingInput();
     if (!input) {
-      router.replace(state.analysisStatus === "done" && state.profile ? "/onboarding/profile" : "/onboarding/scan");
+      router.replace(
+        state.analysisStatus === "done" && state.profile
+          ? "/onboarding/profile"
+          : "/onboarding/scan",
+      );
       return;
     }
     // Kick off asynchronously so the effect itself does not set state. No cleanup on
@@ -227,12 +338,19 @@ export default function AnalyzingPage() {
   const frames = state.frames;
   const status = statusFor(a, phase, thinking);
   const notes = useMemo(
-    () => new Map((a?.frame_notes ?? []).filter((n) => n?.frame_id && n?.what_we_saw).map((n) => [n.frame_id, n.what_we_saw])),
+    () =>
+      new Map(
+        (a?.frame_notes ?? [])
+          .filter((n) => n?.frame_id && n?.what_we_saw)
+          .map((n) => [n.frame_id, n.what_we_saw]),
+      ),
     [a?.frame_notes],
   );
   const cats = (a?.categories ?? []).filter((c) => c?.name);
   const styles = (a?.styles ?? []).filter((s) => s?.name);
-  const complements = (a?.suggested_complements ?? []).filter((c) => c?.category);
+  const complements = (a?.suggested_complements ?? []).filter(
+    (c) => c?.category,
+  );
   const summary = a?.store_read?.summary;
   // Keep the newest information in view as it streams in, unless the retailer has
   // scrolled up to look at something: then only a stage change moves the view.
@@ -241,54 +359,111 @@ export default function AnalyzingPage() {
   useEffect(() => {
     const phaseChanged = lastPhase.current !== phase;
     lastPhase.current = phase;
+    // The hand-off to the note stage is choreographed separately (see stage2Ready).
+    if (!stage2Ready && phase !== "done" && phase !== "error") return;
     const el = sentinel.current?.closest(".screen");
-    const nearBottom = !(el instanceof HTMLElement) || el.scrollHeight - el.scrollTop - el.clientHeight < 260;
+    const nearBottom =
+      !(el instanceof HTMLElement) ||
+      el.scrollHeight - el.scrollTop - el.clientHeight < 260;
     if (!nearBottom && !phaseChanged) return;
-    const t = setTimeout(() => sentinel.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 120);
+    const t = setTimeout(
+      () =>
+        sentinel.current?.scrollIntoView({ behavior: "smooth", block: "end" }),
+      120,
+    );
     return () => clearTimeout(t);
-  }, [version, phase]);
+  }, [version, phase, stage2Ready]);
 
-  const stage1: "active" | "done" = phase === "loading" || phase === "extracting" ? "active" : "done";
-  const stage2: "active" | "done" | "pending" = phase === "analyzing" ? "active" : phase === "done" ? "done" : "pending";
+  const stage1: "active" | "done" =
+    phase === "loading" || phase === "extracting" || !kept ? "active" : "done";
+  const stage2: "active" | "done" | "pending" = !stage2Ready
+    ? "pending"
+    : phase === "analyzing"
+      ? "active"
+      : phase === "done"
+        ? "done"
+        : "pending";
+  useEffect(() => {
+    if (!stage2Ready) return;
+    const t = setTimeout(
+      () =>
+        stage2Ref.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        }),
+      80,
+    );
+    return () => clearTimeout(t);
+  }, [stage2Ready]);
 
   return (
     <div className="flex min-h-full grow shrink-0 flex-col px-6 pb-24 pt-8">
       <p className="text-caption uppercase tracking-[0.14em]">Store scan</p>
       <h1 className="text-display-sm mt-2">Reading your shelves</h1>
-      <div className="mt-2 flex min-h-6 items-center gap-2 text-body">
-        <AnimatePresence mode="wait">
-          <motion.span key={status} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }} className={phase === "done" ? "text-ink" : "text-muted"}>
-            {status}
-            {phase !== "done" && phase !== "error" ? <span className="pulse-soft">…</span> : null}
-          </motion.span>
-        </AnimatePresence>
-        {phase === "done" && (
-          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400, damping: 18 }} className="flex h-5 w-5 items-center justify-center rounded-full bg-success text-white">
-            <Check size={12} strokeWidth={3} />
-          </motion.span>
+      {/* Status and progress stay pinned while the page auto-scrolls through the stages. */}
+      <div className="sticky top-0 z-20 -mx-6 bg-white/95 px-6 pb-2.5 pt-2 backdrop-blur">
+        <div className="flex min-h-6 items-center gap-2 text-body">
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={status}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              className={phase === "done" ? "text-ink" : "text-muted"}
+            >
+              {status}
+              {phase !== "done" && phase !== "error" ? (
+                <span className="pulse-soft">…</span>
+              ) : null}
+            </motion.span>
+          </AnimatePresence>
+          {phase === "done" && (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 18 }}
+              className="flex h-5 w-5 items-center justify-center rounded-full bg-success text-white"
+            >
+              <Check size={12} strokeWidth={3} />
+            </motion.span>
+          )}
+        </div>
+        {phase === "analyzing" && !a && thinking > 0 && (
+          <p className="text-caption mt-1">
+            Thinking it through · about{" "}
+            {Math.max(1, Math.round(thinking / 5)).toLocaleString()} words so
+            far
+          </p>
+        )}
+        {phase !== "error" && (
+          <div className="mt-3" aria-hidden>
+            <div className="h-[3px] w-full overflow-hidden rounded-full bg-line">
+              <div
+                className="h-full rounded-full bg-ink"
+                style={{
+                  width: `${phase === "done" ? 100 : progressFor(elapsed, expected)}%`,
+                  transition: "width 0.3s linear",
+                }}
+              />
+            </div>
+            <p className="text-caption mt-1.5">
+              {phase === "done"
+                ? `Done in ${Math.max(1, Math.round(elapsed / 1000))} seconds`
+                : `Usually takes ${humanDuration(expected)}`}
+            </p>
+          </div>
         )}
       </div>
-      {phase === "analyzing" && !a && thinking > 0 && (
-        <p className="text-caption mt-1">Thinking it through · about {Math.max(1, Math.round(thinking / 5)).toLocaleString()} words so far</p>
-      )}
-      {phase !== "error" && (
-        <div className="mt-3" aria-hidden>
-          <div className="h-[3px] w-full overflow-hidden rounded-full bg-line">
-            <div
-              className="h-full rounded-full bg-ink"
-              style={{ width: `${phase === "done" ? 100 : progressFor(elapsed, expected)}%`, transition: "width 0.3s linear" }}
-            />
-          </div>
-          <p className="text-caption mt-1.5">
-            {phase === "done" ? `Done in ${Math.max(1, Math.round(elapsed / 1000))} seconds` : `Usually takes ${humanDuration(expected)}`}
-          </p>
-        </div>
-      )}
 
       {/* Stage 1: the video becomes frames, live */}
       <Stage index={1} title="Your walkthrough" state={stage1}>
         {candidates.length === 0 ? (
-          <div className="flex h-24 items-center justify-center rounded-[var(--radius-lg)] bg-surface-2 text-caption">{phase === "loading" ? "Loading the clip" : "Decoding the first frames"}</div>
+          <div className="flex h-24 items-center justify-center rounded-[var(--radius-lg)] bg-surface-2 text-caption">
+            {phase === "loading"
+              ? "Loading the clip"
+              : "Decoding the first frames"}
+          </div>
         ) : (
           <div className="grid grid-cols-4 gap-1.5">
             {candidates.map((c) => {
@@ -306,7 +481,11 @@ export default function AnalyzingPage() {
                   style={{ aspectRatio: "4 / 3" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.dataUrl} alt="" className="h-full w-full object-cover" />
+                  <img
+                    src={c.dataUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
                   {kept && isKept && (
                     <span className="absolute bottom-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-ink shadow-sm">
                       <Check size={10} strokeWidth={3} />
@@ -320,14 +499,22 @@ export default function AnalyzingPage() {
         <div className="text-caption mt-2 space-y-0.5">
           {candidates.length > 0 && (
             <p>
-              {kept ? `Sampled ${candidates.length} images.` : `Sampling ${candidates.length} images`}
+              {kept
+                ? `Sampled ${candidates.length} images.`
+                : `Sampling ${candidates.length} images`}
               {!kept && <span className="pulse-soft">…</span>}
             </p>
           )}
           <AnimatePresence>
             {kept && (
-              <motion.p key="keep" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
-                Keeping {kept.length} clear, distinct views from across your store. Tap any image to look closer. Your video itself never leaves your phone.
+              <motion.p
+                key="keep"
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                Keeping {kept.length} clear, distinct views from across your
+                store. Tap any image to look closer. Your video itself never
+                leaves your phone.
               </motion.p>
             )}
           </AnimatePresence>
@@ -336,108 +523,177 @@ export default function AnalyzingPage() {
 
       {/* Stage 2: the read, streaming in the retailer's language */}
       {stage2 !== "pending" && (
-        <Stage index={2} title="A note about your store" state={stage2}>
-          {summary && (
-            <motion.p key="summary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4 font-serif text-[18px] leading-[1.35] text-ink">
-              {summary}
-            </motion.p>
-          )}
-          {frames.length > 0 && (
-            <div className="grid grid-cols-2 gap-2">
-              {frames.map((f, i) => {
-                const scanning = phase === "analyzing" && scanIdx % frames.length === i;
-                const note = notes.get(f.id);
-                return (
-                  <button
-                    key={f.id}
-                    type="button"
-                    aria-label="View frame"
-                    onClick={() => setLightbox(f.dataUrl)}
-                    className={`relative overflow-hidden rounded-[8px] bg-surface-2 transition-shadow ${scanning ? "ring-2 ring-ink" : ""}`}
-                    style={{ aspectRatio: "4 / 3" }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={f.dataUrl} alt="" className="h-full w-full object-cover" />
-                    {scanning && (
-                      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                        <div className="absolute inset-x-0 h-[22%] bg-gradient-to-b from-transparent via-white/55 to-transparent" style={{ animation: `scanline ${SWEEP_MS}ms ease-in-out infinite` }} />
-                      </div>
-                    )}
-                    <AnimatePresence>
-                      {note && (
-                        <motion.span
-                          key={`note-${f.id}`}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          className="absolute inset-x-1 bottom-1 truncate rounded-full bg-white/95 px-2 py-1 text-left text-[11px] font-medium text-ink shadow-sm"
-                        >
-                          {note}
-                        </motion.span>
+        <div ref={stage2Ref} className="scroll-mt-[96px]">
+          <Stage index={2} title="A note about your store" state={stage2}>
+            {summary && (
+              <motion.p
+                key="summary"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mb-4 font-serif text-[18px] leading-[1.35] text-ink"
+              >
+                {summary}
+              </motion.p>
+            )}
+            {frames.length > 0 && (
+              <div className="grid grid-cols-2 gap-2">
+                {frames.map((f, i) => {
+                  const scanning =
+                    phase === "analyzing" && scanIdx % frames.length === i;
+                  const note = notes.get(f.id);
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      aria-label="View frame"
+                      onClick={() => setLightbox(f.dataUrl)}
+                      className={`relative overflow-hidden rounded-[8px] bg-surface-2 transition-shadow ${scanning ? "ring-2 ring-ink" : ""}`}
+                      style={{ aspectRatio: "4 / 3" }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={f.dataUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                      {scanning && (
+                        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                          <div
+                            className="absolute inset-x-0 h-[22%] bg-gradient-to-b from-transparent via-white/55 to-transparent"
+                            style={{
+                              animation: `scanline ${SWEEP_MS}ms ease-in-out infinite`,
+                            }}
+                          />
+                        </div>
                       )}
-                    </AnimatePresence>
-                  </button>
-                );
-              })}
-            </div>
-          )}
+                      <AnimatePresence>
+                        {note && (
+                          <motion.span
+                            key={`note-${f.id}`}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-x-1 bottom-1 truncate rounded-full bg-white/95 px-2 py-1 text-left text-[11px] font-medium text-ink shadow-sm"
+                          >
+                            {note}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
-          <AnimatePresence initial={false}>
-            {cats.length > 0 && (
-              <motion.div key="cats" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
-                <p className="text-caption uppercase tracking-[0.1em]">On your shelves</p>
-                <ul className="mt-2 space-y-2">
-                  {cats.map((c) => (
-                    <motion.li key={c.name} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} className="flex items-baseline justify-between gap-3">
-                      <span className="text-[15px] font-medium text-ink">{c.name}</span>
-                      <span className="text-caption text-right">{c.share ? SHARE_LABEL[c.share] : ""}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-            {styles.length > 0 && (
-              <motion.div key="look" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
-                <p className="text-caption uppercase tracking-[0.1em]">Your look</p>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  {styles.map((s) => (
-                    <motion.span key={s.name} initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="inline-flex h-8 items-center rounded-full bg-ink px-3 text-[13px] text-white">
-                      {styleLabel(s.name)}
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-            {complements.length > 0 && (
-              <motion.div key="comp" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
-                <p className="text-caption uppercase tracking-[0.1em]">Would pair well</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {complements.map((c) => (
-                    <span key={c.category} className="inline-flex h-8 items-center rounded-full border border-line bg-white px-3 text-[13px] text-ink-2">
-                      + {c.category}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Stage>
+            <AnimatePresence initial={false}>
+              {cats.length > 0 && (
+                <motion.div
+                  key="cats"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4"
+                >
+                  <p className="text-caption uppercase tracking-[0.1em]">
+                    On your shelves
+                  </p>
+                  <ul className="mt-2 space-y-2">
+                    {cats.map((c) => (
+                      <motion.li
+                        key={c.name}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-baseline justify-between gap-3"
+                      >
+                        <span className="text-[15px] font-medium text-ink">
+                          {c.name}
+                        </span>
+                        <span className="text-caption text-right">
+                          {c.share ? SHARE_LABEL[c.share] : ""}
+                        </span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+              {styles.length > 0 && (
+                <motion.div
+                  key="look"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4"
+                >
+                  <p className="text-caption uppercase tracking-[0.1em]">
+                    Your look
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    {styles.map((s) => (
+                      <motion.span
+                        key={s.name}
+                        initial={{ scale: 0.7, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="inline-flex h-8 items-center rounded-full bg-ink px-3 text-[13px] text-white"
+                      >
+                        {styleLabel(s.name)}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+              {complements.length > 0 && (
+                <motion.div
+                  key="comp"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4"
+                >
+                  <p className="text-caption uppercase tracking-[0.1em]">
+                    Would pair well
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {complements.map((c) => (
+                      <span
+                        key={c.category}
+                        className="inline-flex h-8 items-center rounded-full border border-line bg-white px-3 text-[13px] text-ink-2"
+                      >
+                        + {c.category}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Stage>
+        </div>
       )}
 
       {phase === "error" && (
         <div className="mt-8 space-y-3">
-          <p className="text-body">{error ?? "We couldn't read this walkthrough."}</p>
-          <p className="text-caption">Try filming your shelves in good light, without people or screens.</p>
-          <Button onClick={() => router.replace("/onboarding/scan")}>Try again</Button>
+          <p className="text-body">
+            {error ?? "We couldn't read this walkthrough."}
+          </p>
+          <p className="text-caption">
+            Try filming your shelves in good light, without people or screens.
+          </p>
+          <Button onClick={() => router.replace("/onboarding/scan")}>
+            Try again
+          </Button>
           <Button variant="ghost" onClick={() => router.replace("/home")}>
             Skip for now
           </Button>
         </div>
       )}
       {phase === "done" && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="sticky bottom-0 -mx-6 mt-8 border-t border-line bg-white/95 px-6 pb-[max(16px,env(safe-area-inset-bottom))] pt-4 backdrop-blur">
-          <Button onClick={() => router.push("/onboarding/profile")}>Review what we found</Button>
-          <p className="text-caption mt-2 text-center">Next: confirm your assortment, your style, and two dials.</p>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="sticky bottom-0 -mx-6 mt-8 border-t border-line bg-white/95 px-6 pb-[max(16px,env(safe-area-inset-bottom))] pt-4 backdrop-blur"
+        >
+          <Button onClick={() => router.push("/onboarding/profile")}>
+            Review what we found
+          </Button>
+          <p className="text-caption mt-2 text-center">
+            Next: confirm your assortment, your style, and two dials.
+          </p>
         </motion.div>
       )}
       <div ref={sentinel} className="h-1" />
@@ -455,7 +711,11 @@ export default function AnalyzingPage() {
             className="absolute inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={lightbox} alt="" className="max-h-full max-w-full rounded-[8px] object-contain" />
+            <img
+              src={lightbox}
+              alt=""
+              className="max-h-full max-w-full rounded-[8px] object-contain"
+            />
           </motion.button>
         )}
       </AnimatePresence>

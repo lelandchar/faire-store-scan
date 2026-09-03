@@ -3,7 +3,7 @@
 import { Camera, EyeOff, Sun, Upload } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, type DragEvent } from "react";
 import { DemoSheet, type DemoChoice } from "@/components/DemoSheet";
 import { DoDont } from "@/components/DoDont";
 import { Button } from "@/components/ui/Button";
@@ -21,11 +21,9 @@ const TIPS = [
 export default function ScanPage() {
   const router = useRouter();
   const { state, dispatch } = useOnboarding();
-  const recordRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLInputElement>(null);
-  const photosRef = useRef<HTMLInputElement>(null);
   const [samples, setSamples] = useState<SampleStore[]>([]);
   const [sheet, setSheet] = useState<"record" | "upload" | null>(null);
+  const [dragging, setDragging] = useState(false);
 
   useEffect(() => {
     loadSampleManifest().then(setSamples);
@@ -33,9 +31,9 @@ export default function ScanPage() {
 
   const go = () => router.push("/onboarding/analyzing");
 
-  const onFiles = (list: FileList | null) => {
-    if (!list || list.length === 0) return;
-    const files = Array.from(list);
+  const onFiles = (files: File[]) => {
+    if (files.length === 0) return;
+    setSheet(null);
     const video = files.find((f) => f.type.startsWith("video/"));
     if (video) {
       setPendingInput({ kind: "video", file: video });
@@ -70,12 +68,24 @@ export default function ScanPage() {
       setPendingInput({ kind: "sample-photos", slug: s.slug, urls: s.photos.map((p) => samplePhotoUrl(s, p)) });
       dispatch({ type: "setSource", source: "sample", sampleSlug: s.slug });
       go();
-    } else if (c.kind === "own-record") recordRef.current?.click();
-    else if (c.kind === "own-video") videoRef.current?.click();
-    else photosRef.current?.click();
+    }
+  };
+
+  // Dropping a file anywhere on the screen works too.
+  const onDragOver = (e: DragEvent) => {
+    if (Array.from(e.dataTransfer.types).includes("Files")) {
+      e.preventDefault();
+      setDragging(true);
+    }
+  };
+  const onDrop = (e: DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    onFiles(Array.from(e.dataTransfer.files));
   };
 
   return (
+    <div className="relative flex min-h-full grow shrink-0 flex-col" onDragOver={onDragOver} onDragLeave={() => setDragging(false)} onDrop={onDrop}>
     <Screen back="/onboarding/store-details" title="Show us your shelves" subtitle="A 15-second walkthrough lets Faire personalize your storefront from day one.">
       <div className="mt-5 rise">
         <DoDont />
@@ -103,17 +113,23 @@ export default function ScanPage() {
             <Upload size={18} strokeWidth={1.75} /> Upload video or photos
           </span>
         </Button>
-        <input ref={recordRef} type="file" accept="video/*" capture="environment" className="hidden" onChange={(e) => onFiles(e.target.files)} />
-        <input ref={videoRef} type="file" accept="video/*" className="hidden" onChange={(e) => onFiles(e.target.files)} />
-        <input ref={photosRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => onFiles(e.target.files)} />
       </div>
-
 
       <Link href="/home" className="mt-4 block py-3 text-center text-[14px] text-muted underline underline-offset-4">
         Skip for now
       </Link>
 
-      <DemoSheet open={sheet !== null} mode={sheet} photoSets={samples} onClose={() => setSheet(null)} onChoose={choose} />
+      <DemoSheet open={sheet !== null} mode={sheet} photoSets={samples} onClose={() => setSheet(null)} onChoose={choose} onFiles={onFiles} />
     </Screen>
+    {dragging && (
+      <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center bg-white/85 p-6">
+        <div className="flex w-full flex-col items-center gap-2 rounded-[var(--radius-lg)] border-2 border-dashed border-ink px-6 py-10 text-center">
+          <Upload size={24} strokeWidth={1.75} className="text-ink" />
+          <p className="text-[16px] font-medium text-ink">Drop your video or photos</p>
+          <p className="text-caption">They stay on this device; only a few small frames are sent.</p>
+        </div>
+      </div>
+    )}
+    </div>
   );
 }
