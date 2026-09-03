@@ -21,7 +21,7 @@ export default function DonePage() {
   return (
     <div className="relative flex min-h-full grow shrink-0 flex-col">
       {burst && <JoyBurst originX={50} originY={46} />}
-      <div className="relative h-[42%] min-h-[280px] w-full shrink-0 overflow-hidden bg-surface-2">
+      <div className="relative h-[320px] w-full shrink-0 overflow-hidden bg-surface-2">
         {hero ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={hero} alt="" className="h-full w-full object-cover" />
