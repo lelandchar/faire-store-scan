@@ -3,13 +3,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Camera, MessageCircle, Search, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { CelebrationBanner } from "@/components/Confetti";
-import { JoyBurst } from "@/components/JoyBurst";
+import { useMemo, useState } from "react";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
 import { getCatalog } from "@/lib/catalog";
-import { buildModules, orderCategories, personalize, rankGeneric, type Ranked } from "@/lib/ranking";
+import { orderCategories, personalize, rankGeneric, type Ranked } from "@/lib/ranking";
 import { useOnboarding } from "@/lib/store";
 import { CATEGORIES, type Category } from "@/lib/types";
 
@@ -29,38 +27,13 @@ export default function HomePage() {
   const [hidden, setHidden] = useState<Set<string>>(new Set());
   const [limit, setLimit] = useState(PAGE);
   const [why, setWhy] = useState<Ranked | null>(null);
-  const [confetti, setConfetti] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-
-  // Decide once per mount whether this landing gets the celebration. A ref keeps
-  // the decision stable across StrictMode's double effect run.
-  const celebrateRef = useRef<boolean | null>(null);
-  useEffect(() => {
-    if (!personalized) return;
-    if (celebrateRef.current === null) {
-      try {
-        celebrateRef.current = sessionStorage.getItem("celebrated") !== "1";
-        if (celebrateRef.current) sessionStorage.setItem("celebrated", "1");
-      } catch {
-        celebrateRef.current = false;
-      }
-    }
-    if (!celebrateRef.current) return;
-    const start = setTimeout(() => setConfetti(true), 150);
-    const stop = setTimeout(() => setConfetti(false), 2800);
-    return () => {
-      clearTimeout(start);
-      clearTimeout(stop);
-    };
-  }, [personalized]);
-
   const feed: FeedItem[] = useMemo(() => {
     const items: FeedItem[] =
       personalized && ranked ? ranked.filter((r) => r.score >= 0).map((r) => ({ product: r.product, ranked: r })) : generic.map((p) => ({ product: p }));
     return items.filter((i) => !hidden.has(i.product.id));
   }, [personalized, ranked, generic, hidden]);
 
-  const modules = useMemo(() => (personalized && ranked && profile ? buildModules(ranked, profile) : []), [personalized, ranked, profile]);
   const cats = useMemo(() => orderCategories(CATEGORIES, personalized ? profile : null), [personalized, profile]);
   const tileImage = (c: Category) => generic.find((p) => p.category === c)?.image;
 
@@ -73,12 +46,6 @@ export default function HomePage() {
 
   return (
     <div className="relative flex min-h-full flex-1 flex-col">
-      {confetti && (
-        <>
-          <JoyBurst originX={50} originY={30} count={24} scale={0.85} seed={9} />
-          <CelebrationBanner text="Your storefront, built from your walkthrough" />
-        </>
-      )}
       {/* Search */}
       <div className="sticky top-0 z-20 bg-white px-4 pb-2 pt-3">
         <div className="flex items-center gap-3">
@@ -106,27 +73,10 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Modules */}
-      <AnimatePresence initial={false}>
-        {modules.map((m) => (
-          <motion.section key={m.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="mt-7">
-            <div className="px-4">
-              <h2 className="text-[19px] font-semibold text-ink">{m.title}</h2>
-              {m.subtitle && <p className="text-caption mt-0.5">{m.subtitle}</p>}
-            </div>
-            <div className="mt-3 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
-              {m.items.map((r, i) => (
-                <ProductCard key={r.product.id} compact index={i} item={{ product: r.product, ranked: r }} personalized onWhy={setWhy} />
-              ))}
-            </div>
-          </motion.section>
-        ))}
-      </AnimatePresence>
-
       {/* Ideas for you */}
       <section className="mt-7 px-4 pb-6">
-        <h2 className="text-[19px] font-semibold text-ink">Ideas for you</h2>
-        {personalized && profile && <p className="text-caption mt-0.5">Shaped by your walkthrough. It keeps learning as you browse.</p>}
+        <h2 className="text-[19px] font-semibold text-ink">{personalized && profile ? "Picked for your store" : "Ideas for you"}</h2>
+        {personalized && profile && <p className="text-caption mt-0.5">Ordered from your walkthrough and your choices. Tap a card&apos;s note to see why.</p>}
         <div key={personalized ? "p" : "g"} className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6">
           {feed.slice(0, limit).map((item, i) => (
             <ProductCard key={item.product.id} item={item} index={i} personalized={personalized} onWhy={setWhy} />

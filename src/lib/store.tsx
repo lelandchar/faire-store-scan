@@ -38,6 +38,8 @@ export interface OnboardingState {
   retrievalError: string | null;
   weights: FusionWeights;
   catalogSource: CatalogSource;
+  /** True once someone picked a catalog in the trace view; otherwise the default can move with deploys. */
+  catalogChosen: boolean;
 }
 
 const initialState: OnboardingState = {
@@ -60,6 +62,7 @@ const initialState: OnboardingState = {
   retrievalError: null,
   weights: DEFAULT_WEIGHTS,
   catalogSource: "shopify",
+  catalogChosen: false,
 };
 
 type Action =
@@ -118,7 +121,7 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
     case "setWeights":
       return { ...state, weights: action.weights };
     case "setCatalogSource":
-      return { ...state, catalogSource: action.source };
+      return { ...state, catalogSource: action.source, catalogChosen: true };
     case "resetScan":
       return {
         ...state,
@@ -164,7 +167,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         if (saved.retrievalStatus === "running") saved.retrievalStatus = "idle";
         if (!saved.weights) saved.weights = DEFAULT_WEIGHTS;
         if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.8 };
-        if (!saved.catalogSource) saved.catalogSource = "shopify";
+        if (!saved.catalogSource || !saved.catalogChosen) saved.catalogSource = "shopify";
         dispatch({ type: "hydrate", state: saved });
       }
     } catch {
