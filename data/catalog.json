@@ -1,0 +1,2167 @@
+[
+  {
+    "id": "hd-01",
+    "name": "Hand-Thrown Bud Vase, Speckled",
+    "brand": "Cobble & Clay",
+    "category": "Home decor",
+    "subcategory": "Vases",
+    "wholesalePrice": 12,
+    "msrp": 24,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 18,
+    "styles": [
+      "minimalist",
+      "scandinavian"
+    ],
+    "materials": [
+      "stoneware"
+    ],
+    "colors": [
+      "speckled white",
+      "sand"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/hd-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a small hand-thrown speckled white stoneware bud vase holding a single dried stem. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "hd-02",
+    "name": "Woven Seagrass Basket, Set of 3",
+    "brand": "Wren & Willow",
+    "category": "Home decor",
+    "subcategory": "Baskets",
+    "wholesalePrice": 28,
+    "msrp": 56,
+    "minOrder": 200,
+    "rating": 4.8,
+    "reviewCount": 412,
+    "styles": [
+      "boho",
+      "natural",
+      "coastal"
+    ],
+    "materials": [
+      "seagrass"
+    ],
+    "colors": [
+      "natural"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "Vietnam",
+    "image": "/catalog/hd-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a nested set of three hand-woven natural seagrass baskets with looped handles. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "hd-03",
+    "name": "Linen Throw Pillow Cover, Terracotta",
+    "brand": "Wren & Willow",
+    "category": "Home decor",
+    "subcategory": "Throw pillows",
+    "wholesalePrice": 16,
+    "msrp": 32,
+    "minOrder": 200,
+    "rating": 4.9,
+    "reviewCount": 276,
+    "styles": [
+      "modern-farmhouse",
+      "minimalist"
+    ],
+    "materials": [
+      "linen"
+    ],
+    "colors": [
+      "terracotta"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/hd-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a stonewashed terracotta linen throw pillow with a simple flanged edge. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "hd-04",
+    "name": "Checkerboard Cotton Throw Blanket",
+    "brand": "Sunny Side Studio",
+    "category": "Home decor",
+    "subcategory": "Throws",
+    "wholesalePrice": 34,
+    "msrp": 68,
+    "minOrder": 75,
+    "rating": 4.6,
+    "reviewCount": 89,
+    "styles": [
+      "playful",
+      "maximalist"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "mustard",
+      "cream"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "India",
+    "image": "/catalog/hd-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a folded mustard-and-cream checkerboard woven cotton throw blanket with tasseled fringe. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "hd-05",
+    "name": "Brass Arched Tabletop Mirror",
+    "brand": "Harlow Home",
+    "category": "Home decor",
+    "subcategory": "Mirrors",
+    "wholesalePrice": 38,
+    "msrp": 78,
+    "minOrder": 250,
+    "rating": 4.7,
+    "reviewCount": 154,
+    "styles": [
+      "luxe",
+      "vintage"
+    ],
+    "materials": [
+      "brass",
+      "glass"
+    ],
+    "colors": [
+      "gold"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 14,
+    "madeIn": "India",
+    "image": "/catalog/hd-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an arched tabletop vanity mirror with a slim antique brass frame and stand. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "hd-06",
+    "name": "Dried Bunny Tail Grass Bundle",
+    "brand": "Verdant Home",
+    "category": "Home decor",
+    "subcategory": "Dried florals",
+    "wholesalePrice": 6.5,
+    "msrp": 14,
+    "minOrder": 50,
+    "rating": 4.5,
+    "reviewCount": 63,
+    "styles": [
+      "cottagecore",
+      "natural",
+      "boho"
+    ],
+    "materials": [
+      "dried grass"
+    ],
+    "colors": [
+      "natural",
+      "blush"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 4,
+    "madeIn": "USA",
+    "image": "/catalog/hd-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a bundle of fluffy natural and blush-pink dried bunny tail grass tied with twine. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kt-01",
+    "name": "Stoneware Serving Bowl, Oat",
+    "brand": "Hearth & Hollow",
+    "category": "Kitchen & tabletop",
+    "subcategory": "Serveware",
+    "wholesalePrice": 14.5,
+    "msrp": 29,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 132,
+    "styles": [
+      "minimalist",
+      "modern-farmhouse"
+    ],
+    "materials": [
+      "stoneware"
+    ],
+    "colors": [
+      "oat",
+      "cream"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/kt-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a matte oat-colored stoneware serving bowl with a speckled glaze and cream interior. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kt-02",
+    "name": "Hand-Blown Ripple Glass Tumblers, Set of 4",
+    "brand": "Riverbend Glassworks",
+    "category": "Kitchen & tabletop",
+    "subcategory": "Drinkware",
+    "wholesalePrice": 24,
+    "msrp": 50,
+    "minOrder": 200,
+    "rating": 4.9,
+    "reviewCount": 341,
+    "styles": [
+      "luxe",
+      "minimalist"
+    ],
+    "materials": [
+      "glass"
+    ],
+    "colors": [
+      "clear"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "Mexico",
+    "image": "/catalog/kt-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a set of four hand-blown clear ripple-textured glass tumblers grouped together. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kt-03",
+    "name": "Striped Cotton Tea Towel, Set of 2",
+    "brand": "Bowline Goods",
+    "category": "Kitchen & tabletop",
+    "subcategory": "Linens",
+    "wholesalePrice": 9,
+    "msrp": 18,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 27,
+    "styles": [
+      "coastal",
+      "playful"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "navy",
+      "white"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "Portugal",
+    "image": "/catalog/kt-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of two folded navy-and-white striped woven cotton tea towels with a hanging loop. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kt-04",
+    "name": "Acacia Wood Salad Servers",
+    "brand": "Maple & Moss",
+    "category": "Kitchen & tabletop",
+    "subcategory": "Utensils",
+    "wholesalePrice": 11,
+    "msrp": 22,
+    "minOrder": 100,
+    "rating": 4.7,
+    "reviewCount": 98,
+    "styles": [
+      "rustic",
+      "natural"
+    ],
+    "materials": [
+      "wood"
+    ],
+    "colors": [
+      "walnut"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/kt-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a pair of hand-finished acacia wood salad servers with a rich walnut tone. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kt-05",
+    "name": "Hammered Brass Measuring Spoons",
+    "brand": "Copperline",
+    "category": "Kitchen & tabletop",
+    "subcategory": "Utensils",
+    "wholesalePrice": 13,
+    "msrp": 26,
+    "minOrder": 150,
+    "rating": 4.8,
+    "reviewCount": 519,
+    "styles": [
+      "luxe",
+      "vintage"
+    ],
+    "materials": [
+      "brass"
+    ],
+    "colors": [
+      "gold"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "India",
+    "image": "/catalog/kt-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a set of four hammered brass measuring spoons on a ring. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kt-06",
+    "name": "Hand-Painted Ceramic Dessert Plates, Set of 4",
+    "brand": "Casa Lumi",
+    "category": "Kitchen & tabletop",
+    "subcategory": "Dinnerware",
+    "wholesalePrice": 32,
+    "msrp": 64,
+    "minOrder": 250,
+    "rating": 4.9,
+    "reviewCount": 12,
+    "styles": [
+      "maximalist",
+      "playful",
+      "cottagecore"
+    ],
+    "materials": [
+      "ceramic"
+    ],
+    "colors": [
+      "blue",
+      "yellow",
+      "white"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 14,
+    "madeIn": "Portugal",
+    "image": "/catalog/kt-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a stack of four hand-painted ceramic dessert plates with blue and yellow folk floral patterns. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "cf-01",
+    "name": "Hand-Poured Soy Candle, Fig & Cedar",
+    "brand": "Ember & Oak",
+    "category": "Candles & fragrance",
+    "subcategory": "Candles",
+    "wholesalePrice": 12,
+    "msrp": 24,
+    "minOrder": 100,
+    "rating": 4.9,
+    "reviewCount": 864,
+    "styles": [
+      "rustic",
+      "natural",
+      "modern-farmhouse"
+    ],
+    "materials": [
+      "soy-wax",
+      "glass"
+    ],
+    "colors": [
+      "amber"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/cf-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a hand-poured soy candle in an amber glass jar with a wooden lid. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "cf-02",
+    "name": "Mini Organic Simmer Pot Kits",
+    "brand": "Bramble & Bee",
+    "category": "Candles & fragrance",
+    "subcategory": "Simmer pots",
+    "wholesalePrice": 6,
+    "msrp": 12,
+    "minOrder": 75,
+    "rating": 4.7,
+    "reviewCount": 238,
+    "styles": [
+      "cottagecore",
+      "natural"
+    ],
+    "materials": [
+      "dried botanicals",
+      "paper"
+    ],
+    "colors": [
+      "natural",
+      "orange"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/cf-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a small glass jar simmer pot kit filled with dried orange slices, cinnamon sticks, star anise and cranberries. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "cf-03",
+    "name": "Concrete Vessel Candle, Sea Salt",
+    "brand": "Lumen Wax Works",
+    "category": "Candles & fragrance",
+    "subcategory": "Candles",
+    "wholesalePrice": 16,
+    "msrp": 32,
+    "minOrder": 150,
+    "rating": 4.8,
+    "reviewCount": 21,
+    "styles": [
+      "minimalist",
+      "scandinavian"
+    ],
+    "materials": [
+      "concrete",
+      "soy-wax"
+    ],
+    "colors": [
+      "grey"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/cf-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a minimalist soy candle in a smooth grey concrete vessel. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "cf-04",
+    "name": "Palo Santo Incense Sticks, Box of 20",
+    "brand": "Ember & Oak",
+    "category": "Candles & fragrance",
+    "subcategory": "Incense",
+    "wholesalePrice": 5,
+    "msrp": 10,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 147,
+    "styles": [
+      "boho",
+      "natural"
+    ],
+    "materials": [
+      "wood",
+      "paper"
+    ],
+    "colors": [
+      "natural",
+      "black"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 4,
+    "madeIn": "USA",
+    "image": "/catalog/cf-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a bundle of palo santo incense sticks resting in a small kraft box beside a ceramic holder. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "cf-05",
+    "name": "Coastal Linen Room Spray",
+    "brand": "Tidewater Candle Co.",
+    "category": "Candles & fragrance",
+    "subcategory": "Room sprays",
+    "wholesalePrice": 9,
+    "msrp": 18,
+    "minOrder": 100,
+    "rating": 4.7,
+    "reviewCount": 302,
+    "styles": [
+      "coastal",
+      "minimalist"
+    ],
+    "materials": [
+      "glass"
+    ],
+    "colors": [
+      "white",
+      "blue"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/cf-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a frosted white glass room spray bottle with a pale blue mist cap. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "cf-06",
+    "name": "Gilded Ceramic Candle, Amber & Oud",
+    "brand": "Harlow Home",
+    "category": "Candles & fragrance",
+    "subcategory": "Candles",
+    "wholesalePrice": 29,
+    "msrp": 60,
+    "minOrder": 250,
+    "rating": 4.8,
+    "reviewCount": 76,
+    "styles": [
+      "luxe",
+      "maximalist"
+    ],
+    "materials": [
+      "ceramic",
+      "coconut-wax"
+    ],
+    "colors": [
+      "black",
+      "gold"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "USA",
+    "image": "/catalog/cf-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a luxury coconut-wax candle in a glossy black ceramic vessel with a gold-leaf rim. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "sp-01",
+    "name": "Letterpress Birthday Card, Set of 6",
+    "brand": "Marlowe Paper Co.",
+    "category": "Stationery & paper",
+    "subcategory": "Greeting cards",
+    "wholesalePrice": 15,
+    "msrp": 30,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 221,
+    "styles": [
+      "minimalist",
+      "literary"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "white",
+      "black"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/sp-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a fanned set of six thick white letterpress greeting cards with kraft envelopes, blank fronts. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "sp-02",
+    "name": "Risograph Fruit Sticker Sheet",
+    "brand": "Sunday Press",
+    "category": "Stationery & paper",
+    "subcategory": "Stickers",
+    "wholesalePrice": 2.5,
+    "msrp": 5,
+    "minOrder": 50,
+    "rating": 4.9,
+    "reviewCount": 733,
+    "styles": [
+      "playful",
+      "maximalist"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "pink",
+      "orange",
+      "green"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 3,
+    "madeIn": "USA",
+    "image": "/catalog/sp-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a colorful risograph-printed sticker sheet of stylized fruits in pink, orange and green. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "sp-03",
+    "name": "Recycled Kraft Wrapping Paper Roll",
+    "brand": "Papercut Studio",
+    "category": "Stationery & paper",
+    "subcategory": "Gift wrap",
+    "wholesalePrice": 4.5,
+    "msrp": 9,
+    "minOrder": 75,
+    "rating": 4.5,
+    "reviewCount": 14,
+    "styles": [
+      "natural",
+      "rustic",
+      "minimalist"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "kraft",
+      "brown"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/sp-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a roll of recycled kraft wrapping paper partially unrolled with a length of natural twine. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "sp-04",
+    "name": "Brass Fountain Pen, Matte Black",
+    "brand": "Ledger & Lark",
+    "category": "Stationery & paper",
+    "subcategory": "Pens",
+    "wholesalePrice": 22,
+    "msrp": 44,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 168,
+    "styles": [
+      "luxe",
+      "literary"
+    ],
+    "materials": [
+      "brass"
+    ],
+    "colors": [
+      "black",
+      "gold"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "Japan",
+    "image": "/catalog/sp-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a matte black brass fountain pen with a gold nib resting on a linen notebook. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "sp-05",
+    "name": "Wildflower Watercolor Notepad",
+    "brand": "Clover Lane Paper",
+    "category": "Stationery & paper",
+    "subcategory": "Notepads",
+    "wholesalePrice": 6,
+    "msrp": 12,
+    "minOrder": 50,
+    "rating": 4.8,
+    "reviewCount": 9,
+    "styles": [
+      "cottagecore",
+      "vintage"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "cream",
+      "green"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/sp-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a cream notepad with a delicate watercolor wildflower border, blank pages. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "sp-06",
+    "name": "Hand-Marbled Envelopes, Set of 10",
+    "brand": "Marlowe Paper Co.",
+    "category": "Stationery & paper",
+    "subcategory": "Envelopes",
+    "wholesalePrice": 12,
+    "msrp": 24,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 57,
+    "styles": [
+      "vintage",
+      "luxe"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "blue",
+      "cream"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/sp-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a stack of hand-marbled paper envelopes in swirling blue and cream tones. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bj-01",
+    "name": "Linen-Bound Lined Journal, Sage",
+    "brand": "Ledger & Lark",
+    "category": "Books & journals",
+    "subcategory": "Journals",
+    "wholesalePrice": 13,
+    "msrp": 26,
+    "minOrder": 150,
+    "rating": 4.9,
+    "reviewCount": 488,
+    "styles": [
+      "minimalist",
+      "literary",
+      "scandinavian"
+    ],
+    "materials": [
+      "linen",
+      "paper"
+    ],
+    "colors": [
+      "sage"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bj-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a sage green linen-bound hardcover journal with a cream ribbon bookmark. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bj-02",
+    "name": "Slow Mornings: A Seasonal Baking Cookbook",
+    "brand": "The Quiet Shelf",
+    "category": "Books & journals",
+    "subcategory": "Cookbooks",
+    "wholesalePrice": 17.5,
+    "msrp": 35,
+    "minOrder": 150,
+    "rating": 4.8,
+    "reviewCount": 196,
+    "styles": [
+      "cottagecore",
+      "literary"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "cream"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/bj-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a hardcover baking cookbook with a cream cloth spine, closed and lying flat beside a wooden spoon, cover artwork only with no lettering. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bj-03",
+    "name": "Undated Weekly Planner, Kraft",
+    "brand": "Papercut Studio",
+    "category": "Books & journals",
+    "subcategory": "Planners",
+    "wholesalePrice": 9,
+    "msrp": 18,
+    "minOrder": 75,
+    "rating": 4.6,
+    "reviewCount": 16,
+    "styles": [
+      "natural",
+      "minimalist"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "kraft"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bj-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a kraft-cover undated weekly planner with exposed stitched binding. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bj-04",
+    "name": "The Coastal Home, Photo Book",
+    "brand": "The Quiet Shelf",
+    "category": "Books & journals",
+    "subcategory": "Coffee table books",
+    "wholesalePrice": 30,
+    "msrp": 60,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 84,
+    "styles": [
+      "coastal",
+      "luxe"
+    ],
+    "materials": [
+      "paper",
+      "linen"
+    ],
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "USA",
+    "image": "/catalog/bj-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a large linen-bound coffee table photo book with a pale blue cover showing a seaside photograph, no lettering. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bj-05",
+    "name": "Leather Travel Sketchbook",
+    "brand": "Peregrine Leather",
+    "category": "Books & journals",
+    "subcategory": "Journals",
+    "wholesalePrice": 21,
+    "msrp": 42,
+    "minOrder": 200,
+    "rating": 4.8,
+    "reviewCount": 260,
+    "styles": [
+      "rustic",
+      "vintage"
+    ],
+    "materials": [
+      "leather",
+      "paper"
+    ],
+    "colors": [
+      "tan"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "USA",
+    "image": "/catalog/bj-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a tan full-grain leather wrap sketchbook with a leather tie closure and cream pages. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bj-06",
+    "name": "Little Fox Learns to Share, Board Book",
+    "brand": "Little Fable Co.",
+    "category": "Books & journals",
+    "subcategory": "Children's books",
+    "wholesalePrice": 7,
+    "msrp": 14,
+    "minOrder": 100,
+    "rating": 4.7,
+    "reviewCount": 129,
+    "styles": [
+      "playful",
+      "cottagecore"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "orange",
+      "cream"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bj-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a small children's board book with an illustrated orange fox on the cover, no lettering. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ap-01",
+    "name": "Garment-Dyed Boxy Tee, Clay",
+    "brand": "Prairie Thread Co.",
+    "category": "Apparel",
+    "subcategory": "Tees",
+    "wholesalePrice": 14,
+    "msrp": 28,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 312,
+    "styles": [
+      "minimalist",
+      "natural"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "clay"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/ap-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a folded garment-dyed clay-colored boxy cotton t-shirt. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ap-02",
+    "name": "Hand-Knit Wool Beanie, Oatmeal",
+    "brand": "Kindred Knits",
+    "category": "Apparel",
+    "subcategory": "Hats",
+    "wholesalePrice": 18,
+    "msrp": 36,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 24,
+    "styles": [
+      "scandinavian",
+      "rustic"
+    ],
+    "materials": [
+      "wool"
+    ],
+    "colors": [
+      "oatmeal"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 10,
+    "madeIn": "Peru",
+    "image": "/catalog/ap-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a chunky hand-knit oatmeal wool beanie with a folded cuff. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ap-03",
+    "name": "Striped Organic Cotton Crew Socks",
+    "brand": "Bowline Goods",
+    "category": "Apparel",
+    "subcategory": "Socks",
+    "wholesalePrice": 6,
+    "msrp": 12,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 29,
+    "styles": [
+      "coastal",
+      "playful"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "navy",
+      "cream"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "Portugal",
+    "image": "/catalog/ap-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a pair of navy-and-cream striped organic cotton crew socks folded together. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ap-04",
+    "name": "Embroidered Mushroom Sweatshirt",
+    "brand": "Camp Cricket",
+    "category": "Apparel",
+    "subcategory": "Sweatshirts",
+    "wholesalePrice": 24,
+    "msrp": 48,
+    "minOrder": 150,
+    "rating": 4.9,
+    "reviewCount": 205,
+    "styles": [
+      "cottagecore",
+      "playful"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "forest green"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/ap-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a forest green crewneck sweatshirt with a small embroidered mushroom on the chest, folded. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ap-05",
+    "name": "Silk Charmeuse Hair Scarf",
+    "brand": "Golden Hour Goods",
+    "category": "Apparel",
+    "subcategory": "Scarves",
+    "wholesalePrice": 16,
+    "msrp": 32,
+    "minOrder": 200,
+    "rating": 4.7,
+    "reviewCount": 93,
+    "styles": [
+      "luxe",
+      "vintage"
+    ],
+    "materials": [
+      "silk"
+    ],
+    "colors": [
+      "champagne"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "India",
+    "image": "/catalog/ap-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a champagne silk charmeuse hair scarf loosely coiled. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ap-06",
+    "name": "Block-Print Cotton Robe, Indigo",
+    "brand": "Wild Hazel",
+    "category": "Apparel",
+    "subcategory": "Loungewear",
+    "wholesalePrice": 32,
+    "msrp": 64,
+    "minOrder": 150,
+    "rating": 4.8,
+    "reviewCount": 67,
+    "styles": [
+      "boho",
+      "maximalist"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "indigo",
+      "white"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 14,
+    "madeIn": "India",
+    "image": "/catalog/ap-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an indigo block-printed cotton robe with a white floral pattern, folded with the tie belt visible. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ja-01",
+    "name": "14k Gold-Filled Huggie Hoops",
+    "brand": "Noor Studio",
+    "category": "Jewelry & accessories",
+    "subcategory": "Earrings",
+    "wholesalePrice": 18,
+    "msrp": 36,
+    "minOrder": 100,
+    "rating": 4.9,
+    "reviewCount": 33,
+    "styles": [
+      "minimalist",
+      "luxe"
+    ],
+    "materials": [
+      "gold-filled"
+    ],
+    "colors": [
+      "gold"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/ja-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a pair of small 14k gold-filled huggie hoop earrings on a linen jewelry card. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ja-02",
+    "name": "Beaded Sunburst Statement Earrings",
+    "brand": "Wild Hazel",
+    "category": "Jewelry & accessories",
+    "subcategory": "Earrings",
+    "wholesalePrice": 14,
+    "msrp": 28,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 118,
+    "styles": [
+      "boho",
+      "maximalist"
+    ],
+    "materials": [
+      "glass beads",
+      "brass"
+    ],
+    "colors": [
+      "turquoise",
+      "orange"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "Guatemala",
+    "image": "/catalog/ja-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a pair of hand-beaded turquoise and orange sunburst statement earrings. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ja-03",
+    "name": "Freshwater Pearl Drop Necklace",
+    "brand": "Golden Hour Goods",
+    "category": "Jewelry & accessories",
+    "subcategory": "Necklaces",
+    "wholesalePrice": 26,
+    "msrp": 54,
+    "minOrder": 200,
+    "rating": 4.8,
+    "reviewCount": 254,
+    "styles": [
+      "luxe",
+      "vintage",
+      "coastal"
+    ],
+    "materials": [
+      "pearl",
+      "gold-plated"
+    ],
+    "colors": [
+      "white",
+      "gold"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/ja-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a delicate gold chain necklace with a single freshwater pearl drop, coiled on a ceramic dish. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ja-04",
+    "name": "Full-Grain Leather Card Wallet",
+    "brand": "Peregrine Leather",
+    "category": "Jewelry & accessories",
+    "subcategory": "Wallets",
+    "wholesalePrice": 22,
+    "msrp": 44,
+    "minOrder": 200,
+    "rating": 4.9,
+    "reviewCount": 377,
+    "styles": [
+      "rustic",
+      "minimalist"
+    ],
+    "materials": [
+      "leather"
+    ],
+    "colors": [
+      "tan"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "USA",
+    "image": "/catalog/ja-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a slim tan full-grain leather card wallet with contrast stitching. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ja-05",
+    "name": "Hand-Carved Wooden Hair Claw",
+    "brand": "Maple & Moss",
+    "category": "Jewelry & accessories",
+    "subcategory": "Hair accessories",
+    "wholesalePrice": 8,
+    "msrp": 16,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 52,
+    "styles": [
+      "natural",
+      "scandinavian"
+    ],
+    "materials": [
+      "wood"
+    ],
+    "colors": [
+      "walnut"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/ja-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a hand-carved walnut wood hair claw clip. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "ja-06",
+    "name": "Enamel Smiley Daisy Ring",
+    "brand": "Sunny Side Studio",
+    "category": "Jewelry & accessories",
+    "subcategory": "Rings",
+    "wholesalePrice": 7,
+    "msrp": 14,
+    "minOrder": 75,
+    "rating": 4.5,
+    "reviewCount": 140,
+    "styles": [
+      "playful",
+      "maximalist"
+    ],
+    "materials": [
+      "enamel",
+      "brass"
+    ],
+    "colors": [
+      "yellow",
+      "white"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/ja-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a gold-tone ring with a white enamel daisy and a yellow smiley face center. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bb-01",
+    "name": "Handmade Soap Bar, Natural Soaps",
+    "brand": "Saltmarsh Soap",
+    "category": "Bath & body",
+    "subcategory": "Bar soap",
+    "wholesalePrice": 4.5,
+    "msrp": 9,
+    "minOrder": 75,
+    "rating": 4.8,
+    "reviewCount": 921,
+    "styles": [
+      "natural",
+      "rustic",
+      "cottagecore"
+    ],
+    "materials": [
+      "olive oil"
+    ],
+    "colors": [
+      "cream",
+      "green"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bb-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a rustic cream-and-green swirled handmade cold-process soap bar wrapped in a paper band. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bb-02",
+    "name": "Botanical Bath Soak, Lavender & Oat",
+    "brand": "Fern & Fig",
+    "category": "Bath & body",
+    "subcategory": "Bath soaks",
+    "wholesalePrice": 9,
+    "msrp": 18,
+    "minOrder": 100,
+    "rating": 4.7,
+    "reviewCount": 105,
+    "styles": [
+      "cottagecore",
+      "natural"
+    ],
+    "materials": [
+      "glass",
+      "sea salt"
+    ],
+    "colors": [
+      "lavender",
+      "cream"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bb-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a glass apothecary jar of lavender and oat bath salts with a cork lid and dried lavender sprigs. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bb-03",
+    "name": "Rosehip Facial Oil, 30ml",
+    "brand": "Fern & Fig",
+    "category": "Bath & body",
+    "subcategory": "Skincare",
+    "wholesalePrice": 16,
+    "msrp": 32,
+    "minOrder": 100,
+    "rating": 4.9,
+    "reviewCount": 288,
+    "styles": [
+      "minimalist",
+      "natural"
+    ],
+    "materials": [
+      "glass"
+    ],
+    "colors": [
+      "amber"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bb-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a 30ml amber glass dropper bottle of rosehip facial oil with a plain white label. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bb-04",
+    "name": "Sea Kelp Body Wash, 16oz",
+    "brand": "Driftline Bath",
+    "category": "Bath & body",
+    "subcategory": "Body wash",
+    "wholesalePrice": 11,
+    "msrp": 22,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 17,
+    "styles": [
+      "coastal",
+      "minimalist"
+    ],
+    "materials": [
+      "glass"
+    ],
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bb-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a tall pale blue glass pump bottle of body wash with a plain white label. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bb-05",
+    "name": "Gold-Leaf Bath Bomb Gift Set",
+    "brand": "Halcyon Bath",
+    "category": "Bath & body",
+    "subcategory": "Bath bombs",
+    "wholesalePrice": 18,
+    "msrp": 36,
+    "minOrder": 150,
+    "rating": 4.8,
+    "reviewCount": 176,
+    "styles": [
+      "luxe",
+      "playful"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "pink",
+      "gold"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/bb-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a gift box of four pastel pink bath bombs flecked with gold leaf. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "bb-06",
+    "name": "Charcoal Shampoo Bar, Cedar & Sage",
+    "brand": "Saltmarsh Soap",
+    "category": "Bath & body",
+    "subcategory": "Hair care",
+    "wholesalePrice": 6.5,
+    "msrp": 13,
+    "minOrder": 75,
+    "rating": 4.6,
+    "reviewCount": 69,
+    "styles": [
+      "rustic",
+      "natural",
+      "minimalist"
+    ],
+    "materials": [
+      "coconut oil"
+    ],
+    "colors": [
+      "black"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/bb-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a round black activated charcoal shampoo bar on a small wooden soap dish. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "fd-01",
+    "name": "Single-Origin Ethiopia Coffee, 12oz",
+    "brand": "Alder Street Coffee Roasters",
+    "category": "Food & drink",
+    "subcategory": "Coffee",
+    "wholesalePrice": 11,
+    "msrp": 22,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 402,
+    "styles": [
+      "rustic",
+      "minimalist"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "kraft",
+      "black"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/fd-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a 12oz kraft coffee bag with a plain black label beside a scatter of roasted coffee beans. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "fd-02",
+    "name": "Wildflower Honey Jar, 8oz",
+    "brand": "Bramble & Bee",
+    "category": "Food & drink",
+    "subcategory": "Pantry",
+    "wholesalePrice": 7,
+    "msrp": 14,
+    "minOrder": 75,
+    "rating": 4.9,
+    "reviewCount": 355,
+    "styles": [
+      "cottagecore",
+      "natural",
+      "rustic"
+    ],
+    "materials": [
+      "glass"
+    ],
+    "colors": [
+      "amber",
+      "gold"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/fd-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an 8oz glass jar of golden wildflower honey with a cloth-topped lid and a wooden honey dipper. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "fd-03",
+    "name": "Loose Leaf Chamomile Tea Tin",
+    "brand": "Oat & Olive",
+    "category": "Food & drink",
+    "subcategory": "Tea",
+    "wholesalePrice": 8,
+    "msrp": 16,
+    "minOrder": 75,
+    "rating": 4.7,
+    "reviewCount": 14,
+    "styles": [
+      "minimalist",
+      "scandinavian"
+    ],
+    "materials": [
+      "stainless-steel"
+    ],
+    "colors": [
+      "white",
+      "sage"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/fd-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a matte white loose-leaf tea tin with a sage green lid and loose chamomile flowers beside it. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "fd-04",
+    "name": "Smoked Chili Hot Sauce, 5oz",
+    "brand": "Marigold Market",
+    "category": "Food & drink",
+    "subcategory": "Condiments",
+    "wholesalePrice": 5.5,
+    "msrp": 11,
+    "minOrder": 50,
+    "rating": 4.7,
+    "reviewCount": 187,
+    "styles": [
+      "playful",
+      "maximalist"
+    ],
+    "materials": [
+      "glass"
+    ],
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/fd-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a 5oz glass bottle of deep red smoked chili hot sauce with a bright yellow cap and plain label. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "fd-05",
+    "name": "Sparkling Yuzu Soda, 4-Pack",
+    "brand": "Bright Side Sodaworks",
+    "category": "Food & drink",
+    "subcategory": "Beverages",
+    "wholesalePrice": 9,
+    "msrp": 18,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 22,
+    "styles": [
+      "playful",
+      "coastal"
+    ],
+    "materials": [
+      "glass",
+      "aluminum"
+    ],
+    "colors": [
+      "yellow",
+      "white"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/fd-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a four-pack of slim yellow-and-white sparkling yuzu soda cans with condensation. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "fd-06",
+    "name": "Artisan Chocolate Bar Gift Box, 6 Bars",
+    "brand": "Cacao Row",
+    "category": "Food & drink",
+    "subcategory": "Chocolate",
+    "wholesalePrice": 27,
+    "msrp": 54,
+    "minOrder": 150,
+    "rating": 4.9,
+    "reviewCount": 143,
+    "styles": [
+      "luxe",
+      "minimalist"
+    ],
+    "materials": [
+      "paper",
+      "foil"
+    ],
+    "colors": [
+      "black",
+      "gold"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/fd-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an open black gift box holding six artisan chocolate bars wrapped in gold foil and plain paper sleeves. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kb-01",
+    "name": "Organic Muslin Swaddle, Sage Gingham",
+    "brand": "Little Fable Co.",
+    "category": "Kids & baby",
+    "subcategory": "Blankets",
+    "wholesalePrice": 14,
+    "msrp": 28,
+    "minOrder": 100,
+    "rating": 4.9,
+    "reviewCount": 508,
+    "styles": [
+      "cottagecore",
+      "natural"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "sage",
+      "cream"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "India",
+    "image": "/catalog/kb-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a softly folded sage green gingham organic cotton muslin swaddle blanket. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kb-02",
+    "name": "Wooden Stacking Rainbow Toy",
+    "brand": "Tinker & Tale",
+    "category": "Kids & baby",
+    "subcategory": "Toys",
+    "wholesalePrice": 19,
+    "msrp": 38,
+    "minOrder": 200,
+    "rating": 4.8,
+    "reviewCount": 36,
+    "styles": [
+      "playful",
+      "scandinavian"
+    ],
+    "materials": [
+      "wood"
+    ],
+    "colors": [
+      "rainbow"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": true,
+    "leadTimeDays": 10,
+    "madeIn": "USA",
+    "image": "/catalog/kb-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a wooden stacking rainbow toy in muted pastel colors. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kb-03",
+    "name": "Silicone Teether, Mushroom",
+    "brand": "Little Fable Co.",
+    "category": "Kids & baby",
+    "subcategory": "Teethers",
+    "wholesalePrice": 5,
+    "msrp": 10,
+    "minOrder": 100,
+    "rating": 4.6,
+    "reviewCount": 173,
+    "styles": [
+      "playful",
+      "natural"
+    ],
+    "materials": [
+      "silicone"
+    ],
+    "colors": [
+      "terracotta"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/kb-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a terracotta-colored mushroom-shaped silicone baby teether. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kb-04",
+    "name": "Hand-Knit Wool Baby Booties",
+    "brand": "Kindred Knits",
+    "category": "Kids & baby",
+    "subcategory": "Clothing",
+    "wholesalePrice": 12,
+    "msrp": 24,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 19,
+    "styles": [
+      "scandinavian",
+      "vintage"
+    ],
+    "materials": [
+      "wool"
+    ],
+    "colors": [
+      "oatmeal"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 10,
+    "madeIn": "Peru",
+    "image": "/catalog/kb-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a tiny pair of hand-knit oatmeal wool baby booties. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kb-05",
+    "name": "Woodland Animals Wooden Puzzle",
+    "brand": "Tinker & Tale",
+    "category": "Kids & baby",
+    "subcategory": "Puzzles",
+    "wholesalePrice": 16,
+    "msrp": 32,
+    "minOrder": 200,
+    "rating": 4.7,
+    "reviewCount": 22,
+    "styles": [
+      "rustic",
+      "playful",
+      "natural"
+    ],
+    "materials": [
+      "wood"
+    ],
+    "colors": [
+      "natural",
+      "green"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/kb-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a natural wood chunky puzzle with woodland animal shapes painted in muted green and brown. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "kb-06",
+    "name": "Heirloom Linen Baby Bonnet",
+    "brand": "Nest & Nettle",
+    "category": "Kids & baby",
+    "subcategory": "Clothing",
+    "wholesalePrice": 24,
+    "msrp": 48,
+    "minOrder": 250,
+    "rating": 4.8,
+    "reviewCount": 58,
+    "styles": [
+      "luxe",
+      "vintage",
+      "cottagecore"
+    ],
+    "materials": [
+      "linen"
+    ],
+    "colors": [
+      "ivory"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "USA",
+    "image": "/catalog/kb-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an ivory linen heirloom baby bonnet with lace trim and tie ribbons. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "pt-01",
+    "name": "Peanut Butter Dog Biscuits, 8oz",
+    "brand": "Wagtail Supply Co.",
+    "category": "Pets",
+    "subcategory": "Treats",
+    "wholesalePrice": 6,
+    "msrp": 12,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 267,
+    "styles": [
+      "rustic",
+      "playful"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "kraft",
+      "tan"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/pt-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a kraft paper bag of bone-shaped peanut butter dog biscuits with a few biscuits spilling out. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "pt-02",
+    "name": "Waxed Canvas Dog Collar, Olive",
+    "brand": "Wagtail Supply Co.",
+    "category": "Pets",
+    "subcategory": "Collars",
+    "wholesalePrice": 12,
+    "msrp": 24,
+    "minOrder": 100,
+    "rating": 4.9,
+    "reviewCount": 431,
+    "styles": [
+      "rustic",
+      "modern-farmhouse"
+    ],
+    "materials": [
+      "waxed canvas",
+      "brass"
+    ],
+    "colors": [
+      "olive"
+    ],
+    "priceTier": "mid",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/pt-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an olive waxed canvas dog collar with solid brass hardware, coiled. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "pt-03",
+    "name": "Stoneware Pet Bowl, Speckled",
+    "brand": "Cobble & Clay",
+    "category": "Pets",
+    "subcategory": "Bowls",
+    "wholesalePrice": 15,
+    "msrp": 30,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 26,
+    "styles": [
+      "minimalist",
+      "scandinavian"
+    ],
+    "materials": [
+      "stoneware"
+    ],
+    "colors": [
+      "speckled white"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/pt-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a speckled white stoneware pet food bowl with a raised rim. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "pt-04",
+    "name": "Rope Knot Dog Toy, Coastal Stripe",
+    "brand": "Bowline Goods",
+    "category": "Pets",
+    "subcategory": "Toys",
+    "wholesalePrice": 5,
+    "msrp": 10,
+    "minOrder": 100,
+    "rating": 4.5,
+    "reviewCount": 15,
+    "styles": [
+      "coastal",
+      "playful"
+    ],
+    "materials": [
+      "cotton rope"
+    ],
+    "colors": [
+      "navy",
+      "white"
+    ],
+    "priceTier": "value",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/pt-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a navy and white striped cotton rope knot dog toy. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "pt-05",
+    "name": "Organic Catnip Mice, Set of 3",
+    "brand": "Sage & Sparrow",
+    "category": "Pets",
+    "subcategory": "Cat toys",
+    "wholesalePrice": 7,
+    "msrp": 14,
+    "minOrder": 50,
+    "rating": 4.8,
+    "reviewCount": 11,
+    "styles": [
+      "natural",
+      "cottagecore",
+      "playful"
+    ],
+    "materials": [
+      "cotton",
+      "catnip"
+    ],
+    "colors": [
+      "grey",
+      "natural"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": true,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/pt-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of three small handmade grey and natural cotton catnip mouse toys with twine tails. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "pt-06",
+    "name": "Bouclé Donut Pet Bed, Cream",
+    "brand": "Harlow Home",
+    "category": "Pets",
+    "subcategory": "Beds",
+    "wholesalePrice": 42,
+    "msrp": 85,
+    "minOrder": 250,
+    "rating": 4.7,
+    "reviewCount": 92,
+    "styles": [
+      "luxe",
+      "minimalist"
+    ],
+    "materials": [
+      "bouclé"
+    ],
+    "colors": [
+      "cream"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 14,
+    "madeIn": "China",
+    "image": "/catalog/pt-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a round cream bouclé donut pet bed with a plush raised rim. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "go-01",
+    "name": "Terracotta Planter with Saucer, 6in",
+    "brand": "Juniper Lane",
+    "category": "Garden & outdoor",
+    "subcategory": "Planters",
+    "wholesalePrice": 8,
+    "msrp": 16,
+    "minOrder": 100,
+    "rating": 4.8,
+    "reviewCount": 389,
+    "styles": [
+      "natural",
+      "rustic",
+      "cottagecore"
+    ],
+    "materials": [
+      "terracotta"
+    ],
+    "colors": [
+      "terracotta"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "Italy",
+    "image": "/catalog/go-01.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a classic 6-inch terracotta planter with matching saucer holding a small green plant. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "go-02",
+    "name": "Heirloom Wildflower Seed Packets, Set of 6",
+    "brand": "Juniper Lane",
+    "category": "Garden & outdoor",
+    "subcategory": "Seeds",
+    "wholesalePrice": 9,
+    "msrp": 18,
+    "minOrder": 100,
+    "rating": 4.7,
+    "reviewCount": 214,
+    "styles": [
+      "cottagecore",
+      "vintage"
+    ],
+    "materials": [
+      "paper"
+    ],
+    "colors": [
+      "cream",
+      "green"
+    ],
+    "priceTier": "value",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 5,
+    "madeIn": "USA",
+    "image": "/catalog/go-02.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a fanned set of six cream seed packets with vintage botanical illustrations, no lettering. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "go-03",
+    "name": "Japanese Steel Hori Hori Knife",
+    "brand": "Maple & Moss",
+    "category": "Garden & outdoor",
+    "subcategory": "Tools",
+    "wholesalePrice": 21,
+    "msrp": 42,
+    "minOrder": 100,
+    "rating": 4.9,
+    "reviewCount": 156,
+    "styles": [
+      "rustic",
+      "minimalist"
+    ],
+    "materials": [
+      "stainless-steel",
+      "wood"
+    ],
+    "colors": [
+      "silver",
+      "walnut"
+    ],
+    "priceTier": "premium",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "Japan",
+    "image": "/catalog/go-03.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a Japanese hori hori garden knife with a stainless steel blade and walnut handle beside its leather sheath. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "go-04",
+    "name": "Ceramic Hanging Bird Feeder",
+    "brand": "Cobble & Clay",
+    "category": "Garden & outdoor",
+    "subcategory": "Bird feeders",
+    "wholesalePrice": 17,
+    "msrp": 34,
+    "minOrder": 150,
+    "rating": 4.6,
+    "reviewCount": 23,
+    "styles": [
+      "scandinavian",
+      "minimalist",
+      "natural"
+    ],
+    "materials": [
+      "ceramic",
+      "leather"
+    ],
+    "colors": [
+      "white"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": true,
+    "leadTimeDays": 7,
+    "madeIn": "USA",
+    "image": "/catalog/go-04.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a matte white ceramic hanging bird feeder suspended from a leather cord, filled with seed. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "go-05",
+    "name": "Striped Cotton Picnic Blanket",
+    "brand": "Camp Cricket",
+    "category": "Garden & outdoor",
+    "subcategory": "Outdoor living",
+    "wholesalePrice": 26,
+    "msrp": 52,
+    "minOrder": 150,
+    "rating": 4.8,
+    "reviewCount": 121,
+    "styles": [
+      "coastal",
+      "playful"
+    ],
+    "materials": [
+      "cotton"
+    ],
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "priceTier": "premium",
+    "isBestseller": true,
+    "isNewBrand": false,
+    "leadTimeDays": 7,
+    "madeIn": "India",
+    "image": "/catalog/go-05.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of a rolled blue-and-white striped cotton picnic blanket with a leather carry strap. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  },
+  {
+    "id": "go-06",
+    "name": "Brass Plant Mister, Antique Finish",
+    "brand": "Copperline",
+    "category": "Garden & outdoor",
+    "subcategory": "Tools",
+    "wholesalePrice": 13,
+    "msrp": 26,
+    "minOrder": 150,
+    "rating": 4.7,
+    "reviewCount": 201,
+    "styles": [
+      "vintage",
+      "luxe"
+    ],
+    "materials": [
+      "brass"
+    ],
+    "colors": [
+      "gold"
+    ],
+    "priceTier": "mid",
+    "isBestseller": false,
+    "isNewBrand": false,
+    "leadTimeDays": 10,
+    "madeIn": "India",
+    "image": "/catalog/go-06.jpg",
+    "imagePrompt": "Wholesale marketplace product photo of an antique-finish brass plant mister spray bottle beside a trailing houseplant. Single product, centered, soft natural window light, plain warm off-white background or simple styled surface, shallow depth of field, no text, no logos, no people, editorial catalog photography, square."
+  }
+]

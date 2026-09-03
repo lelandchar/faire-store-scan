@@ -1,26 +1,258 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Faire-inspired design tokens. Neutral, editorial, restrained.
+   --------------------------------------------------------------------------- */
 :root {
+  --ink: #333333;
+  --ink-2: #4b4b4b;
+  --muted: #6c6a6a;
+  --muted-2: #8e8c8c;
+  --line: #dadada;
+  --line-strong: #333333;
+  --surface: #ffffff;
+  --surface-2: #f7f7f7;
+  --surface-3: #f1f1f1;
+  --warm: #fbf8f6;
+  --peach: #f6eee4;
+  --teal: #36676a;
+  --sage: #91957b;
+  --orange: #ab7456;
+  --accent: #8b6f3a;      /* bronze check on the congratulations screen */
+  --accent-soft: #f3ece3;
+  --success: #2f6b4f;
+  --danger: #b3261e;
+  --radius: 4px;
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --font-serif: var(--font-display), "Nantes", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-body), "Graphik", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: var(--ink);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-warm: var(--warm);
+  --color-peach: var(--peach);
+  --color-teal: var(--teal);
+  --color-sage: var(--sage);
+  --color-orange: var(--orange);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --radius-faire: var(--radius);
+  --radius-faire-lg: var(--radius-lg);
+  --shadow-card: var(--shadow-card);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  height: 100%;
+  background: #f2f0ec;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+/* Device shell: full-bleed on phones, a framed handset on larger screens. */
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.device {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  background: var(--surface);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.screen {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+.screen::-webkit-scrollbar {
+  display: none;
+}
+.screen {
+  scrollbar-width: none;
+}
+
+@media (min-width: 900px) {
+  .shell {
+    align-items: center;
+    gap: 64px;
+    padding: 40px 24px;
+  }
+  .device {
+    width: 390px;
+    height: 844px;
+    border-radius: 48px;
+    box-shadow:
+      0 0 0 10px #1b1b1b,
+      0 0 0 12px #3a3a3a,
+      0 30px 80px rgba(0, 0, 0, 0.35);
+  }
+  .device::before {
+    /* dynamic island */
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 118px;
+    height: 34px;
+    border-radius: 20px;
+    background: #111;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .status-bar {
+    height: 54px;
+  }
+}
+@media (max-width: 899px) {
+  .status-bar {
+    display: none;
+  }
+  .side-panel {
+    display: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-serif {
+  font-family: var(--font-serif);
+}
+.text-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.text-display-sm {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.text-body {
+  font-size: 15px;
+  line-height: 1.4;
+  letter-spacing: 0.1px;
+  color: var(--ink-2);
+}
+.text-label {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.text-caption {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* Faire-style bottom-line input */
+.input-underline {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 0 10px;
+  font-size: 16px;
+  color: var(--ink);
+  outline: none;
+  border-radius: 0;
+}
+.input-underline:focus {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 9px;
+}
+.input-underline::placeholder {
+  color: var(--muted-2);
+}
+
+.hairline {
+  height: 1px;
+  background: var(--line);
+}
+
+/* Motion helpers */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+@keyframes scanline {
+  0% {
+    top: -8%;
+  }
+  100% {
+    top: 104%;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.pulse-soft {
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

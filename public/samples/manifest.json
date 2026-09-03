@@ -1,0 +1,157 @@
+[
+  {
+    "slug": "bookshop",
+    "name": "Marginalia Books & Paper",
+    "tagline": "New and used books, greeting cards, stationery, and small gifts in a sunlit corner shop.",
+    "storeType": "Book Store",
+    "cover": "cover.jpg",
+    "photos": [
+      {
+        "file": "01.jpg",
+        "credit": "Christopher Stites",
+        "sourceUrl": "https://unsplash.com/photos/lUVOWdpPEW4",
+        "license": "Unsplash License"
+      },
+      {
+        "file": "02.jpg",
+        "credit": "Ksenia Chernaya",
+        "sourceUrl": "https://www.pexels.com/photo/3952095/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "03.jpg",
+        "credit": "Zeynep M.",
+        "sourceUrl": "https://www.pexels.com/photo/29509137/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "04.jpg",
+        "credit": "Zeynep M.",
+        "sourceUrl": "https://www.pexels.com/photo/17910625/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "05.jpg",
+        "credit": "Rao Qingwei",
+        "sourceUrl": "https://www.pexels.com/photo/18176577/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "06.jpg",
+        "credit": "Rachel Claire",
+        "sourceUrl": "https://www.pexels.com/photo/5865624/",
+        "license": "Pexels License"
+      }
+    ]
+  },
+  {
+    "slug": "home-gift",
+    "name": "Hearth & Ember Home",
+    "tagline": "Ceramics, candles, kitchen goods, textiles, and gifts for a calm, modern home.",
+    "storeType": "Home Decor Store",
+    "cover": "cover.jpg",
+    "photos": [
+      {
+        "file": "01.jpg",
+        "credit": "Rachel Claire",
+        "sourceUrl": "https://www.pexels.com/photo/5531743/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "02.jpg",
+        "credit": "Zoshua Colah",
+        "sourceUrl": "https://unsplash.com/photos/gIK8upCKV9A",
+        "license": "Unsplash License"
+      },
+      {
+        "file": "03.jpg",
+        "credit": "Matthias Briz",
+        "sourceUrl": "https://www.pexels.com/photo/14723067/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "04.jpg",
+        "credit": "Rachel Claire",
+        "sourceUrl": "https://www.pexels.com/photo/5490931/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "05.jpg",
+        "credit": "Anton Borzenkov",
+        "sourceUrl": "https://unsplash.com/photos/q0CNR8R8oLg",
+        "license": "Unsplash License"
+      },
+      {
+        "file": "06.jpg",
+        "credit": "Nico de Beer",
+        "sourceUrl": "https://www.pexels.com/photo/11949990/",
+        "license": "Pexels License"
+      }
+    ],
+    "video": {
+      "file": "walkthrough.mp4",
+      "credit": "MART PRODUCTION",
+      "sourceUrl": "https://www.pexels.com/video/7668419/",
+      "license": "Pexels License",
+      "durationSeconds": 15.5,
+      "width": 2732,
+      "height": 1440,
+      "note": "Slow pan across a table of handmade ceramics inside a shop (racks visible behind); not a full room walkthrough."
+    }
+  },
+  {
+    "slug": "boutique",
+    "name": "Juniper & June",
+    "tagline": "Women's apparel, jewelry, bags, and accessories with a bright, playful, boho edge.",
+    "storeType": "Apparel Boutique",
+    "cover": "cover.jpg",
+    "photos": [
+      {
+        "file": "01.jpg",
+        "credit": "Ron Lach",
+        "sourceUrl": "https://www.pexels.com/photo/8386651/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "02.jpg",
+        "credit": "Tyler Davis",
+        "sourceUrl": "https://unsplash.com/photos/O8lxsc1RwCQ",
+        "license": "Unsplash License"
+      },
+      {
+        "file": "03.jpg",
+        "credit": "Ksenia Chernaya",
+        "sourceUrl": "https://www.pexels.com/photo/3965551/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "04.jpg",
+        "credit": "Ron Lach",
+        "sourceUrl": "https://www.pexels.com/photo/8386654/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "05.jpg",
+        "credit": "Zhanzat Mamytova",
+        "sourceUrl": "https://www.pexels.com/photo/1827130/",
+        "license": "Pexels License"
+      },
+      {
+        "file": "06.jpg",
+        "credit": "Yasemin Aydoğdu",
+        "sourceUrl": "https://www.pexels.com/photo/14789188/",
+        "license": "Pexels License"
+      }
+    ],
+    "video": {
+      "file": "walkthrough.mp4",
+      "credit": "Ron Lach",
+      "sourceUrl": "https://www.pexels.com/video/8322393/",
+      "license": "Pexels License",
+      "durationSeconds": 18.8,
+      "width": 1080,
+      "height": 2048,
+      "note": "Vertical (phone-style) slow shot of clothing racks in a boutique; no people."
+    }
+  }
+]
