@@ -1,0 +1,402 @@
+{
+  "slug": "home-gift",
+  "kind": "photos",
+  "name": "Hearth & Ember Home",
+  "storeType": "Home Decor Store",
+  "description": "Ceramics, candles, kitchen goods, textiles, and gifts for a calm, modern home.",
+  "capturedAt": "2026-09-03T05:37:55.503Z",
+  "analysisMs": 96849,
+  "meta": {
+    "done": true,
+    "usage": {
+      "input": 10098,
+      "output": 6299
+    },
+    "model": "meta/muse-spark-1.3",
+    "configuredModel": "meta/muse-spark-1.3",
+    "effort": "xhigh",
+    "fallbackReason": null,
+    "issues": [],
+    "provider": "openrouter"
+  },
+  "issues": [],
+  "frames": [
+    {
+      "id": "f1",
+      "file": "home-gift/f1.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f2",
+      "file": "home-gift/f2.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f3",
+      "file": "home-gift/f3.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f4",
+      "file": "home-gift/f4.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f5",
+      "file": "home-gift/f5.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f6",
+      "file": "home-gift/f6.jpg",
+      "timestampMs": 0
+    }
+  ],
+  "analysis": {
+    "store_read": {
+      "store_type_guess": "Curated home decor and gift boutique",
+      "vibe_words": [
+        "warm",
+        "earthy",
+        "tactile",
+        "calm"
+      ],
+      "summary": "Your shelves feel warm and collected, from the creamy walls of handmade vases to the bright blue chair under that ocean painting. You blend earthy ceramics, soft textiles and living green in a way that makes every corner feel welcoming and gift-ready."
+    },
+    "frame_notes": [
+      {
+        "frame_id": "f1",
+        "what_we_saw": "Cozy corner with pillows art candles"
+      },
+      {
+        "frame_id": "f2",
+        "what_we_saw": "Cream ceramic vases on wood wall"
+      },
+      {
+        "frame_id": "f3",
+        "what_we_saw": "Ceramic planters with trailing green plants"
+      },
+      {
+        "frame_id": "f4",
+        "what_we_saw": "Scandi table with lamps textiles shelving"
+      },
+      {
+        "frame_id": "f5",
+        "what_we_saw": "Monochrome vases and glassware on racks"
+      },
+      {
+        "frame_id": "f6",
+        "what_we_saw": "Rustic table with serveware clothes scarves"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Home decor",
+        "share": "dominant",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4",
+          "f5",
+          "f6"
+        ],
+        "examples": [
+          "ceramic vases",
+          "throw pillows",
+          "wall art",
+          "planters"
+        ]
+      },
+      {
+        "name": "Kitchen & tabletop",
+        "share": "strong",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f4",
+          "f5",
+          "f6"
+        ],
+        "examples": [
+          "stoneware bowls",
+          "drinking glasses",
+          "wooden serving boards",
+          "mugs"
+        ]
+      },
+      {
+        "name": "Candles & fragrance",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f5"
+        ],
+        "examples": [
+          "candle jars",
+          "diffuser bottles",
+          "boxed candle sets"
+        ]
+      },
+      {
+        "name": "Bath & body",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1"
+        ],
+        "examples": [
+          "pump lotions",
+          "hand wash"
+        ]
+      },
+      {
+        "name": "Garden & outdoor",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f4"
+        ],
+        "examples": [
+          "potted greenery",
+          "hanging planters"
+        ]
+      },
+      {
+        "name": "Apparel",
+        "share": "trace",
+        "confidence": "high",
+        "evidence_frames": [
+          "f6"
+        ],
+        "examples": [
+          "casual tops",
+          "patterned scarves"
+        ]
+      }
+    ],
+    "styles": [
+      {
+        "name": "natural",
+        "confidence": "high",
+        "evidence_frames": [
+          "f2",
+          "f3",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "minimalist",
+        "confidence": "high",
+        "evidence_frames": [
+          "f2",
+          "f4",
+          "f5"
+        ]
+      },
+      {
+        "name": "boho",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f6"
+        ]
+      },
+      {
+        "name": "scandinavian",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f4",
+          "f5"
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "stoneware",
+        "evidence_frames": [
+          "f2",
+          "f3",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "wood",
+        "evidence_frames": [
+          "f2",
+          "f3",
+          "f4",
+          "f6"
+        ]
+      },
+      {
+        "name": "glass",
+        "evidence_frames": [
+          "f2",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "textile",
+        "evidence_frames": [
+          "f1",
+          "f4",
+          "f6"
+        ]
+      },
+      {
+        "name": "rattan",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f6"
+        ]
+      }
+    ],
+    "palette": [
+      {
+        "name": "Warm white",
+        "hex": "#F5F1E8"
+      },
+      {
+        "name": "Natural oak",
+        "hex": "#C49A6C"
+      },
+      {
+        "name": "Leaf green",
+        "hex": "#5A7D5A"
+      },
+      {
+        "name": "Indigo blue",
+        "hex": "#2A4B9B"
+      },
+      {
+        "name": "Charcoal black",
+        "hex": "#2B2B2B"
+      }
+    ],
+    "price_position": {
+      "tier": "mid",
+      "confidence": "medium",
+      "rationale": "Printed $24 to $149 vase tags and clean boutique fixtures point to attainable mid-market pricing."
+    },
+    "visible_brands": [],
+    "merchandising_notes": [
+      "Layered vignettes pairing chairs throws and art",
+      "Vase walls grouped by color and finish",
+      "Center tables staged for serveware and gifts",
+      "Plants and ladders soften tall shelving"
+    ],
+    "suggested_complements": [
+      {
+        "category": "Stationery & paper",
+        "reason": "Gift cards and journals suit your giftable candles and ceramics."
+      },
+      {
+        "category": "Jewelry & accessories",
+        "reason": "Small handmade jewelry would sit well beside scarves and gift vignettes."
+      },
+      {
+        "category": "Food & drink",
+        "reason": "Pantry treats like teas pair naturally with your bowls and mugs."
+      }
+    ]
+  },
+  "profile": {
+    "storeName": "Hearth & Ember Home",
+    "storeType": "Home Decor Store",
+    "description": "Ceramics, candles, kitchen goods, textiles, and gifts for a calm, modern home.",
+    "categories": [
+      {
+        "name": "Home decor",
+        "share": "dominant",
+        "intent": "more"
+      },
+      {
+        "name": "Kitchen & tabletop",
+        "share": "strong",
+        "intent": "more"
+      },
+      {
+        "name": "Candles & fragrance",
+        "share": "present",
+        "intent": "more"
+      },
+      {
+        "name": "Bath & body",
+        "share": "present",
+        "intent": "more"
+      },
+      {
+        "name": "Garden & outdoor",
+        "share": "present",
+        "intent": "more"
+      },
+      {
+        "name": "Apparel",
+        "share": "trace",
+        "intent": "more"
+      }
+    ],
+    "styles": [
+      "natural",
+      "minimalist",
+      "boho",
+      "scandinavian"
+    ],
+    "materials": [
+      "stoneware",
+      "wood",
+      "glass",
+      "textile",
+      "rattan"
+    ],
+    "palette": [
+      {
+        "name": "Warm white",
+        "hex": "#F5F1E8"
+      },
+      {
+        "name": "Natural oak",
+        "hex": "#C49A6C"
+      },
+      {
+        "name": "Leaf green",
+        "hex": "#5A7D5A"
+      },
+      {
+        "name": "Indigo blue",
+        "hex": "#2A4B9B"
+      },
+      {
+        "name": "Charcoal black",
+        "hex": "#2B2B2B"
+      }
+    ],
+    "priceTier": "unknown",
+    "complements": [
+      "Stationery & paper",
+      "Jewelry & accessories",
+      "Food & drink"
+    ],
+    "mode": "complement",
+    "explore": 0.5,
+    "strength": 0.8,
+    "vibeWords": [
+      "warm",
+      "earthy",
+      "tactile",
+      "calm"
+    ],
+    "summary": "Your shelves feel warm and collected, from the creamy walls of handmade vases to the bright blue chair under that ocean painting. You blend earthy ceramics, soft textiles and living green in a way that makes every corner feel welcoming and gift-ready."
+  }
+}

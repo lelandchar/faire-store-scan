@@ -139,6 +139,7 @@ export default function AnalyzingPage() {
       const med = median(seen);
       if (med) setExpected(med);
       dispatch({ type: "setAnalysisStatus", status: "extracting" });
+      dispatch({ type: "setAnalysisMeta", meta: null });
       dispatch({ type: "setAnalysis", analysis: null });
       dispatch({ type: "setProfile", profile: null });
       dispatch({ type: "setRetrieval", retrieval: null });
@@ -326,7 +327,7 @@ export default function AnalyzingPage() {
           <AnimatePresence>
             {kept && (
               <motion.p key="keep" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
-                Keeping the {kept.length} clearest. Tap any image to look closer. Your video itself never leaves your phone.
+                Keeping {kept.length} clear, distinct views from across your store. Tap any image to look closer. Your video itself never leaves your phone.
               </motion.p>
             )}
           </AnimatePresence>

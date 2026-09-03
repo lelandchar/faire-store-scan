@@ -1,0 +1,2737 @@
+{
+ "bookshop|69furu|shp-0012": {
+  "fit": 1,
+  "junk": true,
+  "why": "Personalized photo suncatcher, off-brand novelty, no literary tie"
+ },
+ "bookshop|69furu|shp-0050": {
+  "fit": 3,
+  "junk": false,
+  "why": "Practical reading light could suit book-loving customers"
+ },
+ "bookshop|69furu|shp-0205": {
+  "fit": 1,
+  "junk": false,
+  "why": "House numbers unrelated to bookshop gift assortment"
+ },
+ "bookshop|69furu|shp-0294": {
+  "fit": 1,
+  "junk": true,
+  "why": "Kitschy artificial food magnet, off-brand novelty item"
+ },
+ "bookshop|69furu|shp-0396": {
+  "fit": 3,
+  "junk": false,
+  "why": "Elegant educational globe fits literary, curious-reader vibe"
+ },
+ "bookshop|69furu|shp-0455": {
+  "fit": 1,
+  "junk": true,
+  "why": "Customizable logo barware, promotional junk, wrong category"
+ },
+ "bookshop|69furu|shp-0507": {
+  "fit": 1,
+  "junk": false,
+  "why": "Seafood tool, no relevance to bookshop offerings"
+ },
+ "bookshop|69furu|shp-0652": {
+  "fit": 1,
+  "junk": false,
+  "why": "Kitchen gadget, unrelated to books/stationery/gifts"
+ },
+ "bookshop|69furu|shp-0663": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market cookware set, totally off-brand for bookstore"
+ },
+ "bookshop|69furu|shp-0705": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk kitchen supply, irrelevant test listing, no fit"
+ },
+ "bookshop|69furu|shp-0714": {
+  "fit": 2,
+  "junk": false,
+  "why": "Plain kitchen tabletop item, no literary/vintage character"
+ },
+ "bookshop|69furu|shp-0715": {
+  "fit": 2,
+  "junk": false,
+  "why": "Holiday decor figurine, tangential to bookshop gift mix"
+ },
+ "bookshop|69furu|shp-0908": {
+  "fit": 1,
+  "junk": true,
+  "why": "Licensed character pencil display, off-brand for literary shop"
+ },
+ "bookshop|69furu|shp-1091": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial paper-jogging equipment, not a boutique gift"
+ },
+ "bookshop|69furu|shp-1172": {
+  "fit": 2,
+  "junk": false,
+  "why": "Niche art pastel, minor fit with stationery/art supplies"
+ },
+ "bookshop|69furu|shp-1197": {
+  "fit": 1,
+  "junk": true,
+  "why": "Vinyl application tool, industrial supply not retail gift"
+ },
+ "bookshop|69furu|shp-1211": {
+  "fit": 1,
+  "junk": true,
+  "why": "Institutional acrylic display rack, not boutique aesthetic"
+ },
+ "bookshop|69furu|shp-1422": {
+  "fit": 1,
+  "junk": false,
+  "why": "Apparel top unrelated to bookshop's core categories"
+ },
+ "bookshop|69furu|shp-1503": {
+  "fit": 1,
+  "junk": false,
+  "why": "Athletic shorts, no connection to bookshop offerings"
+ },
+ "bookshop|69furu|shp-1559": {
+  "fit": 1,
+  "junk": false,
+  "why": "Swimwear burkini, completely unrelated to store concept"
+ },
+ "boutique-video|1fhpjpo|shp-0714": {
+  "fit": 1,
+  "junk": false,
+  "why": "Plain kitchen tabletop item, no boutique style tie-in"
+ },
+ "boutique-video|1fhpjpo|shp-0715": {
+  "fit": 1,
+  "junk": true,
+  "why": "Christmas novelty decor, clashes with coastal minimalist look"
+ },
+ "boutique-video|1fhpjpo|shp-0908": {
+  "fit": 1,
+  "junk": true,
+  "why": "Licensed kids character item, off-brand for boutique aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1091": {
+  "fit": 1,
+  "junk": true,
+  "why": "Office equipment, not a boutique retail product"
+ },
+ "boutique-video|1fhpjpo|shp-1172": {
+  "fit": 1,
+  "junk": false,
+  "why": "Art supply pastel, unrelated to store's product mix"
+ },
+ "boutique-video|1fhpjpo|shp-1197": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial application tool, not a retail product"
+ },
+ "boutique-video|1fhpjpo|shp-1211": {
+  "fit": 1,
+  "junk": true,
+  "why": "Office/commercial display rack, not boutique merchandise"
+ },
+ "boutique-video|1fhpjpo|shp-1422": {
+  "fit": 4,
+  "junk": false,
+  "why": "Boho color-block top fits natural, coastal apparel style"
+ },
+ "boutique-video|1fhpjpo|shp-1503": {
+  "fit": 2,
+  "junk": false,
+  "why": "Athletic shorts don't match boutique's boho aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1559": {
+  "fit": 2,
+  "junk": false,
+  "why": "Niche modest swimwear, doesn't match store's neutral look"
+ },
+ "boutique-video|1fhpjpo|shp-0012": {
+  "fit": 1,
+  "junk": true,
+  "why": "Personalized photo suncatcher, kitschy mass-market, wrong aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-0050": {
+  "fit": 1,
+  "junk": true,
+  "why": "Tech gadget reading light, no aesthetic or category fit"
+ },
+ "boutique-video|1fhpjpo|shp-0205": {
+  "fit": 2,
+  "junk": false,
+  "why": "Chrome hardware letter clashes with natural/boho decor style"
+ },
+ "boutique-video|1fhpjpo|shp-0294": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty fridge magnet food charm, not boutique-credible"
+ },
+ "boutique-video|1fhpjpo|shp-0396": {
+  "fit": 2,
+  "junk": false,
+  "why": "Gadget globe, too tech/novelty for coastal minimalist look"
+ },
+ "boutique-video|1fhpjpo|shp-0455": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic 'your logo here' promo wine set, off-category"
+ },
+ "boutique-video|1fhpjpo|shp-0507": {
+  "fit": 1,
+  "junk": false,
+  "why": "Kitchen tool irrelevant to apparel/accessories boutique"
+ },
+ "boutique-video|1fhpjpo|shp-0652": {
+  "fit": 1,
+  "junk": false,
+  "why": "Garlic press, no relation to store's categories"
+ },
+ "boutique-video|1fhpjpo|shp-0663": {
+  "fit": 1,
+  "junk": false,
+  "why": "Mass cookware set, totally off-category for boutique"
+ },
+ "boutique-video|1fhpjpo|shp-0705": {
+  "fit": 1,
+  "junk": false,
+  "why": "Kitchen wrap/parchment, unrelated to apparel boutique"
+ },
+ "general-store-video|sthzki|shp-0012": {
+  "fit": 1,
+  "junk": true,
+  "why": "Personalized acrylic photo suncatcher, off-brand novelty, not farmhouse"
+ },
+ "general-store-video|sthzki|shp-0050": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand tech gadget, no farmhouse relevance"
+ },
+ "general-store-video|sthzki|shp-0205": {
+  "fit": 2,
+  "junk": false,
+  "why": "Chic hardware letter, sleek not rustic farmhouse style"
+ },
+ "general-store-video|sthzki|shp-0294": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute novelty attachment but niche brand-specific accessory"
+ },
+ "general-store-video|sthzki|shp-0396": {
+  "fit": 1,
+  "junk": false,
+  "why": "High-tech novelty globe, clashes with rustic farmhouse aesthetic"
+ },
+ "general-store-video|sthzki|shp-0455": {
+  "fit": 2,
+  "junk": true,
+  "why": "Bamboo barware but customizable logo promo item"
+ },
+ "general-store-video|sthzki|shp-0507": {
+  "fit": 3,
+  "junk": false,
+  "why": "Fun kitchen tool, could suit coastal farmhouse pantry"
+ },
+ "general-store-video|sthzki|shp-0652": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market gadget, off-brand look"
+ },
+ "general-store-video|sthzki|shp-0663": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk mass-market cookware set, not boutique farmhouse style"
+ },
+ "general-store-video|sthzki|shp-0705": {
+  "fit": 2,
+  "junk": true,
+  "why": "Test listing, industrial checkered wrap, unclear branding"
+ },
+ "general-store-video|sthzki|shp-0714": {
+  "fit": 3,
+  "junk": false,
+  "why": "Plain sugar bowl could fit farmhouse tabletop, but generic look"
+ },
+ "general-store-video|sthzki|shp-0715": {
+  "fit": 2,
+  "junk": true,
+  "why": "Kitschy holiday nutcracker clashes with farmhouse aesthetic"
+ },
+ "general-store-video|sthzki|shp-0908": {
+  "fit": 1,
+  "junk": true,
+  "why": "Licensed kids' character item, off-brand for farmhouse store"
+ },
+ "general-store-video|sthzki|shp-1091": {
+  "fit": 1,
+  "junk": true,
+  "why": "Office paper-folding equipment, irrelevant industrial supply"
+ },
+ "general-store-video|sthzki|shp-1172": {
+  "fit": 1,
+  "junk": false,
+  "why": "Art supply pastel, no relevance to pantry/farmhouse store"
+ },
+ "general-store-video|sthzki|shp-1197": {
+  "fit": 1,
+  "junk": true,
+  "why": "3M promotional tool, industrial supply not boutique"
+ },
+ "general-store-video|sthzki|shp-1211": {
+  "fit": 1,
+  "junk": true,
+  "why": "Clear acrylic literature display, office/retail supply not decor"
+ },
+ "general-store-video|sthzki|shp-1422": {
+  "fit": 4,
+  "junk": false,
+  "why": "Boho floral top matches cottagecore/farmhouse apparel expansion"
+ },
+ "general-store-video|sthzki|shp-1503": {
+  "fit": 1,
+  "junk": true,
+  "why": "Athletic legging shorts don't match farmhouse aesthetic"
+ },
+ "general-store-video|sthzki|shp-1559": {
+  "fit": 1,
+  "junk": false,
+  "why": "Modest swimwear unrelated to farmhouse pantry store concept"
+ },
+ "home-gift-video|1emhj4e|shp-0714": {
+  "fit": 3,
+  "junk": false,
+  "why": "Plain stoneware-style sugar bowl fits minimalist kitchen tabletop line"
+ },
+ "home-gift-video|1emhj4e|shp-0715": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market Christmas nutcracker clashes with rustic artisan aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-0908": {
+  "fit": 1,
+  "junk": true,
+  "why": "Licensed Hello Kitty novelty pencils, not artisan stationery"
+ },
+ "home-gift-video|1emhj4e|shp-1091": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial office paper jogger, irrelevant equipment for boutique"
+ },
+ "home-gift-video|1emhj4e|shp-1172": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk art pastel supply, not gift-ready stationery product"
+ },
+ "home-gift-video|1emhj4e|shp-1197": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial vinyl application tool, unrelated to boutique offerings"
+ },
+ "home-gift-video|1emhj4e|shp-1211": {
+  "fit": 1,
+  "junk": true,
+  "why": "Office literature display rack, not boutique-worthy decor"
+ },
+ "home-gift-video|1emhj4e|shp-1422": {
+  "fit": 2,
+  "junk": false,
+  "why": "Boho apparel could suit gift boutique but outside core categories"
+ },
+ "home-gift-video|1emhj4e|shp-1503": {
+  "fit": 1,
+  "junk": true,
+  "why": "Athletic legging shorts, mismatched with artisan home store"
+ },
+ "home-gift-video|1emhj4e|shp-1559": {
+  "fit": 1,
+  "junk": false,
+  "why": "Modest swimwear entirely unrelated to home/kitchen/gift focus"
+ },
+ "home-gift-video|1emhj4e|shp-0012": {
+  "fit": 1,
+  "junk": true,
+  "why": "Personalized photo suncatcher, mass novelty item, wrong aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-0050": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand tech gadget, unrelated to boutique home/gift focus"
+ },
+ "home-gift-video|1emhj4e|shp-0205": {
+  "fit": 2,
+  "junk": false,
+  "why": "Chrome hardware letter clashes with rustic/artisan materials palette"
+ },
+ "home-gift-video|1emhj4e|shp-0294": {
+  "fit": 3,
+  "junk": false,
+  "why": "Whimsical ceramic fruit accent, fits cottagecore charm loosely"
+ },
+ "home-gift-video|1emhj4e|shp-0396": {
+  "fit": 2,
+  "junk": false,
+  "why": "Novelty science gadget globe, not artisan/rustic aesthetic fit"
+ },
+ "home-gift-video|1emhj4e|shp-0455": {
+  "fit": 1,
+  "junk": true,
+  "why": "Customizable logo promo item, not boutique credible product"
+ },
+ "home-gift-video|1emhj4e|shp-0507": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty colored plastic seafood tool, off-aesthetic gadget"
+ },
+ "home-gift-video|1emhj4e|shp-0652": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mass-market kitchen gadget, not artisan or rustic"
+ },
+ "home-gift-video|1emhj4e|shp-0663": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market copper cookware combo set, wrong tone entirely"
+ },
+ "home-gift-video|1emhj4e|shp-0705": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk industrial food wrap, distributor test listing, no boutique appeal"
+ },
+ "home-gift|fp0m5d|shp-0714": {
+  "fit": 4,
+  "junk": false,
+  "why": "Simple minimalist sugar bowl fits tabletop line"
+ },
+ "home-gift|fp0m5d|shp-0715": {
+  "fit": 2,
+  "junk": false,
+  "why": "Kitschy seasonal decor clashes with boho/Scandi look"
+ },
+ "home-gift|fp0m5d|shp-0908": {
+  "fit": 1,
+  "junk": true,
+  "why": "Licensed character novelty, off-brand for boutique"
+ },
+ "home-gift|fp0m5d|shp-1091": {
+  "fit": 1,
+  "junk": true,
+  "why": "Office equipment, not a boutique retail product"
+ },
+ "home-gift|fp0m5d|shp-1172": {
+  "fit": 1,
+  "junk": false,
+  "why": "Art supply pastel, wrong category for store"
+ },
+ "home-gift|fp0m5d|shp-1197": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial vinyl tool, not a gift item"
+ },
+ "home-gift|fp0m5d|shp-1211": {
+  "fit": 1,
+  "junk": true,
+  "why": "Office/library display rack, not boutique decor"
+ },
+ "home-gift|fp0m5d|shp-1422": {
+  "fit": 3,
+  "junk": false,
+  "why": "Boho floral top fits trace apparel category"
+ },
+ "home-gift|fp0m5d|shp-1503": {
+  "fit": 1,
+  "junk": false,
+  "why": "Athletic shorts unrelated to home/gift boutique"
+ },
+ "home-gift|fp0m5d|shp-1559": {
+  "fit": 1,
+  "junk": false,
+  "why": "Swimwear irrelevant to curated home decor store"
+ },
+ "home-gift|fp0m5d|shp-0012": {
+  "fit": 1,
+  "junk": true,
+  "why": "Personalized photo suncatcher, novelty gift not boutique aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0050": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand tech gadget, no decor/gift relevance"
+ },
+ "home-gift|fp0m5d|shp-0205": {
+  "fit": 2,
+  "junk": false,
+  "why": "Chrome hardware clashes with warm boho/natural aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0294": {
+  "fit": 3,
+  "junk": false,
+  "why": "Whimsical mini decor accent could suit gift shelf"
+ },
+ "home-gift|fp0m5d|shp-0396": {
+  "fit": 3,
+  "junk": false,
+  "why": "Novel decorative globe, interesting gift but tech-leaning"
+ },
+ "home-gift|fp0m5d|shp-0455": {
+  "fit": 1,
+  "junk": true,
+  "why": "Customizable 'your logo here' promotional item"
+ },
+ "home-gift|fp0m5d|shp-0507": {
+  "fit": 2,
+  "junk": false,
+  "why": "Novelty crab cracker, off-style for curated boho shop"
+ },
+ "home-gift|fp0m5d|shp-0652": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic mass-market kitchen gadget, lacks boutique feel"
+ },
+ "home-gift|fp0m5d|shp-0663": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market copper cookware set, not curated boutique style"
+ },
+ "home-gift|fp0m5d|shp-0705": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk industrial food wrap, wrong category and scale"
+ },
+ "bookshop|69furu|shp-2445": {
+  "fit": 4,
+  "junk": false,
+  "why": "Playful gift chocolate, fits food/drink consideration"
+ },
+ "bookshop|69furu|shp-1174": {
+  "fit": 4,
+  "junk": false,
+  "why": "Charming vintage-style ceramic gift, matches decor/gift aesthetic"
+ },
+ "bookshop|69furu|shp-1237": {
+  "fit": 2,
+  "junk": true,
+  "why": "Classroom craft paper, mass-market school supply"
+ },
+ "bookshop|69furu|shp-1272": {
+  "fit": 5,
+  "junk": false,
+  "why": "Literary vintage tartan journal, perfect for dominant category"
+ },
+ "bookshop|69furu|shp-1270": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market planner brand, not boutique feel"
+ },
+ "bookshop|69furu|shp-1229": {
+  "fit": 1,
+  "junk": true,
+  "why": "Plain industrial office clipboard, no boutique appeal"
+ },
+ "bookshop|69furu|shp-1269": {
+  "fit": 2,
+  "junk": true,
+  "why": "Bulk multipack notebooks, generic Amazon-style product"
+ },
+ "bookshop|69furu|shp-0985": {
+  "fit": 5,
+  "junk": false,
+  "why": "Playful illustrated greeting card, fits store's whimsical vibe"
+ },
+ "bookshop|69furu|shp-1093": {
+  "fit": 3,
+  "junk": false,
+  "why": "Unique woven gift box, decor-adjacent but unclear category"
+ },
+ "bookshop|69furu|shp-1254": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic bulk book cover, low-brand mass-market item"
+ },
+ "bookshop|69furu|shp-1294": {
+  "fit": 2,
+  "junk": false,
+  "why": "Scrapbook paper, more craft-store than literary boutique"
+ },
+ "bookshop|69furu|shp-1285": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic off-brand journal, mass-market look"
+ },
+ "bookshop|69furu|shp-1030": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial office equipment, totally off-brand"
+ },
+ "bookshop|69furu|shp-0955": {
+  "fit": 5,
+  "junk": false,
+  "why": "Charming illustrated card fits playful stationery vibe"
+ },
+ "bookshop|69furu|shp-1295": {
+  "fit": 3,
+  "junk": false,
+  "why": "Simple planner could work, generic branding"
+ },
+ "bookshop|69furu|shp-2688": {
+  "fit": 2,
+  "junk": false,
+  "why": "Bulky wooden toy, tangential fit for kids section"
+ },
+ "bookshop|69furu|shp-0846": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market designer perfume, not boutique fragrance"
+ },
+ "bookshop|69furu|shp-1184": {
+  "fit": 2,
+  "junk": false,
+  "why": "Art supply, tangential to core paper/stationery focus"
+ },
+ "bookshop|69furu|shp-0938": {
+  "fit": 2,
+  "junk": false,
+  "why": "Emoji clipfolio feels novelty, not literary/vintage style"
+ },
+ "boutique-video|1fhpjpo|shp-1873": {
+  "fit": 5,
+  "junk": false,
+  "why": "Woven straw tote with leather trim, perfect match"
+ },
+ "boutique-video|1fhpjpo|shp-1548": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty men's garters, unrelated to boutique aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1463": {
+  "fit": 3,
+  "junk": false,
+  "why": "Neutral beanie fits, but branded logo may clash"
+ },
+ "boutique-video|1fhpjpo|shp-1453": {
+  "fit": 1,
+  "junk": true,
+  "why": "Onesie loungewear doesn't fit boutique's coastal minimalist look"
+ },
+ "boutique-video|1fhpjpo|shp-0139": {
+  "fit": 4,
+  "junk": false,
+  "why": "Woven rattan basket aligns with natural, rustic decor"
+ },
+ "boutique-video|1fhpjpo|shp-1706": {
+  "fit": 2,
+  "junk": true,
+  "why": "Rhinestone black handbag, off-brand clone, doesn't fit neutrals"
+ },
+ "boutique-video|1fhpjpo|shp-0384": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral marble jar fits minimalist coastal home decor"
+ },
+ "boutique-video|1fhpjpo|shp-0277": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural wood bookend matches rustic minimalist aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-0331": {
+  "fit": 3,
+  "junk": false,
+  "why": "Natural stones could work as decor filler"
+ },
+ "boutique-video|1fhpjpo|shp-0251": {
+  "fit": 2,
+  "junk": false,
+  "why": "Seasonal Easter decor, off-theme for store's core look"
+ },
+ "boutique-video|1fhpjpo|shp-0356": {
+  "fit": 2,
+  "junk": false,
+  "why": "Faux pine branches skew rustic/Christmas, not core neutral coastal look"
+ },
+ "boutique-video|1fhpjpo|shp-1489": {
+  "fit": 1,
+  "junk": false,
+  "why": "Odd stamped-sole mary jane clashes with minimalist coastal aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1479": {
+  "fit": 1,
+  "junk": false,
+  "why": "Men's wedding tuxedo totally mismatched with boutique's casual apparel focus"
+ },
+ "boutique-video|1fhpjpo|shp-1766": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral scrunchie/clip set fits hair accessories niche well"
+ },
+ "boutique-video|1fhpjpo|shp-0371": {
+  "fit": 1,
+  "junk": false,
+  "why": "Floral slipcover clashes with minimalist neutral, coastal palette"
+ },
+ "boutique-video|1fhpjpo|shp-1645": {
+  "fit": 4,
+  "junk": false,
+  "why": "Cozy ribbed knit leg warmers match chunky knit, coastal vibe"
+ },
+ "boutique-video|1fhpjpo|shp-1828": {
+  "fit": 1,
+  "junk": true,
+  "why": "Logo-heavy bag reads as counterfeit-style, not boutique credible"
+ },
+ "boutique-video|1fhpjpo|shp-1303": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic grey joggers don't match refined neutral, boho aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-0241": {
+  "fit": 2,
+  "junk": false,
+  "why": "Novelty wood elephant bank feels kitschy, off-brand for store"
+ },
+ "boutique-video|1fhpjpo|shp-1806": {
+  "fit": 5,
+  "junk": false,
+  "why": "Neutral leather hobo bag perfectly matches leather tote aesthetic"
+ },
+ "general-store-video|sthzki|shp-2597": {
+  "fit": 5,
+  "junk": false,
+  "why": "Core pantry staple, matches farmhouse food focus perfectly"
+ },
+ "general-store-video|sthzki|shp-2418": {
+  "fit": 5,
+  "junk": false,
+  "why": "Gourmet nut butter gift box, ideal pantry gift item"
+ },
+ "general-store-video|sthzki|shp-0251": {
+  "fit": 3,
+  "junk": false,
+  "why": "Rustic wood decor fits look, but niche seasonal item"
+ },
+ "general-store-video|sthzki|shp-0672": {
+  "fit": 1,
+  "junk": true,
+  "why": "Plasticky novelty travel gadget, clashes with farmhouse aesthetic"
+ },
+ "general-store-video|sthzki|shp-0675": {
+  "fit": 4,
+  "junk": false,
+  "why": "Simple glass/metal shaker fits kitchen tabletop farmhouse style"
+ },
+ "general-store-video|sthzki|shp-0139": {
+  "fit": 4,
+  "junk": false,
+  "why": "Woven basket suits farmhouse decor and storage needs"
+ },
+ "general-store-video|sthzki|shp-0371": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market slipcover, unrelated to pantry/general store theme"
+ },
+ "general-store-video|sthzki|shp-0356": {
+  "fit": 3,
+  "junk": false,
+  "why": "Faux greenery decent but not core to pantry focus"
+ },
+ "general-store-video|sthzki|shp-0384": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural stone jar fits decorative farmhouse tabletop style"
+ },
+ "general-store-video|sthzki|shp-0838": {
+  "fit": 4,
+  "junk": false,
+  "why": "Simple glass candle fits rustic farmhouse ambiance well"
+ },
+ "general-store-video|sthzki|shp-2489": {
+  "fit": 5,
+  "junk": false,
+  "why": "Jarred pantry curd, perfect farmhouse fit"
+ },
+ "general-store-video|sthzki|shp-2350": {
+  "fit": 5,
+  "junk": false,
+  "why": "Classic pantry staple, matches food & drink focus"
+ },
+ "general-store-video|sthzki|shp-0101": {
+  "fit": 3,
+  "junk": false,
+  "why": "Artificial florals; decor fit but not core aesthetic"
+ },
+ "general-store-video|sthzki|shp-3845": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk industrial garden cage, not boutique decor"
+ },
+ "general-store-video|sthzki|shp-2494": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic imported snack pouch, off-brand mass market"
+ },
+ "general-store-video|sthzki|shp-0710": {
+  "fit": 2,
+  "junk": true,
+  "why": "Industrial wire rack, lacks farmhouse charm"
+ },
+ "general-store-video|sthzki|shp-2464": {
+  "fit": 4,
+  "junk": false,
+  "why": "Quality pantry oil, fits gourmet food section"
+ },
+ "general-store-video|sthzki|shp-2402": {
+  "fit": 2,
+  "junk": false,
+  "why": "Neon candy clashes with farmhouse jewel-tone palette"
+ },
+ "general-store-video|sthzki|shp-0617": {
+  "fit": 2,
+  "junk": true,
+  "why": "Commercial foodservice bowl, not boutique tabletop"
+ },
+ "general-store-video|sthzki|shp-0256": {
+  "fit": 4,
+  "junk": false,
+  "why": "Wood/marble floor lamp fits modern farmhouse decor"
+ },
+ "home-gift-video|1emhj4e|shp-3717": {
+  "fit": 4,
+  "junk": false,
+  "why": "Copper rain chain suits rustic garden/outdoor expansion nicely"
+ },
+ "home-gift-video|1emhj4e|shp-0550": {
+  "fit": 2,
+  "junk": false,
+  "why": "Stainless steel with printed joke text, off cottagecore aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-2418": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artisan nut butter gift box fits food & drink expansion"
+ },
+ "home-gift-video|1emhj4e|shp-0658": {
+  "fit": 2,
+  "junk": true,
+  "why": "Odd bed-shaped napkin holder, mass-market look, poor aesthetic match"
+ },
+ "home-gift-video|1emhj4e|shp-0672": {
+  "fit": 1,
+  "junk": true,
+  "why": "Plastic novelty travel cup, totally off-brand for boutique"
+ },
+ "home-gift-video|1emhj4e|shp-0993": {
+  "fit": 3,
+  "junk": false,
+  "why": "Seasonal embosser fits stationery but slightly gimmicky/craft-store feel"
+ },
+ "home-gift-video|1emhj4e|shp-0646": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic acrylic straw dispenser, no artisan appeal"
+ },
+ "home-gift-video|1emhj4e|shp-0844": {
+  "fit": 5,
+  "junk": false,
+  "why": "Linen sachet with lavender fits cottagecore, fragrance line"
+ },
+ "home-gift-video|1emhj4e|shp-0675": {
+  "fit": 2,
+  "junk": false,
+  "why": "Plain glass/metal shaker, lacks handmade rustic charm"
+ },
+ "home-gift-video|1emhj4e|shp-0573": {
+  "fit": 4,
+  "junk": false,
+  "why": "Hand-painted floral pottery butter dish suits artisan shelves"
+ },
+ "home-gift-video|1emhj4e|shp-0838": {
+  "fit": 3,
+  "junk": false,
+  "why": "Faux flame candle is gimmicky but fits candle category"
+ },
+ "home-gift-video|1emhj4e|shp-0621": {
+  "fit": 3,
+  "junk": false,
+  "why": "Minimalist enameled pot fits decor but pricier cookware niche"
+ },
+ "home-gift-video|1emhj4e|shp-0656": {
+  "fit": 4,
+  "junk": false,
+  "why": "Reactive glaze stoneware bowls match drip-glaze aesthetic well"
+ },
+ "home-gift-video|1emhj4e|shp-0635": {
+  "fit": 2,
+  "junk": false,
+  "why": "Stainless steel colander too utilitarian, off rustic theme"
+ },
+ "home-gift-video|1emhj4e|shp-0587": {
+  "fit": 2,
+  "junk": false,
+  "why": "Basic metal cutlery lacks artisan or rustic character"
+ },
+ "home-gift-video|1emhj4e|shp-2489": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artisan jarred food fits food & drink expansion nicely"
+ },
+ "home-gift|fp0m5d|shp-0556": {
+  "fit": 4,
+  "junk": false,
+  "why": "Wood knife block fits kitchen/tabletop natural aesthetic well"
+ },
+ "home-gift|fp0m5d|shp-0039": {
+  "fit": 5,
+  "junk": false,
+  "why": "Turkish towel fits textile-forward boho/Scandinavian look perfectly"
+ },
+ "home-gift|fp0m5d|shp-0101": {
+  "fit": 3,
+  "junk": false,
+  "why": "Artificial branch decor okay but store favors living greenery"
+ },
+ "home-gift|fp0m5d|shp-0241": {
+  "fit": 2,
+  "junk": true,
+  "why": "Novelty DIY craft item, off-brand for curated boutique"
+ },
+ "home-gift|fp0m5d|shp-0167": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial exterior LED fixture, not boutique decor"
+ },
+ "home-gift|fp0m5d|shp-1828": {
+  "fit": 1,
+  "junk": true,
+  "why": "Counterfeit logo bag, off-brand knockoff, inappropriate"
+ },
+ "home-gift|fp0m5d|shp-3724": {
+  "fit": 4,
+  "junk": false,
+  "why": "Rattan porch swing fits garden/boho aesthetic nicely"
+ },
+ "home-gift|fp0m5d|shp-0256": {
+  "fit": 4,
+  "junk": false,
+  "why": "Warm wood/marble floor lamp fits Scandi-natural aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0283": {
+  "fit": 5,
+  "junk": false,
+  "why": "Rattan napkin rings match boho tabletop style perfectly"
+ },
+ "home-gift|fp0m5d|shp-0351": {
+  "fit": 2,
+  "junk": false,
+  "why": "Kid growth chart feels off-brand for warm gift boutique"
+ },
+ "home-gift|fp0m5d|shp-0621": {
+  "fit": 4,
+  "junk": false,
+  "why": "Minimalist enamel pot suits curated kitchen/tabletop selection"
+ },
+ "home-gift|fp0m5d|shp-0356": {
+  "fit": 3,
+  "junk": false,
+  "why": "Faux greenery okay but less premium than living plants"
+ },
+ "home-gift|fp0m5d|shp-0251": {
+  "fit": 2,
+  "junk": false,
+  "why": "Seasonal Easter egg decor niche, limited year-round fit"
+ },
+ "home-gift|fp0m5d|shp-0656": {
+  "fit": 5,
+  "junk": false,
+  "why": "Blue reactive stoneware bowls match store's ceramic, boho vibe"
+ },
+ "home-gift|fp0m5d|shp-0384": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral marble jar fits earthy decorative accessory mix"
+ },
+ "home-gift|fp0m5d|shp-0139": {
+  "fit": 5,
+  "junk": false,
+  "why": "Rattan hanging basket aligns with natural boho storage decor"
+ },
+ "home-gift|fp0m5d|shp-0331": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural pebbles work as vase filler in boho displays"
+ },
+ "bookshop|69furu|shp-0838": {
+  "fit": 3,
+  "junk": false,
+  "why": "Generic flameless candle, borderline fit for gift decor"
+ },
+ "bookshop|69furu|shp-1105": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk craft fragrance oil, not a boutique gift item"
+ },
+ "bookshop|69furu|shp-0968": {
+  "fit": 3,
+  "junk": false,
+  "why": "Licensed novelty card, fun but off literary tone"
+ },
+ "bookshop|69furu|shp-1021": {
+  "fit": 5,
+  "junk": false,
+  "why": "Playful letterpress card fits stationery style perfectly"
+ },
+ "bookshop|69furu|shp-1261": {
+  "fit": 2,
+  "junk": true,
+  "why": "Odd motivational branding, low-quality mass-market notebook"
+ },
+ "boutique-video|1fhpjpo|shp-2489": {
+  "fit": 2,
+  "junk": false,
+  "why": "Niche pastry filling, doesn't match coastal apparel vibe"
+ },
+ "boutique-video|1fhpjpo|shp-0838": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral glass candle fits calm coastal aesthetic well"
+ },
+ "boutique-video|1fhpjpo|shp-2597": {
+  "fit": 2,
+  "junk": false,
+  "why": "Basic flour, low price, odd fit for boutique"
+ },
+ "boutique-video|1fhpjpo|shp-2418": {
+  "fit": 3,
+  "junk": false,
+  "why": "Nice gift box food item, fits considered category"
+ },
+ "boutique-video|1fhpjpo|shp-1465": {
+  "fit": 5,
+  "junk": false,
+  "why": "Neutral wool coat perfectly matches natural minimalist apparel"
+ },
+ "boutique-video|1fhpjpo|shp-1643": {
+  "fit": 2,
+  "junk": true,
+  "why": "Maternity photo prop, not typical boutique apparel"
+ },
+ "boutique|19tqing|shp-1732": {
+  "fit": 1,
+  "junk": true,
+  "why": "Counterfeit Chanel-style bag, not credible wholesale product"
+ },
+ "boutique|19tqing|shp-1489": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic mary jane flats, not matching boho/playful aesthetic"
+ },
+ "boutique|19tqing|shp-1828": {
+  "fit": 1,
+  "junk": true,
+  "why": "Fendi logo knockoff bag, counterfeit risk"
+ },
+ "boutique|19tqing|shp-1648": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial food service coverall, completely off-brand"
+ },
+ "boutique|19tqing|shp-2188": {
+  "fit": 2,
+  "junk": false,
+  "why": "Basic pumice stone, functional but low style fit"
+ },
+ "boutique|19tqing|shp-1422": {
+  "fit": 5,
+  "junk": false,
+  "why": "Boho floral peasant top matches playful, soft palette perfectly"
+ },
+ "boutique|19tqing|shp-1564": {
+  "fit": 2,
+  "junk": false,
+  "why": "Maternity distressed denim, niche and off-aesthetic"
+ },
+ "boutique|19tqing|shp-1730": {
+  "fit": 1,
+  "junk": true,
+  "why": "Blender part mislabeled as jewelry, clearly junk"
+ },
+ "boutique|19tqing|shp-1873": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural woven straw bag fits boho, natural materials theme"
+ },
+ "boutique|19tqing|shp-1522": {
+  "fit": 3,
+  "junk": false,
+  "why": "Loungewear tracksuit fits cozy robe corner somewhat"
+ },
+ "boutique|19tqing|shp-1645": {
+  "fit": 3,
+  "junk": false,
+  "why": "Playful knit accessory, fits boho vibe loosely"
+ },
+ "boutique|19tqing|shp-1451": {
+  "fit": 5,
+  "junk": false,
+  "why": "Soft cream lace blouse matches boutique aesthetic perfectly"
+ },
+ "boutique|19tqing|shp-0844": {
+  "fit": 4,
+  "junk": false,
+  "why": "Linen fragrance sachet fits gifting and fresh vibe"
+ },
+ "boutique|19tqing|shp-1317": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cute baby accessory, fits considered kids category"
+ },
+ "boutique|19tqing|shp-1542": {
+  "fit": 1,
+  "junk": true,
+  "why": "Burberry check clone, counterfeit-style, not credible boutique item"
+ },
+ "boutique|19tqing|shp-0823": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic ceramic oil burner, mismatched playful/boho style"
+ },
+ "boutique|19tqing|shp-1519": {
+  "fit": 1,
+  "junk": false,
+  "why": "Rugged utilitarian sandal clashes with soft feminine aesthetic"
+ },
+ "boutique|19tqing|shp-1643": {
+  "fit": 2,
+  "junk": false,
+  "why": "Niche maternity item, not core to boutique's style"
+ },
+ "boutique|19tqing|shp-1675": {
+  "fit": 3,
+  "junk": false,
+  "why": "Preppy kids swim fits considered kids expansion"
+ },
+ "boutique|19tqing|shp-1439": {
+  "fit": 5,
+  "junk": false,
+  "why": "Neutral cozy sweater set matches minimalist boho look"
+ },
+ "general-store-video|sthzki|shp-3818": {
+  "fit": 2,
+  "junk": false,
+  "why": "Garden decor but heavy concrete style, not farmhouse pantry vibe"
+ },
+ "general-store-video|sthzki|shp-2610": {
+  "fit": 1,
+  "junk": true,
+  "why": "Looks like restaurant dish photo, not packaged retail product"
+ },
+ "general-store-video|sthzki|shp-0646": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial plastic dispenser, not boutique farmhouse aesthetic"
+ },
+ "general-store-video|sthzki|shp-2551": {
+  "fit": 3,
+  "junk": false,
+  "why": "Novelty pantry item, gluten-free, fits specialty food shelf"
+ },
+ "home-gift-video|1emhj4e|shp-0742": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial stainless bain-marie, not artisan boutique style"
+ },
+ "home-gift-video|1emhj4e|shp-0617": {
+  "fit": 1,
+  "junk": true,
+  "why": "Commercial restaurant-supply mixing bowl, not boutique aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-0775": {
+  "fit": 3,
+  "junk": false,
+  "why": "Handmade ceramic but ornate folk style clashes with minimalist look"
+ },
+ "home-gift-video|1emhj4e|shp-0461": {
+  "fit": 4,
+  "junk": false,
+  "why": "Minimalist organic white ceramic saucer fits rustic tabletop aesthetic"
+ },
+ "home-gift|fp0m5d|shp-1717": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market ring, not boho/natural aesthetic fit"
+ },
+ "home-gift|fp0m5d|shp-0371": {
+  "fit": 1,
+  "junk": true,
+  "why": "Floral polyester slipcover clashes with curated natural boho look"
+ },
+ "home-gift|fp0m5d|shp-0629": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural teak, fits kitchen/tabletop and earthy aesthetic perfectly"
+ },
+ "boutique-video|1fhpjpo|shp-1885": {
+  "fit": 2,
+  "junk": true,
+  "why": "Novelty gnome print clashes with minimalist coastal aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1542": {
+  "fit": 1,
+  "junk": true,
+  "why": "Obvious designer knockoff, not credible boutique wholesale item"
+ },
+ "boutique|19tqing|shp-1504": {
+  "fit": 1,
+  "junk": true,
+  "why": "Technical ski gear clashes with boho boutique aesthetic"
+ },
+ "general-store-video|sthzki|shp-2516": {
+  "fit": 4,
+  "junk": false,
+  "why": "Fits farmhouse pantry baking/extract category nicely"
+ },
+ "home-gift-video|1emhj4e|shp-3845": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial garden supply, not artisan boutique gift item"
+ },
+ "bookshop|69furu|shp-1265": {
+  "fit": 2,
+  "junk": true,
+  "why": "Novelty mass-market bookmark packaging, not boutique feel"
+ },
+ "bookshop|69furu|shp-1296": {
+  "fit": 4,
+  "junk": false,
+  "why": "Vintage-styled notepads fit literary aesthetic well"
+ },
+ "bookshop|69furu|shp-1081": {
+  "fit": 4,
+  "junk": false,
+  "why": "Elegant boxed stationery fits strong stationery category"
+ },
+ "bookshop|69furu|shp-0918": {
+  "fit": 4,
+  "junk": false,
+  "why": "Charming illustrated card fits gift card offerings"
+ },
+ "boutique-video|1fhpjpo|shp-1439": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral knit set matches sweater/coastal aesthetic well"
+ },
+ "boutique-video|1fhpjpo|shp-1648": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial workwear coverall, irrelevant to boutique"
+ },
+ "boutique-video|1fhpjpo|shp-1451": {
+  "fit": 3,
+  "junk": false,
+  "why": "Feminine lace blouse could fit, though delicate not minimalist"
+ },
+ "boutique-video|1fhpjpo|shp-2434": {
+  "fit": 2,
+  "junk": false,
+  "why": "Niche specialty food item, unclear fit for store"
+ },
+ "boutique-video|1fhpjpo|shp-1229": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial office clipboard, not boutique stationery"
+ },
+ "boutique|19tqing|shp-1717": {
+  "fit": 4,
+  "junk": false,
+  "why": "Delicate stackable ring fits jewelry wall, playful minimalist style"
+ },
+ "boutique|19tqing|shp-1463": {
+  "fit": 1,
+  "junk": false,
+  "why": "Technical outdoor brand beanie doesn't match boho boutique aesthetic"
+ },
+ "boutique|19tqing|shp-1414": {
+  "fit": 1,
+  "junk": false,
+  "why": "Kids activewear brand mismatched with women's apparel focus"
+ },
+ "boutique|19tqing|shp-2791": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic bulk baby storage bags, low-end mass-market feel"
+ },
+ "boutique|19tqing|shp-0838": {
+  "fit": 3,
+  "junk": false,
+  "why": "Simple glass candle could fit cozy gifting corner nicely"
+ },
+ "boutique|19tqing|shp-0813": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic dropship gadget, doesn't match curated boutique aesthetic"
+ },
+ "boutique|19tqing|shp-1437": {
+  "fit": 2,
+  "junk": false,
+  "why": "Maternity sleepwear too niche, style mismatched with brand feel"
+ },
+ "general-store-video|sthzki|shp-2434": {
+  "fit": 5,
+  "junk": false,
+  "why": "Artisanal glass-bottled treacle, perfect pantry aesthetic"
+ },
+ "general-store-video|sthzki|shp-2541": {
+  "fit": 5,
+  "junk": false,
+  "why": "Boutique jar salt with wood lid, farmhouse fit"
+ },
+ "general-store-video|sthzki|shp-2391": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk generic herb from mass Chinese wholesaler, no branding"
+ },
+ "general-store-video|sthzki|shp-2608": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market grocery store canned fruit, not boutique"
+ },
+ "general-store-video|sthzki|shp-2312": {
+  "fit": 1,
+  "junk": true,
+  "why": "Plastic-bagged mass candy, off-brand look, no farmhouse feel"
+ },
+ "general-store-video|sthzki|shp-2558": {
+  "fit": 5,
+  "junk": false,
+  "why": "Established organic spice brand, ideal pantry shelf item"
+ },
+ "general-store-video|sthzki|shp-2592": {
+  "fit": 2,
+  "junk": true,
+  "why": "Big-box CPG snack brand, generic supermarket packaging"
+ },
+ "general-store-video|sthzki|shp-2414": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market bottled soda, no artisanal farmhouse relevance"
+ },
+ "home-gift-video|1emhj4e|shp-0813": {
+  "fit": 2,
+  "junk": true,
+  "why": "Modern metal lamp clashes with rustic handmade aesthetic, mass-market look"
+ },
+ "home-gift-video|1emhj4e|shp-0955": {
+  "fit": 3,
+  "junk": false,
+  "why": "Whimsical greeting card fits stationery niche, though urban theme slightly off"
+ },
+ "home-gift-video|1emhj4e|shp-0655": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk generic canning kit, not artisan boutique product"
+ },
+ "home-gift-video|1emhj4e|shp-0823": {
+  "fit": 3,
+  "junk": false,
+  "why": "Ceramic oil burner fits candle category but generic text design"
+ },
+ "home-gift|fp0m5d|shp-0838": {
+  "fit": 4,
+  "junk": false,
+  "why": "Flameless candle fits cozy warm aesthetic well"
+ },
+ "home-gift|fp0m5d|shp-0009": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market towel brand, not curated boutique feel"
+ },
+ "home-gift|fp0m5d|shp-0178": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artificial palm aligns with living green boho decor"
+ },
+ "home-gift|fp0m5d|shp-0813": {
+  "fit": 3,
+  "junk": false,
+  "why": "Modern candle warmer lamp fits fragrance category loosely"
+ },
+ "home-gift|fp0m5d|shp-0318": {
+  "fit": 4,
+  "junk": false,
+  "why": "Moss planter fits natural greenery gift-ready aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0319": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty hair bonnet, off-brand, not boutique home decor"
+ },
+ "bookshop|69furu|shp-1258": {
+  "fit": 4,
+  "junk": false,
+  "why": "Pretty floral address book fits literary/vintage stationery aesthetic"
+ },
+ "bookshop|69furu|shp-1279": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic bulk 8-pack, mass-market office supply look"
+ },
+ "bookshop|69furu|shp-1297": {
+  "fit": 2,
+  "junk": true,
+  "why": "Plain industrial black bookends, lacks boutique charm"
+ },
+ "boutique-video|1fhpjpo|shp-0813": {
+  "fit": 3,
+  "junk": false,
+  "why": "Brass tone fits aesthetic, candle category present"
+ },
+ "boutique-video|1fhpjpo|shp-1345": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty graphic tee, off-brand, not boutique style"
+ },
+ "boutique-video|1fhpjpo|shp-1496": {
+  "fit": 1,
+  "junk": true,
+  "why": "Technical heated gear, off-brand tech, wrong aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1717": {
+  "fit": 3,
+  "junk": false,
+  "why": "Silver stackable ring, decent jewelry fit but not brass"
+ },
+ "boutique-video|1fhpjpo|shp-0283": {
+  "fit": 5,
+  "junk": false,
+  "why": "Rattan napkin rings match coastal, natural home decor look"
+ },
+ "boutique|19tqing|shp-1548": {
+  "fit": 1,
+  "junk": true,
+  "why": "Men's novelty garters, unrelated to women's boutique aesthetic"
+ },
+ "boutique|19tqing|shp-1345": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty joke tee, clashes with boutique's soft playful style"
+ },
+ "boutique|19tqing|shp-1453": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic black onesie, no brand identity, mass-market feel"
+ },
+ "boutique|19tqing|shp-1806": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral hobo bag fits boho minimalist accessory wall nicely"
+ },
+ "general-store-video|sthzki|shp-2399": {
+  "fit": 3,
+  "junk": false,
+  "why": "Organic pantry oil fits, but plain generic label"
+ },
+ "general-store-video|sthzki|shp-2448": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mislabeled sweetener, mass-market plastic bottle, off-brand"
+ },
+ "general-store-video|sthzki|shp-2352": {
+  "fit": 2,
+  "junk": false,
+  "why": "Plastic protein drink, too convenience-store for farmhouse look"
+ },
+ "home-gift-video|1emhj4e|shp-0422": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market plastic kitchen tool, clashes with artisan handmade aesthetic"
+ },
+ "bookshop|69furu|shp-1054": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic office mesh tray, not boutique gift"
+ },
+ "bookshop|69furu|shp-0939": {
+  "fit": 2,
+  "junk": true,
+  "why": "Cheap novelty pencils, oddly branded, low quality feel"
+ },
+ "bookshop|69furu|shp-0965": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk institutional office supply, not curated retail"
+ },
+ "bookshop|69furu|shp-1086": {
+  "fit": 3,
+  "junk": false,
+  "why": "Useful gift-wrap filler, fits playful gift aesthetic"
+ },
+ "bookshop|69furu|shp-1217": {
+  "fit": 1,
+  "junk": true,
+  "why": "Corporate promo-style item, no charm or fit"
+ },
+ "bookshop|69furu|shp-1290": {
+  "fit": 2,
+  "junk": true,
+  "why": "Clinical lab notebook, not literary or giftable"
+ },
+ "boutique-video|1fhpjpo|shp-1626": {
+  "fit": 1,
+  "junk": true,
+  "why": "Streetwear hip-hop bomber clashes with natural minimalist coastal look"
+ },
+ "boutique-video|1fhpjpo|shp-1519": {
+  "fit": 2,
+  "junk": false,
+  "why": "Sporty tech sandal, not aligned with boutique's soft coastal aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1393": {
+  "fit": 3,
+  "junk": false,
+  "why": "Floral bandana could work as accessory but bold pattern differs from neutrals"
+ },
+ "boutique-video|1fhpjpo|shp-0039": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural cotton Turkish towel fits coastal, minimalist home decor niche"
+ },
+ "boutique-video|1fhpjpo|shp-1054": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mesh office supply, unrelated to boutique's curated aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1730": {
+  "fit": 1,
+  "junk": true,
+  "why": "Blender lip ring mislabeled as jewelry, off-brand industrial part"
+ },
+ "boutique-video|1fhpjpo|shp-1675": {
+  "fit": 2,
+  "junk": false,
+  "why": "Kids swim shorts don't match women's apparel/accessories focus"
+ },
+ "boutique|19tqing|shp-3046": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute neutral kids item but outside core apparel/jewelry focus"
+ },
+ "boutique|19tqing|shp-2860": {
+  "fit": 2,
+  "junk": false,
+  "why": "Novelty print clashes with soft minimalist boho aesthetic"
+ },
+ "boutique|19tqing|shp-1465": {
+  "fit": 5,
+  "junk": false,
+  "why": "Neutral wool coat fits apparel style and material palette perfectly"
+ },
+ "boutique|19tqing|shp-3052": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty safety gadget, not a boutique gift item"
+ },
+ "boutique|19tqing|shp-1766": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral tone hair accessory fits jewelry wall nicely"
+ },
+ "boutique|19tqing|shp-1373": {
+  "fit": 3,
+  "junk": false,
+  "why": "Trendy denim skort, playful but leans streetwear not boho"
+ },
+ "general-store-video|sthzki|shp-0655": {
+  "fit": 3,
+  "junk": true,
+  "why": "Generic imported kit, not boutique branded pantry item"
+ },
+ "general-store-video|sthzki|shp-2459": {
+  "fit": 4,
+  "junk": false,
+  "why": "Jarred salsa fits pantry/food focus, plain branding"
+ },
+ "general-store-video|sthzki|shp-0283": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural rattan napkin rings match farmhouse linens perfectly"
+ },
+ "general-store-video|sthzki|shp-3592": {
+  "fit": 1,
+  "junk": true,
+  "why": "Kitschy mass-market mailbox cover, off-brand aesthetic"
+ },
+ "general-store-video|sthzki|shp-0154": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic chenille pillow, weak farmhouse tie, pricey"
+ },
+ "general-store-video|sthzki|shp-2439": {
+  "fit": 5,
+  "junk": false,
+  "why": "Gourmet jarred olives fit jewel-toned pantry wall"
+ },
+ "general-store-video|sthzki|shp-2470": {
+  "fit": 5,
+  "junk": false,
+  "why": "Trusted natural pantry staple, matches kraft/farmhouse vibe"
+ },
+ "home-gift-video|1emhj4e|shp-2597": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artisan flour fits food & drink expansion, rustic vibe"
+ },
+ "home-gift-video|1emhj4e|shp-0606": {
+  "fit": 1,
+  "junk": true,
+  "why": "Industrial storage rack, not boutique home decor"
+ },
+ "home-gift-video|1emhj4e|shp-0421": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk bottling supply, not gift-worthy boutique item"
+ },
+ "home-gift-video|1emhj4e|shp-0408": {
+  "fit": 5,
+  "junk": false,
+  "why": "Artisan hand-painted dinnerware, perfect craft aesthetic match"
+ },
+ "home-gift-video|1emhj4e|shp-0520": {
+  "fit": 3,
+  "junk": false,
+  "why": "Simple metal cutter, fits kitchen tabletop but generic"
+ },
+ "home-gift|fp0m5d|shp-0162": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market towel set, not boutique curated feel"
+ },
+ "home-gift|fp0m5d|shp-0277": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural stone bookend fits earthy minimalist aesthetic perfectly"
+ },
+ "home-gift|fp0m5d|shp-0252": {
+  "fit": 1,
+  "junk": true,
+  "why": "Branded yoga prop, gym item, not home decor gift"
+ },
+ "home-gift|fp0m5d|shp-0154": {
+  "fit": 4,
+  "junk": false,
+  "why": "Cozy boho floor cushion matches textile/Scandinavian look"
+ },
+ "home-gift|fp0m5d|shp-0093": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk hardware supply, generic drapery accessory, no boutique appeal"
+ },
+ "home-gift|fp0m5d|shp-1229": {
+  "fit": 1,
+  "junk": true,
+  "why": "Plain office clipboard, industrial supply, no decor value"
+ },
+ "boutique-video|1fhpjpo|shp-0844": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural linen sachet fits fragrance category and coastal-minimalist look"
+ },
+ "general-store-video|sthzki|shp-3840": {
+  "fit": 1,
+  "junk": true,
+  "why": "Synthetic turf; mass-market landscaping supply, not farmhouse boutique decor"
+ },
+ "home-gift-video|1emhj4e|shp-1054": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market office supply, wrong materials/style, no artisan appeal"
+ },
+ "home-gift|fp0m5d|shp-0020": {
+  "fit": 2,
+  "junk": false,
+  "why": "Too sleek/modern brass, off from earthy boho aesthetic"
+ },
+ "bookshop|69furu|shp-0813": {
+  "fit": 2,
+  "junk": false,
+  "why": "Modern lamp style clashes with literary vintage aesthetic"
+ },
+ "bookshop|69furu|shp-1877": {
+  "fit": 1,
+  "junk": true,
+  "why": "Counterfeit Gucci wallet, not credible boutique product"
+ },
+ "bookshop|69furu|shp-0823": {
+  "fit": 1,
+  "junk": false,
+  "why": "Generic ceramic oil burner, doesn't match shop's aesthetic"
+ },
+ "bookshop|69furu|shp-0987": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk economy office binders, not boutique gift item"
+ },
+ "bookshop|69furu|shp-1057": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk office index dividers, purely functional supply item"
+ },
+ "bookshop|69furu|shp-1284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Plain bulk memo pads, no literary or design appeal"
+ },
+ "boutique-video|1fhpjpo|shp-1476": {
+  "fit": 2,
+  "junk": false,
+  "why": "Men's coat, wrong gender focus, doesn't match coastal aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1592": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market men's suit, totally off-brand for boutique"
+ },
+ "boutique-video|1fhpjpo|shp-1414": {
+  "fit": 1,
+  "junk": false,
+  "why": "Kids activewear, wrong category and demographic for store"
+ },
+ "boutique-video|1fhpjpo|shp-1473": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk generic socks, no boutique appeal or aesthetic fit"
+ },
+ "boutique-video|1fhpjpo|shp-1459": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty men's underwear, inappropriate for this boutique's vibe"
+ },
+ "boutique-video|1fhpjpo|shp-0938": {
+  "fit": 1,
+  "junk": true,
+  "why": "Juvenile emoji design clashes with minimalist neutral aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1428": {
+  "fit": 1,
+  "junk": false,
+  "why": "Bold graphic men's activewear, opposite of coastal minimalist look"
+ },
+ "boutique|19tqing|shp-1592": {
+  "fit": 1,
+  "junk": false,
+  "why": "Men's suits, wrong gender/category entirely"
+ },
+ "boutique|19tqing|shp-1459": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty men's undergarment, inappropriate for boutique"
+ },
+ "boutique|19tqing|shp-2958": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cute kids coat, fits neutral palette but new category"
+ },
+ "boutique|19tqing|shp-1666": {
+  "fit": 1,
+  "junk": false,
+  "why": "Men's cargo shorts, not this store's aesthetic"
+ },
+ "boutique|19tqing|shp-1625": {
+  "fit": 1,
+  "junk": false,
+  "why": "Men's basic tank, no fit for women's boutique"
+ },
+ "general-store-video|sthzki|shp-2485": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market branded soda, not artisanal farmhouse pantry fit"
+ },
+ "home-gift-video|1emhj4e|shp-0607": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market packaged item, not artisan or boutique-style"
+ },
+ "home-gift-video|1emhj4e|shp-0441": {
+  "fit": 1,
+  "junk": true,
+  "why": "Cheap plastic dollar-store peelers, clashes with artisan aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0617": {
+  "fit": 2,
+  "junk": true,
+  "why": "Commercial restaurant-grade bowl, not boutique gift decor"
+ },
+ "home-gift|fp0m5d|shp-0326": {
+  "fit": 1,
+  "junk": true,
+  "why": "Ornate crystal chandelier clashes with natural/boho aesthetic"
+ },
+ "home-gift|fp0m5d|shp-0264": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market artificial tree, off-brand seasonal filler"
+ },
+ "home-gift|fp0m5d|shp-0037": {
+  "fit": 1,
+  "junk": true,
+  "why": "Kids' nap mat, unrelated category and juvenile print"
+ },
+ "bookshop|69furu|shp-2923": {
+  "fit": 4,
+  "junk": false,
+  "why": "Wooden toy fits playful, natural look, kids section"
+ },
+ "bookshop|69furu|shp-0927": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic office supply, lacks literary/vintage charm"
+ },
+ "bookshop|69furu|shp-1033": {
+  "fit": 2,
+  "junk": false,
+  "why": "Scrapbook paper too craft-store, not quite literary fit"
+ },
+ "bookshop|69furu|shp-1031": {
+  "fit": 5,
+  "junk": false,
+  "why": "Elegant fountain pen perfectly suits literary stationery shop"
+ },
+ "boutique|19tqing|shp-1620": {
+  "fit": 1,
+  "junk": true,
+  "why": "Men's snow gear, wrong category and gender for boutique"
+ },
+ "boutique|19tqing|shp-2688": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute wooden toy but store doesn't yet carry kids toys"
+ },
+ "boutique|19tqing|shp-1882": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand hair extension, not boutique jewelry style"
+ },
+ "home-gift-video|1emhj4e|shp-3814": {
+  "fit": 2,
+  "junk": false,
+  "why": "Live plants outside core categories; logistics mismatch for boutique."
+ },
+ "home-gift-video|1emhj4e|shp-0384": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural marble decor jar fits rustic minimalist aesthetic well."
+ },
+ "home-gift-video|1emhj4e|shp-0499": {
+  "fit": 4,
+  "junk": false,
+  "why": "Nature-etched glass fits rustic tabletop look, though not stoneware/amber"
+ },
+ "bookshop|69furu|shp-1873": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic beach bag, off-brand, unrelated to bookshop aesthetic"
+ },
+ "bookshop|69furu|shp-1240": {
+  "fit": 3,
+  "junk": false,
+  "why": "Art supply fits stationery but niche for casual gift shoppers"
+ },
+ "bookshop|69furu|shp-0844": {
+  "fit": 4,
+  "junk": false,
+  "why": "Charming linen sachet fits fragrance category and cozy aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1240": {
+  "fit": 1,
+  "junk": true,
+  "why": "Craft art supply, unrelated to boutique apparel/accessories aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1354": {
+  "fit": 1,
+  "junk": true,
+  "why": "Biker jacket clashes with soft coastal-minimalist boutique style"
+ },
+ "home-gift-video|1emhj4e|shp-3504": {
+  "fit": 2,
+  "junk": false,
+  "why": "Live plant, tangential fit; shipping/perishability issues for gift boutique"
+ },
+ "home-gift-video|1emhj4e|shp-0251": {
+  "fit": 2,
+  "junk": false,
+  "why": "Rustic wood decor but oversized, niche seasonal Easter item"
+ },
+ "home-gift-video|1emhj4e|shp-1229": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic office clipboard, no artisan or gift appeal"
+ },
+ "home-gift|fp0m5d|shp-0023": {
+  "fit": 2,
+  "junk": false,
+  "why": "Curtain hardware finial, too industrial/utilitarian for curated decor boutique"
+ },
+ "bookshop|69furu|shp-1263": {
+  "fit": 2,
+  "junk": false,
+  "why": "Tactical/utility notebook, off-brand feel, clashes with literary vintage aesthetic"
+ },
+ "bookshop|69furu|shp-1280": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mass-market office supply, not boutique-worthy"
+ },
+ "boutique|19tqing|shp-1706": {
+  "fit": 1,
+  "junk": true,
+  "why": "Rhinestone knockoff bag, off-brand clone, wrong aesthetic"
+ },
+ "boutique|19tqing|shp-1626": {
+  "fit": 1,
+  "junk": true,
+  "why": "Hip hop streetwear bomber, off-brand, mismatched style"
+ },
+ "boutique|19tqing|shp-1563": {
+  "fit": 3,
+  "junk": false,
+  "why": "Boho cape could fit, color palette slightly bold"
+ },
+ "boutique|19tqing|shp-1354": {
+  "fit": 1,
+  "junk": false,
+  "why": "Men's biker jacket, wrong category and gender for store"
+ },
+ "boutique|19tqing|shp-1555": {
+  "fit": 1,
+  "junk": true,
+  "why": "Boxing brand tank, unrelated to boutique aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-1093": {
+  "fit": 2,
+  "junk": false,
+  "why": "Ornate lacquered gift box clashes with rustic minimalist aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-0938": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty emoji clipfolio, mass-market look, wrong style entirely"
+ },
+ "home-gift|fp0m5d|shp-0062": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute novelty print, but too whimsical/mass-market for earthy curated aesthetic"
+ },
+ "bookshop|69furu|shp-1259": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market novelty notebook, off-brand quality, not literary/curated"
+ },
+ "bookshop|69furu|shp-0366": {
+  "fit": 1,
+  "junk": true,
+  "why": "Random UK village magnet, irrelevant, off-brand tourist novelty item"
+ },
+ "boutique-video|1fhpjpo|shp-0154": {
+  "fit": 2,
+  "junk": false,
+  "why": "Chenille poly texture clashes with natural/minimalist coastal aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-0256": {
+  "fit": 4,
+  "junk": false,
+  "why": "Wood/marble floor lamp fits natural minimalist look, considers home decor"
+ },
+ "boutique-video|1fhpjpo|shp-0939": {
+  "fit": 2,
+  "junk": false,
+  "why": "Novelty pencils feel off-tone, weak fit for calm aesthetic"
+ },
+ "general-store-video|sthzki|shp-0111": {
+  "fit": 4,
+  "junk": false,
+  "why": "Mason jar solar lights fit farmhouse/cottagecore garden aesthetic well"
+ },
+ "general-store-video|sthzki|shp-3724": {
+  "fit": 2,
+  "junk": false,
+  "why": "Large furniture item, poor fit for pantry/general store format"
+ },
+ "home-gift-video|1emhj4e|shp-1237": {
+  "fit": 1,
+  "junk": true,
+  "why": "School art supply, not boutique gift decor"
+ },
+ "home-gift-video|1emhj4e|shp-2541": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artisan food product fits food & drink expansion nicely"
+ },
+ "home-gift-video|1emhj4e|shp-3724": {
+  "fit": 2,
+  "junk": true,
+  "why": "Bulky mass-market furniture, unlikely at this wholesale price"
+ },
+ "home-gift-video|1emhj4e|shp-0512": {
+  "fit": 3,
+  "junk": false,
+  "why": "Wood servers fit kitchen, but painted handle feels off-style"
+ },
+ "home-gift-video|1emhj4e|shp-0283": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural woven texture matches cottagecore tabletop aesthetic well"
+ },
+ "home-gift-video|1emhj4e|shp-3682": {
+  "fit": 1,
+  "junk": true,
+  "why": "Cheap mass camping gear, wrong aesthetic and category"
+ },
+ "home-gift|fp0m5d|shp-0302": {
+  "fit": 3,
+  "junk": false,
+  "why": "Natural textile tassel, fits boho look, niche accessory item"
+ },
+ "home-gift|fp0m5d|shp-0233": {
+  "fit": 5,
+  "junk": false,
+  "why": "Neutral linen tea towel, perfect for kitchen/tabletop aesthetic"
+ },
+ "boutique|19tqing|shp-1667": {
+  "fit": 1,
+  "junk": false,
+  "why": "Loud novelty print clashes with soft, minimalist boho aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-0623": {
+  "fit": 2,
+  "junk": false,
+  "why": "Bright printed mass-market print clashes with natural, minimalist rustic aesthetic"
+ },
+ "home-gift|fp0m5d|shp-2597": {
+  "fit": 2,
+  "junk": false,
+  "why": "Food category considered but plain flour lacks giftable, decor appeal"
+ },
+ "boutique-video|1fhpjpo|shp-1488": {
+  "fit": 5,
+  "junk": false,
+  "why": "Woven straw hats match natural coastal aesthetic and hat wall perfectly"
+ },
+ "boutique|19tqing|shp-2037": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-market bath gadget, off-brand look, not boutique aesthetic"
+ },
+ "general-store-video|sthzki|shp-0039": {
+  "fit": 4,
+  "junk": false,
+  "why": "Striped linen towel fits farmhouse textile aesthetic well"
+ },
+ "general-store-video|sthzki|shp-2371": {
+  "fit": 2,
+  "junk": false,
+  "why": "Plain flour prepack, clashes with jewel-toned artisan pantry branding"
+ },
+ "home-gift-video|1emhj4e|shp-0757": {
+  "fit": 5,
+  "junk": false,
+  "why": "Stoneware sugar bowl matches rustic tabletop aesthetic perfectly"
+ },
+ "bookshop|69furu|shp-0993": {
+  "fit": 4,
+  "junk": false,
+  "why": "Embossing stamp fits stationery, paper crafts, seasonal gifting nicely"
+ },
+ "bookshop|69furu|shp-1706": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand designer handbag clone, irrelevant to bookshop"
+ },
+ "bookshop|69furu|shp-1732": {
+  "fit": 1,
+  "junk": true,
+  "why": "Counterfeit-branded luxury item, wildly off-assortment for this store"
+ },
+ "general-store-video|sthzki|shp-2291": {
+  "fit": 4,
+  "junk": false,
+  "why": "Premium honey fits pantry theme, though brand feels clinical not farmhouse"
+ },
+ "home-gift-video|1emhj4e|shp-0720": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market Halloween foam doilies, off-brand novelty item"
+ },
+ "home-gift-video|1emhj4e|shp-0464": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic printed slogan wine bag, mass-market gift clone"
+ },
+ "home-gift-video|1emhj4e|shp-0498": {
+  "fit": 2,
+  "junk": true,
+  "why": "Mass-produced blister-pack bar tool, not artisan-boutique credible"
+ },
+ "bookshop|69furu|shp-1956": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mass-market skincare, off-brand, not boutique gift fit"
+ },
+ "bookshop|69furu|shp-2225": {
+  "fit": 1,
+  "junk": true,
+  "why": "Drugstore commodity item, irrelevant to bookshop"
+ },
+ "bookshop|69furu|shp-2233": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass skincare mask, no literary/gift relevance"
+ },
+ "bookshop|69furu|shp-2368": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk baking commodity, wrong category entirely"
+ },
+ "bookshop|69furu|shp-2597": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk pantry staple, not a gift item"
+ },
+ "bookshop|69furu|shp-3146": {
+  "fit": 1,
+  "junk": true,
+  "why": "Pet supply hardware, irrelevant industrial-style product"
+ },
+ "bookshop|69furu|shp-3246": {
+  "fit": 1,
+  "junk": false,
+  "why": "Pet scarf unrelated to bookshop's curated gift focus"
+ },
+ "bookshop|69furu|shp-3284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk pet crate, mass-market, wrong category entirely"
+ },
+ "bookshop|69furu|shp-3287": {
+  "fit": 1,
+  "junk": true,
+  "why": "Outdoor pet furniture, no relevance to bookshop gifts"
+ },
+ "boutique-video|1fhpjpo|shp-1956": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mass-market skincare, off-brand, not boutique aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-2225": {
+  "fit": 1,
+  "junk": true,
+  "why": "Cheap drugstore item, no aesthetic or brand fit"
+ },
+ "boutique-video|1fhpjpo|shp-2233": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand mass skincare mask, not boutique fit"
+ },
+ "boutique-video|1fhpjpo|shp-2368": {
+  "fit": 1,
+  "junk": true,
+  "why": "Grocery staple, unrelated to apparel/accessories boutique"
+ },
+ "boutique-video|1fhpjpo|shp-2445": {
+  "fit": 1,
+  "junk": false,
+  "why": "Random gift chocolate tower, doesn't match store's aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-3146": {
+  "fit": 1,
+  "junk": true,
+  "why": "Pet supply, industrial acrylic item, no store relevance"
+ },
+ "boutique-video|1fhpjpo|shp-3246": {
+  "fit": 1,
+  "junk": false,
+  "why": "Pet scarf, unrelated category, weak brand fit"
+ },
+ "boutique-video|1fhpjpo|shp-3284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk pet crate, no boutique or aesthetic relevance"
+ },
+ "boutique-video|1fhpjpo|shp-3287": {
+  "fit": 1,
+  "junk": true,
+  "why": "Outdoor pet gear, irrelevant to apparel boutique"
+ },
+ "boutique|19tqing|shp-2225": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market drugstore item, off-brand, no boutique appeal"
+ },
+ "boutique|19tqing|shp-2233": {
+  "fit": 2,
+  "junk": false,
+  "why": "Bath & body adjacent but generic Korean mask brand, low fit"
+ },
+ "boutique|19tqing|shp-2368": {
+  "fit": 1,
+  "junk": true,
+  "why": "Grocery staple, not a boutique wholesale product"
+ },
+ "boutique|19tqing|shp-2445": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute gift chocolate but food/drink not carried category"
+ },
+ "boutique|19tqing|shp-2597": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk grocery flour, no boutique relevance"
+ },
+ "boutique|19tqing|shp-3146": {
+  "fit": 1,
+  "junk": true,
+  "why": "Pet supply, unrelated to apparel/jewelry/gift store"
+ },
+ "boutique|19tqing|shp-3246": {
+  "fit": 1,
+  "junk": true,
+  "why": "Pet scarf, wrong category, store doesn't carry pets"
+ },
+ "boutique|19tqing|shp-3284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulky pet crate, off-brand, irrelevant category"
+ },
+ "boutique|19tqing|shp-3287": {
+  "fit": 1,
+  "junk": true,
+  "why": "Outdoor pet furniture, no fit with boutique aesthetic"
+ },
+ "boutique|19tqing|shp-0012": {
+  "fit": 1,
+  "junk": true,
+  "why": "Personalized photo suncatcher, generic sentimental item, not store aesthetic"
+ },
+ "boutique|19tqing|shp-0294": {
+  "fit": 1,
+  "junk": true,
+  "why": "Novelty fake food decor, mismatched with boutique's style"
+ },
+ "boutique|19tqing|shp-0396": {
+  "fit": 1,
+  "junk": false,
+  "why": "Cool gadget but off-brand tech, no aesthetic fit"
+ },
+ "boutique|19tqing|shp-0507": {
+  "fit": 1,
+  "junk": true,
+  "why": "Kitchen tool, unrelated category, no boutique appeal"
+ },
+ "boutique|19tqing|shp-0652": {
+  "fit": 1,
+  "junk": true,
+  "why": "Kitchen gadget, industrial feel, no aesthetic fit"
+ },
+ "boutique|19tqing|shp-0714": {
+  "fit": 2,
+  "junk": false,
+  "why": "Simple white ceramic could fit gift shelf loosely"
+ },
+ "boutique|19tqing|shp-0715": {
+  "fit": 1,
+  "junk": true,
+  "why": "Seasonal mass-market nutcracker, clashes with boho minimalist look"
+ },
+ "boutique|19tqing|shp-1172": {
+  "fit": 1,
+  "junk": true,
+  "why": "Art supply, wrong category, no boutique relevance"
+ },
+ "boutique|19tqing|shp-1559": {
+  "fit": 2,
+  "junk": false,
+  "why": "Modest swimwear niche, could fit apparel but narrow"
+ },
+ "boutique|19tqing|shp-1956": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass skincare brand, feels drugstore not boutique"
+ },
+ "general-store-video|sthzki|shp-1956": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mass-market skincare, off-brand, no farmhouse pantry relevance"
+ },
+ "general-store-video|sthzki|shp-2225": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk drugstore shower cap, not boutique-worthy"
+ },
+ "general-store-video|sthzki|shp-2233": {
+  "fit": 1,
+  "junk": true,
+  "why": "Off-brand sheet masks, doesn't match farmhouse pantry aesthetic"
+ },
+ "general-store-video|sthzki|shp-2368": {
+  "fit": 3,
+  "junk": false,
+  "why": "Pantry baking staple, fits food but low-margin commodity"
+ },
+ "general-store-video|sthzki|shp-2445": {
+  "fit": 4,
+  "junk": false,
+  "why": "Charming boxed chocolates fit gift-giving pantry shop nicely"
+ },
+ "general-store-video|sthzki|shp-3146": {
+  "fit": 1,
+  "junk": true,
+  "why": "Cheap industrial pet supply, unrelated to store concept"
+ },
+ "general-store-video|sthzki|shp-3246": {
+  "fit": 2,
+  "junk": false,
+  "why": "Plaid pet scarf could fit cottagecore but off-category"
+ },
+ "general-store-video|sthzki|shp-3284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market pet crate, no aesthetic or category fit"
+ },
+ "general-store-video|sthzki|shp-3287": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic outdoor pet gear, irrelevant to farmhouse pantry store"
+ },
+ "home-gift-video|1emhj4e|shp-1956": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic mass-market skincare, off-brand, not boutique aesthetic"
+ },
+ "home-gift-video|1emhj4e|shp-2225": {
+  "fit": 1,
+  "junk": true,
+  "why": "Cheap drugstore item, no boutique or aesthetic fit"
+ },
+ "home-gift-video|1emhj4e|shp-2233": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market K-beauty mask, off-brand, not store's style"
+ },
+ "home-gift-video|1emhj4e|shp-2368": {
+  "fit": 1,
+  "junk": true,
+  "why": "Grocery staple, not artisan gift or wholesale boutique product"
+ },
+ "home-gift-video|1emhj4e|shp-2445": {
+  "fit": 3,
+  "junk": false,
+  "why": "Whimsical gift chocolate could suit gift-ready shelves"
+ },
+ "home-gift-video|1emhj4e|shp-3146": {
+  "fit": 1,
+  "junk": true,
+  "why": "Pet supply, outside categories, industrial acrylic item"
+ },
+ "home-gift-video|1emhj4e|shp-3246": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute plaid pet item, but pets not a stocked category"
+ },
+ "home-gift-video|1emhj4e|shp-3284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulky pet crate, industrial/off-brand, no aesthetic fit"
+ },
+ "home-gift-video|1emhj4e|shp-3287": {
+  "fit": 1,
+  "junk": true,
+  "why": "Outdoor pet gear, off-brand, not store's curated style"
+ },
+ "home-gift|fp0m5d|shp-1956": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic off-brand skincare, not boutique home decor fit"
+ },
+ "home-gift|fp0m5d|shp-2225": {
+  "fit": 1,
+  "junk": true,
+  "why": "Mass-market drugstore item, unrelated to curated boutique"
+ },
+ "home-gift|fp0m5d|shp-2233": {
+  "fit": 1,
+  "junk": true,
+  "why": "Generic sheet mask, not aligned with home decor gift shop"
+ },
+ "home-gift|fp0m5d|shp-2368": {
+  "fit": 1,
+  "junk": true,
+  "why": "Grocery commodity item, wrong category entirely"
+ },
+ "home-gift|fp0m5d|shp-2445": {
+  "fit": 2,
+  "junk": false,
+  "why": "Chocolate gift could fit food/drink but tacky branding"
+ },
+ "home-gift|fp0m5d|shp-3146": {
+  "fit": 1,
+  "junk": true,
+  "why": "Pet supply, industrial acrylic box, no aesthetic fit"
+ },
+ "home-gift|fp0m5d|shp-3246": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute plaid pet item but store doesn't carry pets"
+ },
+ "home-gift|fp0m5d|shp-3284": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk pet crate, industrial/utilitarian, no boutique appeal"
+ },
+ "home-gift|fp0m5d|shp-3287": {
+  "fit": 1,
+  "junk": true,
+  "why": "Outdoor pet cot, mass-market utilitarian, no decor fit"
+ },
+ "bookshop|69furu|shp-1268": {
+  "fit": 3,
+  "junk": false,
+  "why": "Gothic novelty journal; playful but off literary/vintage aesthetic"
+ },
+ "bookshop|69furu|shp-0371": {
+  "fit": 1,
+  "junk": true,
+  "why": "Bulk furniture slipcover, unrelated home goods, not bookshop fit"
+ },
+ "boutique-video|1fhpjpo|shp-1338": {
+  "fit": 4,
+  "junk": false,
+  "why": "Cozy knit neutral tone fits cable knit coastal aesthetic well"
+ },
+ "boutique-video|1fhpjpo|shp-1564": {
+  "fit": 2,
+  "junk": false,
+  "why": "Distressed denim clashes with curated natural minimalist boutique look"
+ },
+ "boutique-video|1fhpjpo|shp-1443": {
+  "fit": 2,
+  "junk": false,
+  "why": "Bold floral swimsuit misaligns with sunlit neutral minimalist palette"
+ },
+ "boutique|19tqing|shp-1303": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic logo joggers, mass-market athletic clone"
+ },
+ "boutique|19tqing|shp-1443": {
+  "fit": 2,
+  "junk": false,
+  "why": "Busy print swimsuit, off brand aesthetic mismatch"
+ },
+ "boutique|19tqing|shp-1428": {
+  "fit": 1,
+  "junk": true,
+  "why": "Unisex sportswear clashes with boutique's soft feminine look"
+ },
+ "boutique|19tqing|shp-1607": {
+  "fit": 4,
+  "junk": false,
+  "why": "Minimalist strapless jumpsuit fits playful boho aesthetic well"
+ },
+ "general-store-video|sthzki|shp-0621": {
+  "fit": 4,
+  "junk": false,
+  "why": "Modern enamel dutch oven fits farmhouse kitchen aesthetic well."
+ },
+ "general-store-video|sthzki|shp-0241": {
+  "fit": 2,
+  "junk": false,
+  "why": "DIY wood bank is craft-store item, weak farmhouse pantry fit."
+ },
+ "general-store-video|sthzki|shp-0635": {
+  "fit": 3,
+  "junk": false,
+  "why": "Small steel colander could work but not distinctive to brand."
+ },
+ "general-store-video|sthzki|shp-0062": {
+  "fit": 4,
+  "junk": false,
+  "why": "Charming berry basket matches cottagecore, jewel-toned pantry theme nicely."
+ },
+ "general-store-video|sthzki|shp-0441": {
+  "fit": 1,
+  "junk": true,
+  "why": "Cheap plastic mass-market peelers, off-brand, not boutique quality."
+ },
+ "home-gift-video|1emhj4e|shp-0356": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic faux plant, off-brand mass-market feel, not artisan"
+ },
+ "home-gift-video|1emhj4e|shp-0101": {
+  "fit": 4,
+  "junk": false,
+  "why": "Rustic dried-look filler fits cottagecore, gift-ready aesthetic well"
+ },
+ "home-gift|fp0m5d|shp-0658": {
+  "fit": 2,
+  "junk": false,
+  "why": "Plasticky quilted design clashes with natural, earthy boutique aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1563": {
+  "fit": 2,
+  "junk": false,
+  "why": "Bold color clashes with sunlit neutral, minimalist aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-1577": {
+  "fit": 2,
+  "junk": false,
+  "why": "Fedora with bold stripe band clashes with natural woven-hat look"
+ },
+ "home-gift-video|1emhj4e|shp-0618": {
+  "fit": 2,
+  "junk": false,
+  "why": "Colorful Polish pottery clashes with store's rustic amber/neutral aesthetic"
+ },
+ "bookshop|69furu|shp-1163": {
+  "fit": 3,
+  "junk": false,
+  "why": "Art supply, fits stationery but niche for bookshop"
+ },
+ "bookshop|69furu|shp-2402": {
+  "fit": 2,
+  "junk": false,
+  "why": "Novelty fudge; food category but overly candy-store, off-tone"
+ },
+ "bookshop|69furu|shp-1191": {
+  "fit": 4,
+  "junk": false,
+  "why": "Artisanal paper stationery set, literary/natural aesthetic match"
+ },
+ "boutique-video|1fhpjpo|shp-0993": {
+  "fit": 2,
+  "junk": false,
+  "why": "Cute stationery item but niche, not core to apparel focus"
+ },
+ "bookshop|69furu|shp-1207": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cute local-feel art print, fits gift/card niche loosely"
+ },
+ "bookshop|69furu|shp-1256": {
+  "fit": 3,
+  "junk": false,
+  "why": "Quirky vintage reprint fits literary aesthetic, niche appeal"
+ },
+ "bookshop|69furu|shp-1061": {
+  "fit": 4,
+  "junk": false,
+  "why": "Craft/paper book fits origami-paper stationery nicely"
+ },
+ "bookshop|69furu|shp-1060": {
+  "fit": 3,
+  "junk": false,
+  "why": "Playful kids craft kit fits gift/kids section"
+ },
+ "bookshop|69furu|shp-0967": {
+  "fit": 3,
+  "junk": false,
+  "why": "Charming illustrated card, fits stationery greeting card range"
+ },
+ "bookshop|69furu|shp-1282": {
+  "fit": 4,
+  "junk": false,
+  "why": "Literary nonfiction book fits dominant book category well"
+ },
+ "bookshop|69furu|shp-1190": {
+  "fit": 4,
+  "junk": false,
+  "why": "Playful notecards fit stationery strength perfectly"
+ },
+ "bookshop|69furu|shp-0995": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cute accessory but niche Hobonichi-specific item"
+ },
+ "bookshop|69furu|shp-0811": {
+  "fit": 4,
+  "junk": false,
+  "why": "Glass candle holder fits home decor/candle expansion goals"
+ },
+ "boutique-video|1fhpjpo|shp-1435": {
+  "fit": 4,
+  "junk": false,
+  "why": "Cozy neutral sweater fits chunky knit aesthetic well"
+ },
+ "boutique-video|1fhpjpo|shp-1816": {
+  "fit": 4,
+  "junk": false,
+  "why": "Delicate gold layered necklaces match jewelry wall aesthetic"
+ },
+ "boutique-video|1fhpjpo|shp-0101": {
+  "fit": 3,
+  "junk": false,
+  "why": "Rustic decor fits look, but decor not core yet"
+ },
+ "boutique-video|1fhpjpo|shp-2126": {
+  "fit": 3,
+  "junk": false,
+  "why": "Nice clean bath/body brand, minor fit for boutique"
+ },
+ "boutique-video|1fhpjpo|shp-1298": {
+  "fit": 3,
+  "junk": false,
+  "why": "Nice woven hat style but bolder color-blocked band"
+ },
+ "boutique-video|1fhpjpo|shp-1696": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic mass-produced cap, off-brand feel, low quality"
+ },
+ "boutique|19tqing|shp-1539": {
+  "fit": 3,
+  "junk": false,
+  "why": "Playful pink cardigan, but embroidery may clash with minimalist look"
+ },
+ "boutique|19tqing|shp-2839": {
+  "fit": 1,
+  "junk": false,
+  "why": "Baby changing cover, outside store's core focus"
+ },
+ "boutique|19tqing|shp-1776": {
+  "fit": 3,
+  "junk": false,
+  "why": "Nice neutral bag, could complement jewelry wall"
+ },
+ "boutique|19tqing|shp-1880": {
+  "fit": 2,
+  "junk": false,
+  "why": "High price pouch, niche fit for boutique's style"
+ },
+ "boutique|19tqing|shp-1393": {
+  "fit": 2,
+  "junk": false,
+  "why": "Dark floral scarf clashes with bright, airy palette"
+ },
+ "boutique|19tqing|shp-0039": {
+  "fit": 4,
+  "junk": false,
+  "why": "Neutral striped towel fits natural, cozy home decor"
+ },
+ "boutique|19tqing|shp-1469": {
+  "fit": 4,
+  "junk": false,
+  "why": "Soft loungewear fits cozy robe corner aesthetic"
+ },
+ "boutique|19tqing|shp-1368": {
+  "fit": 4,
+  "junk": false,
+  "why": "Simple neutral socks fit minimalist, playful vibe"
+ },
+ "boutique|19tqing|shp-1435": {
+  "fit": 3,
+  "junk": false,
+  "why": "Colorblock sweater fits playful look, mass-market brand risk"
+ },
+ "general-store-video|sthzki|shp-0844": {
+  "fit": 4,
+  "junk": false,
+  "why": "Natural linen sachet fits farmhouse bath/fragrance section nicely."
+ },
+ "general-store-video|sthzki|shp-0629": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural wood utensils perfectly match rustic farmhouse kitchen aesthetic."
+ },
+ "general-store-video|sthzki|shp-2126": {
+  "fit": 3,
+  "junk": false,
+  "why": "Nice clean-label balm, but skews minimalist not farmhouse-cottagecore."
+ },
+ "general-store-video|sthzki|shp-0408": {
+  "fit": 5,
+  "junk": false,
+  "why": "Charming rustic dinnerware, ideal for farmhouse tabletop display."
+ },
+ "general-store-video|sthzki|shp-2552": {
+  "fit": 2,
+  "junk": true,
+  "why": "Generic label design, mass-market look, weak boutique credibility."
+ },
+ "home-gift-video|1emhj4e|shp-0629": {
+  "fit": 5,
+  "junk": false,
+  "why": "Natural wood utensils match rustic kitchen aesthetic perfectly"
+ },
+ "home-gift-video|1emhj4e|shp-0139": {
+  "fit": 4,
+  "junk": false,
+  "why": "Rattan basket fits cottagecore natural decor look nicely"
+ },
+ "home-gift-video|1emhj4e|shp-2188": {
+  "fit": 2,
+  "junk": false,
+  "why": "Generic bath item, low-craft, weak match to boutique feel"
+ },
+ "home-gift-video|1emhj4e|shp-0062": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cute stoneware-adjacent piece but printed pattern less artisan"
+ },
+ "home-gift-video|1emhj4e|shp-2350": {
+  "fit": 4,
+  "junk": false,
+  "why": "Organic maple syrup fits food & drink expansion nicely"
+ },
+ "home-gift-video|1emhj4e|shp-3818": {
+  "fit": 2,
+  "junk": false,
+  "why": "Garden fountain oversized, pricey, unclear fit for boutique shelves"
+ },
+ "home-gift-video|1emhj4e|shp-2434": {
+  "fit": 3,
+  "junk": false,
+  "why": "Artisanal syrup fits food/drink category, niche appeal"
+ },
+ "home-gift-video|1emhj4e|shp-1081": {
+  "fit": 2,
+  "junk": false,
+  "why": "Bold branded stationery clashes with wildflower cottagecore stationery vibe"
+ },
+ "home-gift-video|1emhj4e|shp-0039": {
+  "fit": 4,
+  "junk": false,
+  "why": "Turkish towel linen texture suits natural cottagecore bath expansion"
+ },
+ "home-gift|fp0m5d|shp-0278": {
+  "fit": 5,
+  "junk": false,
+  "why": "Textile throw, neutral stripes, fits boho/Scandi decor perfectly"
+ },
+ "home-gift|fp0m5d|shp-0462": {
+  "fit": 4,
+  "junk": false,
+  "why": "Stylish glass stemware fits tabletop, though bold color slightly off-palette"
+ },
+ "home-gift|fp0m5d|shp-0170": {
+  "fit": 3,
+  "junk": false,
+  "why": "Cute paper garland, decorative but trendy/novelty-leaning for this store"
+ },
+ "home-gift|fp0m5d|shp-0055": {
+  "fit": 4,
+  "junk": false,
+  "why": "Glass terrarium fits natural/boho decor and living green theme"
+ },
+ "home-gift|fp0m5d|shp-0844": {
+  "fit": 4,
+  "junk": false,
+  "why": "Small linen sachet fits fragrance and gift-ready assortment nicely"
+ },
+ "home-gift|fp0m5d|shp-0461": {
+  "fit": 5,
+  "junk": false,
+  "why": "Handmade stoneware saucer matches ceramics and earthy tabletop aesthetic"
+ },
+ "home-gift|fp0m5d|shp-3504": {
+  "fit": 2,
+  "junk": false,
+  "why": "Live culinary plant, more garden-center item than curated decor gift"
+ }
+}

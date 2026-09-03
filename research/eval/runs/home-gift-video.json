@@ -1,0 +1,377 @@
+{
+  "slug": "home-gift-video",
+  "kind": "video",
+  "name": "Hearth & Hollow",
+  "storeType": "Home Decor Store",
+  "description": "Home, kitchen & gift boutique",
+  "capturedAt": "2026-09-03T05:32:24.980Z",
+  "analysisMs": 65125,
+  "meta": {
+    "done": true,
+    "usage": {
+      "input": 11252,
+      "output": 5165
+    },
+    "model": "meta/muse-spark-1.3",
+    "configuredModel": "meta/muse-spark-1.3",
+    "effort": "xhigh",
+    "fallbackReason": null,
+    "issues": [],
+    "provider": "openrouter"
+  },
+  "issues": [],
+  "frames": [
+    {
+      "id": "f1",
+      "file": "home-gift-video/f1.jpg",
+      "timestampMs": 400
+    },
+    {
+      "id": "f2",
+      "file": "home-gift-video/f2.jpg",
+      "timestampMs": 1071
+    },
+    {
+      "id": "f3",
+      "file": "home-gift-video/f3.jpg",
+      "timestampMs": 3086
+    },
+    {
+      "id": "f4",
+      "file": "home-gift-video/f4.jpg",
+      "timestampMs": 3757
+    },
+    {
+      "id": "f5",
+      "file": "home-gift-video/f5.jpg",
+      "timestampMs": 5771
+    },
+    {
+      "id": "f6",
+      "file": "home-gift-video/f6.jpg",
+      "timestampMs": 7114
+    },
+    {
+      "id": "f7",
+      "file": "home-gift-video/f7.jpg",
+      "timestampMs": 8457
+    },
+    {
+      "id": "f8",
+      "file": "home-gift-video/f8.jpg",
+      "timestampMs": 9129
+    }
+  ],
+  "analysis": {
+    "store_read": {
+      "store_type_guess": "Artisan home, kitchen and gift boutique",
+      "vibe_words": [
+        "warm",
+        "artisanal",
+        "botanical"
+      ],
+      "summary": "Your sunlit shelves of drip-glazed mugs and bowls celebrate honest handmade craft. The amber candles, soft linens and wildflower cards make every corner gift-ready and welcoming."
+    },
+    "frame_notes": [
+      {
+        "frame_id": "f1",
+        "what_we_saw": "Glazed ceramic mugs and bowls on shelf"
+      },
+      {
+        "frame_id": "f2",
+        "what_we_saw": "Glazed stoneware mugs and bowls in sunlight"
+      },
+      {
+        "frame_id": "f3",
+        "what_we_saw": "Amber glass candles with ceramic mugs"
+      },
+      {
+        "frame_id": "f4",
+        "what_we_saw": "Amber candles and stacked stoneware bowls"
+      },
+      {
+        "frame_id": "f5",
+        "what_we_saw": "Folded linen napkins, cards, lit candle"
+      },
+      {
+        "frame_id": "f6",
+        "what_we_saw": "Botanical greeting cards beside linen napkins"
+      },
+      {
+        "frame_id": "f7",
+        "what_we_saw": "Floral journals and cards under straw hat"
+      },
+      {
+        "frame_id": "f8",
+        "what_we_saw": "Floral stationery with plant and candles"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Kitchen & tabletop",
+        "share": "dominant",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4"
+        ],
+        "examples": [
+          "hand-glazed mugs",
+          "serving bowls",
+          "linen napkins"
+        ]
+      },
+      {
+        "name": "Candles & fragrance",
+        "share": "strong",
+        "confidence": "high",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5",
+          "f8"
+        ],
+        "examples": [
+          "amber jar candles",
+          "pillar candles"
+        ]
+      },
+      {
+        "name": "Stationery & paper",
+        "share": "strong",
+        "confidence": "high",
+        "evidence_frames": [
+          "f5",
+          "f6",
+          "f7",
+          "f8"
+        ],
+        "examples": [
+          "botanical greeting cards",
+          "illustrated notebooks"
+        ]
+      },
+      {
+        "name": "Home decor",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f8"
+        ],
+        "examples": [
+          "potted succulent",
+          "ceramic planter"
+        ]
+      }
+    ],
+    "styles": [
+      {
+        "name": "natural",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f5",
+          "f8"
+        ]
+      },
+      {
+        "name": "rustic",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4"
+        ]
+      },
+      {
+        "name": "cottagecore",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f6",
+          "f7",
+          "f8"
+        ]
+      },
+      {
+        "name": "minimalist",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5"
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "stoneware",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4"
+        ]
+      },
+      {
+        "name": "oak wood",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f5"
+        ]
+      },
+      {
+        "name": "amber glass",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5"
+        ]
+      },
+      {
+        "name": "paper",
+        "evidence_frames": [
+          "f6",
+          "f7",
+          "f8"
+        ]
+      },
+      {
+        "name": "linen",
+        "evidence_frames": [
+          "f5",
+          "f6"
+        ]
+      }
+    ],
+    "palette": [
+      {
+        "name": "warm oak",
+        "hex": "#C9985E"
+      },
+      {
+        "name": "glaze blue",
+        "hex": "#6E8391"
+      },
+      {
+        "name": "amber",
+        "hex": "#B35E20"
+      },
+      {
+        "name": "cream",
+        "hex": "#F3EAD9"
+      },
+      {
+        "name": "sage",
+        "hex": "#8AA88A"
+      }
+    ],
+    "price_position": {
+      "tier": "unknown",
+      "confidence": "low",
+      "rationale": "No legible prices or tags are visible, so positioning is unknown."
+    },
+    "visible_brands": [],
+    "merchandising_notes": [
+      "Sunlit window shelving highlights glaze and scent",
+      "Ceramics grouped by finish for tonal impact",
+      "Cards fanned upright for easy browsing",
+      "Linens folded in neat tabletop stacks"
+    ],
+    "suggested_complements": [
+      {
+        "category": "Bath & body",
+        "reason": "Handmade soaps pair with the earthy candles and stoneware."
+      },
+      {
+        "category": "Food & drink",
+        "reason": "Teas or preserves suit the mugs and gifting mix."
+      },
+      {
+        "category": "Garden & outdoor",
+        "reason": "Small planters extend the botanical stationery theme."
+      }
+    ]
+  },
+  "profile": {
+    "storeName": "Hearth & Hollow",
+    "storeType": "Home Decor Store",
+    "description": "Home, kitchen & gift boutique",
+    "categories": [
+      {
+        "name": "Kitchen & tabletop",
+        "share": "dominant",
+        "intent": "more"
+      },
+      {
+        "name": "Candles & fragrance",
+        "share": "strong",
+        "intent": "more"
+      },
+      {
+        "name": "Stationery & paper",
+        "share": "strong",
+        "intent": "more"
+      },
+      {
+        "name": "Home decor",
+        "share": "present",
+        "intent": "more"
+      }
+    ],
+    "styles": [
+      "natural",
+      "rustic",
+      "cottagecore",
+      "minimalist"
+    ],
+    "materials": [
+      "stoneware",
+      "oak wood",
+      "amber glass",
+      "paper",
+      "linen"
+    ],
+    "palette": [
+      {
+        "name": "warm oak",
+        "hex": "#C9985E"
+      },
+      {
+        "name": "glaze blue",
+        "hex": "#6E8391"
+      },
+      {
+        "name": "amber",
+        "hex": "#B35E20"
+      },
+      {
+        "name": "cream",
+        "hex": "#F3EAD9"
+      },
+      {
+        "name": "sage",
+        "hex": "#8AA88A"
+      }
+    ],
+    "priceTier": "unknown",
+    "complements": [
+      "Bath & body",
+      "Food & drink",
+      "Garden & outdoor"
+    ],
+    "mode": "complement",
+    "explore": 0.5,
+    "strength": 0.8,
+    "vibeWords": [
+      "warm",
+      "artisanal",
+      "botanical"
+    ],
+    "summary": "Your sunlit shelves of drip-glazed mugs and bowls celebrate honest handmade craft. The amber candles, soft linens and wildflower cards make every corner gift-ready and welcoming."
+  }
+}

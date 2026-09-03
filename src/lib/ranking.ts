@@ -16,8 +16,9 @@ const SHARE_WEIGHT: Record<Share, number> = {
 // tell us. No marketplace popularity signal enters the personalized score; the
 // popularity prior only orders the generic feed that new retailers see today.
 export const WEIGHTS = {
-  category: 0.5,
-  style: 0.25,
+  category: 0.6,
+  // Zero-shot style tags on a real catalog are noisy; the semantic channel carries the look instead.
+  style: 0.08,
   material: 0.1,
   price: 0.05,
   popularity: 0,
@@ -34,6 +35,7 @@ export type ReasonKind =
   | "popular"
   | "visual"
   | "semantic"
+  | "buyer"
   | "skip";
 
 export interface Reason {
@@ -48,6 +50,8 @@ export interface RankComponents {
   /** min-max normalized visual similarity across the catalog, or null without embeddings */
   visual: number | null;
   semantic: number | null;
+  /** buyer's-eye fit 1..5 from the LM rerank, or null when this product was not reviewed */
+  buyer: number | null;
   fused: number;
 }
 
@@ -106,7 +110,9 @@ export function styleLabel(s: Style): string {
 
 const TIER_ORDER = { value: 0, mid: 1, premium: 2 } as const;
 
-export function scoreProduct(p: Product, profile: StoreProfile): { score: number; reasons: Reason[] } {
+export type TagWeights = { [K in keyof typeof WEIGHTS]: number };
+
+export function scoreProduct(p: Product, profile: StoreProfile, W: TagWeights = WEIGHTS): { score: number; reasons: Reason[] } {
   const reasons: Reason[] = [];
   const cat = profile.categories.find((c) => c.name === p.category);
   const isComplement = profile.complements.includes(p.category);
@@ -125,7 +131,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     reasons.push({
       kind: "category",
       text: `You carry ${p.category.toLowerCase()}`,
-      weight: WEIGHTS.category * categoryScore,
+      weight: W.category * categoryScore,
     });
   } else if (cat && cat.intent === "stocked") {
     // Already covered: keep a trickle for replenishment, favor complements.
@@ -134,7 +140,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
       reasons.push({
         kind: "category",
         text: `Restock for your ${p.category.toLowerCase()} section`,
-        weight: WEIGHTS.category * categoryScore,
+        weight: W.category * categoryScore,
       });
     }
   }
@@ -146,7 +152,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     reasons.push({
       kind: "complement",
       text: anchor ? `Pairs with your ${anchor.name.toLowerCase()}` : `A natural next category`,
-      weight: WEIGHTS.category * complementScore,
+      weight: W.category * complementScore,
     });
   }
 
@@ -157,7 +163,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     reasons.push({
       kind: "style",
       text: `Matches your ${prettyList(styleHits.map(styleLabel))} look`,
-      weight: WEIGHTS.style * styleScore,
+      weight: W.style * styleScore,
     });
   }
 
@@ -169,7 +175,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     reasons.push({
       kind: "material",
       text: `You stock ${prettyList(matHits)}`,
-      weight: WEIGHTS.material * materialScore,
+      weight: W.material * materialScore,
     });
   }
 
@@ -179,7 +185,7 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
     const d = Math.abs(TIER_ORDER[p.priceTier] - TIER_ORDER[profile.priceTier]);
     priceScore = d === 0 ? 1 : d === 1 ? 0.5 : 0.1;
     if (d === 0) {
-      reasons.push({ kind: "price", text: `In your ${p.priceTier}-tier price range`, weight: WEIGHTS.price });
+      reasons.push({ kind: "price", text: `In your ${p.priceTier}-tier price range`, weight: W.price });
     }
   }
 
@@ -187,21 +193,28 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   let noveltyScore = 0;
   if (profile.mode === "discover" && p.isNewBrand) {
     noveltyScore = 1;
-    reasons.push({ kind: "new", text: "New on Faire, fits your look", weight: WEIGHTS.novelty });
+    reasons.push({ kind: "new", text: "New on Faire, fits your look", weight: W.novelty });
   }
 
   const score =
-    WEIGHTS.category * categoryScore +
-    WEIGHTS.style * styleScore +
-    WEIGHTS.material * materialScore +
-    WEIGHTS.price * priceScore +
-    WEIGHTS.novelty * noveltyScore;
+    W.category * categoryScore +
+    W.style * styleScore +
+    W.material * materialScore +
+    W.price * priceScore +
+    W.novelty * noveltyScore;
 
   reasons.sort((a, b) => b.weight - a.weight);
   return { score, reasons: reasons.slice(0, 3) };
 }
 
+/** Score shift per point of buyer's-eye fit away from neutral (3): a 5 gains +0.3, a 1 loses 0.3. */
+export const BUYER_STEP = 0.15;
+
 export interface RankOptions {
+  /** Override individual tag weights (evaluation and trace view). */
+  tagWeights?: Partial<TagWeights>;
+  /** product id -> fit 1..5 from the LM rerank of the top candidates */
+  rerank?: Record<string, number>;
   scores?: Record<string, ProductScores>;
   weights?: FusionWeights;
 }
@@ -226,7 +239,8 @@ export function effectiveWeights(weights: FusionWeights | undefined, hasVisual: 
 export function personalize(catalog: Product[], profile: StoreProfile, opts: RankOptions = {}): Ranked[] {
   const generic = rankGeneric(catalog);
   const genericRank = new Map(generic.map((p, i) => [p.id, i + 1]));
-  const tagScored = catalog.map((product) => ({ product, ...scoreProduct(product, profile) }));
+  const tw: TagWeights = opts.tagWeights ? { ...WEIGHTS, ...opts.tagWeights } : WEIGHTS;
+  const tagScored = catalog.map((product) => ({ product, ...scoreProduct(product, profile, tw) }));
 
   const scores = opts.scores ?? {};
   const visualRaw = catalog.map((p) => scores[p.id]?.visual ?? null);
@@ -242,17 +256,25 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
     const v = visualN[i];
     const sm = semanticN[i];
     const reasons = [...t.reasons];
+    const fit = opts.rerank?.[t.product.id];
+    const buyer = typeof fit === "number" ? fit : null;
     if (t.score < 0) {
-      return { ...t, reasons, components: { tag: -1, visual: v, semantic: sm, fused: -1 } };
+      return { ...t, reasons, components: { tag: -1, visual: v, semantic: sm, buyer, fused: -1 } };
     }
     if (v !== null && v >= 0.72) reasons.push({ kind: "visual", text: "Looks like what's on your shelves", weight: w.visual * v });
     if (sm !== null && sm >= 0.72) reasons.push({ kind: "semantic", text: "Fits how we read your store", weight: w.semantic * sm });
     reasons.sort((a, b) => b.weight - a.weight);
-    const fusedScore = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0);
+    let fusedScore = w.tag * tag + w.visual * (v ?? 0) + w.semantic * (sm ?? 0);
+    if (buyer !== null) {
+      // The buyer's-eye review re-orders the reviewed set: a strong fit rises, a poor one drops
+      // below unreviewed candidates.
+      fusedScore += (buyer - 3) * BUYER_STEP;
+      if (buyer >= 4) reasons.push({ kind: "buyer", text: "Passed a buyer's-eye check for your store", weight: (buyer - 3) * BUYER_STEP });
+    }
     // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic popularity order.
     const strength = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;
     const score = strength * fusedScore + (1 - strength) * popularityScore(t.product);
-    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, visual: v, semantic: sm, fused: score } };
+    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, visual: v, semantic: sm, buyer, fused: score } };
   });
 
   const ordered = stableSort(fused, (s) => s.score, (s) => s.product.id);

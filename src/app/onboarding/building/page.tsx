@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { getCatalog } from "@/lib/catalog";
+import { personalize } from "@/lib/ranking";
+import { RERANK_CANDIDATES, runRerank } from "@/lib/rerank";
 import { promptsFromProfile, runRetrieval } from "@/lib/retrieval";
 import { useOnboarding } from "@/lib/store";
 
@@ -16,7 +18,7 @@ import { useOnboarding } from "@/lib/store";
 export default function BuildingPage() {
   const router = useRouter();
   const { state, dispatch, hydrated } = useOnboarding();
-  const [phase, setPhase] = useState<"running" | "done" | "error">("running");
+  const [phase, setPhase] = useState<"running" | "review" | "done" | "error">("running");
   const [error, setError] = useState<string | null>(null);
   const started = useRef(false);
   const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
@@ -37,10 +39,26 @@ export default function BuildingPage() {
         return;
       }
       dispatch({ type: "setRetrievalStatus", status: "running" });
+      dispatch({ type: "setRerank", rerank: null });
       try {
         const retrieval = await runRetrieval({ frames, catalog: state.catalogSource, prompts: promptsFromProfile(profile, analysis) });
         dispatch({ type: "setRetrieval", retrieval });
         dispatch({ type: "setRetrievalStatus", status: "done" });
+        // A buyer's-eye pass over the top candidates: the LM looks at the products themselves.
+        setPhase("review");
+        dispatch({ type: "setRerankStatus", status: "running" });
+        try {
+          const ids = personalize(catalog, profile, { scores: retrieval.scores, weights: state.weights })
+            .filter((r) => r.score >= 0)
+            .slice(0, RERANK_CANDIDATES)
+            .map((r) => r.product.id);
+          const rerank = await runRerank({ catalog: state.catalogSource, ids, profile, storeType: analysis?.store_read?.store_type_guess });
+          dispatch({ type: "setRerank", rerank });
+          dispatch({ type: "setRerankStatus", status: "done" });
+        } catch (e) {
+          // Not fatal: the fused ranking stands on its own.
+          dispatch({ type: "setRerankStatus", status: "error", error: e instanceof Error ? e.message : "Review failed" });
+        }
         setPhase("done");
         setTimeout(() => router.replace("/onboarding/done"), 1100);
       } catch (e) {
@@ -73,16 +91,18 @@ export default function BuildingPage() {
       <p className="text-body mt-2 text-muted">
         {phase === "done"
           ? "Ready."
-          : `Matching your shelves and your choices against ${catalog.length.toLocaleString()} products from independent brands`}
-        {phase === "running" && <span className="pulse-soft">…</span>}
+          : phase === "review"
+            ? `Giving the top ${RERANK_CANDIDATES} picks a buyer's-eye review`
+            : `Matching your shelves and your choices against ${catalog.length.toLocaleString()} products from independent brands`}
+        {(phase === "running" || phase === "review") && <span className="pulse-soft">…</span>}
       </p>
 
       <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-surface-3">
         <motion.div
           className="h-full rounded-full bg-ink"
           initial={{ width: "6%" }}
-          animate={{ width: phase === "done" ? "100%" : ["6%", "72%"] }}
-          transition={phase === "done" ? { duration: 0.4 } : { duration: 4, ease: "easeOut" }}
+          animate={{ width: phase === "done" ? "100%" : phase === "review" ? ["40%", "92%"] : ["6%", "36%"] }}
+          transition={phase === "done" ? { duration: 0.4 } : phase === "review" ? { duration: 22, ease: "easeOut" } : { duration: 3, ease: "easeOut" }}
         />
       </div>
 
@@ -108,7 +128,9 @@ export default function BuildingPage() {
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-success text-white">
             <Check size={12} strokeWidth={3} />
           </span>
-          {retrieval ? `${retrieval.count.toLocaleString()} products scored against your shelves.` : "Your storefront is ready."}
+          {retrieval
+            ? `${retrieval.count.toLocaleString()} products scored against your shelves${state.rerank ? `, top ${state.rerank.count} reviewed` : ""}.`
+            : "Your storefront is ready."}
         </p>
       )}
       {phase === "error" && (

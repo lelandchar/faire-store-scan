@@ -1,6 +1,9 @@
 import { runAnalysis } from "@/lib/analyze-client";
 import { extractFramesFromVideo, framesFromImages, framesFromUrls } from "@/lib/frames";
+import { personalize } from "@/lib/ranking";
+import { RERANK_CANDIDATES, runRerank } from "@/lib/rerank";
 import { promptsFromAnalysis, runRetrieval, type CatalogSource } from "@/lib/retrieval";
+import { getCatalog } from "@/lib/catalog";
 import { profileFromAnalysis, type useOnboarding } from "@/lib/store";
 import type { Frame } from "@/lib/types";
 
@@ -14,23 +17,27 @@ export type PipelineInput =
   | { kind: "sample-photos"; slug: string; urls: string[] }
   | { kind: "sample-video"; slug: string; url: string };
 
-export type PipelineStage = "idle" | "extracting" | "analyzing" | "matching" | "done" | "error";
+export type PipelineStage = "idle" | "extracting" | "analyzing" | "matching" | "reranking" | "done" | "error";
 
 export interface PipelineTimings {
   extractMs?: number;
   analyzeMs?: number;
   matchMs?: number;
+  rerankMs?: number;
   totalMs?: number;
 }
 
 export interface PipelineProgress {
   stage: PipelineStage;
   extract: { done: number; total: number } | null;
+  /** Set while the store read streams: when it started and the median time it takes on this deployment. */
+  analyze: { startedAt: number; expectedMs: number } | null;
   error: string | null;
   timings: PipelineTimings;
 }
 
-export const IDLE_PROGRESS: PipelineProgress = { stage: "idle", extract: null, error: null, timings: {} };
+export const IDLE_PROGRESS: PipelineProgress = { stage: "idle", extract: null, analyze: null, error: null, timings: {} };
+const DEFAULT_ANALYZE_MS = 52_000;
 
 export type StoreDispatch = ReturnType<typeof useOnboarding>["dispatch"];
 
@@ -51,13 +58,15 @@ export async function runPipeline(opts: {
   const { input, ctx, dispatch, onProgress, signal } = opts;
   const timings: PipelineTimings = {};
   let extract: PipelineProgress["extract"] = null;
-  const emit = (stage: PipelineStage, error: string | null = null) => onProgress({ stage, extract, error, timings: { ...timings } });
+  let analyze: PipelineProgress["analyze"] = null;
+  const emit = (stage: PipelineStage, error: string | null = null) => onProgress({ stage, extract, analyze, error, timings: { ...timings } });
   const tStart = performance.now();
 
   try {
     // --- Stage 1: frames ----------------------------------------------------
     emit("extracting");
     dispatch({ type: "setAnalysisStatus", status: "extracting" });
+    dispatch({ type: "setAnalysisMeta", meta: null });
     dispatch({ type: "setAnalysis", analysis: null });
     dispatch({ type: "setProfile", profile: null });
     const onExtract = (done: number, total: number) => {
@@ -81,9 +90,10 @@ export async function runPipeline(opts: {
     timings.extractMs = Math.round(performance.now() - tStart);
 
     // --- Stage 2: LM store read ---------------------------------------------
+    const t0 = performance.now();
+    analyze = { startedAt: t0, expectedMs: DEFAULT_ANALYZE_MS };
     emit("analyzing");
     dispatch({ type: "setAnalysisStatus", status: "analyzing" });
-    const t0 = performance.now();
     const analysis = await runAnalysis({
       frames,
       context: {
@@ -93,18 +103,19 @@ export async function runPipeline(opts: {
         sampleSlug: "slug" in input ? input.slug : undefined,
       },
       onPartial: (p) => dispatch({ type: "setAnalysis", analysis: p }),
-      onMeta: (m) => dispatch({ type: "setAnalysisMeta", meta: { ...m, ms: Math.round(performance.now() - t0) } }),
+      onMeta: (m) => {
+        dispatch({ type: "setAnalysisMeta", meta: { ...m, ms: Math.round(performance.now() - t0) } });
+        if (m.p50Ms) {
+          analyze = { startedAt: t0, expectedMs: m.p50Ms };
+          emit("analyzing");
+        }
+      },
       signal,
     });
+    analyze = null;
     dispatch({ type: "setAnalysis", analysis });
-    dispatch({
-      type: "setProfile",
-      profile: profileFromAnalysis(analysis, {
-        storeName: ctx.storeName,
-        storeType: ctx.storeCategory ?? "",
-        description: ctx.description,
-      }),
-    });
+    const profile = profileFromAnalysis(analysis, { storeName: ctx.storeName, storeType: ctx.storeCategory ?? "", description: ctx.description });
+    dispatch({ type: "setProfile", profile });
     dispatch({ type: "setAnalysisStatus", status: "done" });
     timings.analyzeMs = Math.round(performance.now() - t0);
 
@@ -112,8 +123,10 @@ export async function runPipeline(opts: {
     emit("matching");
     dispatch({ type: "setRetrievalStatus", status: "running" });
     const t1 = performance.now();
+    dispatch({ type: "setRerank", rerank: null });
+    let retrieval: Awaited<ReturnType<typeof runRetrieval>> | null = null;
     try {
-      const retrieval = await runRetrieval({ frames, catalog: ctx.catalogSource, prompts: promptsFromAnalysis(analysis), signal });
+      retrieval = await runRetrieval({ frames, catalog: ctx.catalogSource, prompts: promptsFromAnalysis(analysis), signal });
       dispatch({ type: "setRetrieval", retrieval });
       dispatch({ type: "setRetrievalStatus", status: "done" });
     } catch (e) {
@@ -122,6 +135,24 @@ export async function runPipeline(opts: {
       dispatch({ type: "setRetrievalStatus", status: "error", error: e instanceof Error ? e.message : "Retrieval failed" });
     }
     timings.matchMs = Math.round(performance.now() - t1);
+
+    // --- Stage 4: buyer's-eye rerank of the top candidates --------------------
+    emit("reranking");
+    dispatch({ type: "setRerankStatus", status: "running" });
+    const t2 = performance.now();
+    try {
+      const catalog = getCatalog(ctx.catalogSource);
+      const ids = personalize(catalog, profile, { scores: retrieval?.scores })
+        .filter((r) => r.score >= 0)
+        .slice(0, RERANK_CANDIDATES)
+        .map((r) => r.product.id);
+      const rerank = await runRerank({ catalog: ctx.catalogSource, ids, profile, storeType: analysis.store_read?.store_type_guess, signal });
+      dispatch({ type: "setRerank", rerank });
+      dispatch({ type: "setRerankStatus", status: "done" });
+    } catch (e) {
+      dispatch({ type: "setRerankStatus", status: "error", error: e instanceof Error ? e.message : "Rerank failed" });
+    }
+    timings.rerankMs = Math.round(performance.now() - t2);
     timings.totalMs = Math.round(performance.now() - tStart);
     emit("done");
   } catch (e) {

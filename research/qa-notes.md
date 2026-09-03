@@ -48,3 +48,23 @@ P2 — polish
 - The "why" pill truncates long reasons on 156 px cards; copy was shortened but a few still ellipsize.
 - Congratulations hero uses the first frame; picking the frame cited by the dominant category would be nicer.
 - Confetti fires once per session on the first personalized home landing; consider also on the "Got it" moment.
+
+
+## Pass 3 (2026-09-03): personalization quality
+
+Leland's read after trying the larger catalog: the feed was "not working really well relative to the categories the user wanted" (an apparel boutique got a black onesie and a branded toque first). Category matching was fine (0% of the top 40 outside carried or complement categories); the problem was *which* products inside those categories.
+
+**Method.** `scripts/eval/capture.ts` ran the six demos (three Seedance walkthroughs, three photo sets) through the live Muse Spark read and saved frames, analysis and default profile. `scripts/eval/evaluate.ts` ranks each demo under a named variant and asks Claude Sonnet 5 to rate the top 20 as a wholesale buyer (fit 1–5, junk flag). Judge verdicts are cached per store and product, so variants are cheap to compare.
+
+**Findings.**
+- The generic feed (popularity order over the raw catalog) judged at fit 1.47 with 53 junk items in 120: the public dataset is full of promotional merch, office supply, licensed and test listings.
+- The personalized baseline (CLIP ViT-B/32, mean-vector matching) reached fit 2.80 on the raw catalog; embedding and weight changes alone moved it by at most 0.1 to 0.2, within noise.
+- Catalog hygiene mattered more: an LM pass over titles (746 removed) and photos (1,031 more) left 2,016 credible listings. The same baseline on the clean catalog scores 3.02.
+- SigLIP base with per-prompt matching (best two of 16 prompts built from category examples, look, store type and frame notes), fusion 0.4/0.15/0.45 and a lighter style weight scores 3.28 (48% of the top 20 rated 4 or 5).
+- A buyer's-eye rerank of the top 60 by a vision LM (Muse Spark in the evaluation) is the biggest single lift: fit 3.73 with 65% of the top 20 rated 4 or 5 and 6 junk items in 120, against 3.28 / 48% / 16 without it. Per-demo lists are in `research/eval/results-generic+baseline+app+apprerank.md`.
+
+**Shipped.** SigLIP embeddings (`EMBEDDING_MODEL`), the prompt builder, scoring modes and weights, the cleaned catalog, and `/api/rerank` with a trace-view stage. The reviewer defaults to Sonnet 5 for latency (about 5 s per 20-image batch versus 23 s for Muse Spark at low effort); the evaluation used Muse Spark as the reviewer so the judge and the reviewer are different models.
+
+**Also in this pass.** Scroll room on the analyzing screen (page roots no longer shrink below their content), a P50-paced progress bar on the analyzing screen and in the trace view (median of recent reads on the deployment, seeded at 52 s), a slower frame sweep, switch rows with one image on the assortment step, a store recap beside the feed on desktop, curated category tile art, a circular back button on the pitch screen, and frame selection that keeps 6 to 16 evenly spaced, sharp, mutually different frames depending on clip length.
+
+**Open.** Muse Spark xhigh took 65 to 110 s per read tonight (P50 seed is 52 s); `ANALYSIS_EFFORT=medium` halves it. Books (34) and Candles (42) are thin after cleaning. The judge and the catalog classifier are the same model family, so the junk numbers are only as good as one reviewer's taste.

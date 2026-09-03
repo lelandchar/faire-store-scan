@@ -7,7 +7,7 @@ const STEPS: { title: string; body: string }[] = [
   },
   {
     title: "Pick the clearest frames",
-    body: "The phone samples about sixteen moments from the clip, drops blurry and repeated ones, and keeps eight sharp frames. Only those small images are sent.",
+    body: "The phone samples a couple of moments per second from the clip, drops blurry and repeated ones, and keeps six to sixteen sharp frames spread evenly through the walkthrough, so every section of the store is represented. Only those small images are sent.",
   },
   {
     title: "Read the shelves",
@@ -15,11 +15,15 @@ const STEPS: { title: string; body: string }[] = [
   },
   {
     title: "The retailer confirms",
-    body: "Three quick screens: what's on the shelves (show me more / not interested), the look (keep or drop each style), and two dials: restock what sells versus discover new brands, and how strongly the walkthrough should shape the feed. Their answers win over the model's guesses.",
+    body: "Three quick screens: what's on the shelves (a switch per category), the look (keep or drop each style), and two dials: restock what sells versus discover new brands, and how strongly the walkthrough should shape the feed. Their answers win over the model's guesses.",
   },
   {
     title: "Match against the catalog",
-    body: "The frames and the confirmed choices are turned into vectors with an open-source image model (CLIP) and compared with every product in the catalog, which was embedded the same way. Each product also gets a plain score from the confirmed choices: category fit, style, materials, and the buying goal.",
+    body: "The frames and the confirmed choices are turned into vectors with an open-source image-and-text model (SigLIP) and compared with every product in the catalog, which was embedded the same way. Each product also gets a plain score from the confirmed choices: category fit, style, materials, and the buying goal.",
+  },
+  {
+    title: "A buyer's-eye review",
+    body: "The sixty best candidates go back to a vision model together with a short brief of the store. It looks at each product the way a wholesale buyer would and rates the fit from one to five; strong fits rise and poor ones drop below products it did not review.",
   },
   {
     title: "Build the storefront",

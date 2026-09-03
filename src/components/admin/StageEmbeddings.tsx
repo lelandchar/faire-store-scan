@@ -29,7 +29,7 @@ function stats(scores: RetrievalResult["scores"], key: "visual" | "semantic") {
 }
 
 const SUBTITLE =
-  "Frames and the LM read are embedded with CLIP ViT-B/32 (transformers.js, int8 ONNX on CPU); every product image and product text in the catalog was embedded offline into a 512-d index. visual = cosine(product image, mean frame vector). semantic = ½·cosine(product image, store text) + ½·cosine(product text, store text), where store text is the mean of the prompt vectors below.";
+  "Frames and the prompts are embedded with SigLIP base (patch16, 224px; transformers.js, int8 ONNX on CPU); every product image and product text in the catalog was embedded offline into a 768-d index. visual = mean of the two best cosine(product image, frame) values. semantic = mean over the two best prompts of ¾·cosine(product image, prompt) + ¼·cosine(product text, prompt). Prompts are matched one at a time so a candle can match the candle prompt without being diluted by the apparel prompt. Chosen on the offline evaluation in scripts/eval (six demos, Sonnet-judged top 20, clean catalog): SigLIP + per-prompt matching scored 3.28 vs 3.02 for CLIP ViT-B/32 with mean vectors.";
 
 export function StageEmbeddings({
   retrieval,
@@ -155,7 +155,7 @@ export function StageEmbeddings({
       <div className="mt-5 grid gap-5 lg:grid-cols-2">
         <div className="min-w-0">
           <p className="mb-1 text-[13px] font-medium text-ink">
-            Text prompts <Mono className="text-muted">(promptsFromAnalysis → CLIP text tower)</Mono>
+            Text prompts <Mono className="text-muted">(buildPrompts → SigLIP text tower)</Mono>
           </p>
           {retrieval.prompts.length ? (
             <ol className="list-decimal space-y-0.5 pl-5 text-[12px]">
@@ -225,7 +225,7 @@ export function StageEmbeddings({
           })}
         </div>
         <p className="text-caption mt-3 max-w-[920px]">
-          Caveat: CLIP image–image cosines are compressed. Across this catalog they cluster in roughly the 0.5–0.7 band (see the distribution
+          Caveat: image–image cosines from these models are compressed. Across this catalog they cluster in roughly the 0.5–0.7 band (see the distribution
           above), so a raw cosine is not on the same scale as the 0–1 tag score. Before fusion each channel is min–max normalized across the
           catalog (ranking.ts → minMax), which preserves order but not distances — a 0.02 gap in cosine can become a 0.3 gap after
           normalization.

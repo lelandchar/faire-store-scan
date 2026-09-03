@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
+import type { RerankResult } from "./rerank";
 import { DEFAULT_WEIGHTS, type CatalogSource, type FusionWeights, type RetrievalResult } from "./retrieval";
 import type { Analysis, BuyingMode, Category, CategoryIntent, Frame, StoreProfile, Style } from "./types";
 
@@ -21,6 +22,7 @@ export interface OnboardingState {
   analysisStatus: AnalysisStatus;
   analysisError: string | null;
   analysisMeta: {
+    p50Ms?: number;
     mock?: boolean;
     provider?: string;
     model?: string;
@@ -35,6 +37,9 @@ export interface OnboardingState {
   personalized: boolean;
   retrieval: RetrievalResult | null;
   retrievalStatus: "idle" | "running" | "done" | "error";
+  rerank: RerankResult | null;
+  rerankStatus: "idle" | "running" | "done" | "error";
+  rerankError?: string | null;
   retrievalError: string | null;
   weights: FusionWeights;
   catalogSource: CatalogSource;
@@ -59,6 +64,8 @@ const initialState: OnboardingState = {
   personalized: true,
   retrieval: null,
   retrievalStatus: "idle",
+  rerank: null,
+  rerankStatus: "idle",
   retrievalError: null,
   weights: DEFAULT_WEIGHTS,
   catalogSource: "shopify",
@@ -81,6 +88,8 @@ type Action =
   | { type: "setPersonalized"; value: boolean }
   | { type: "setRetrieval"; retrieval: RetrievalResult | null }
   | { type: "setRetrievalStatus"; status: OnboardingState["retrievalStatus"]; error?: string | null }
+  | { type: "setRerank"; rerank: RerankResult | null }
+  | { type: "setRerankStatus"; status: OnboardingState["rerankStatus"]; error?: string | null }
   | { type: "setWeights"; weights: FusionWeights }
   | { type: "setCatalogSource"; source: CatalogSource }
   | { type: "resetScan" }
@@ -107,7 +116,7 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
     case "setAnalysis":
       return { ...state, analysis: action.analysis };
     case "setAnalysisMeta":
-      return { ...state, analysisMeta: action.meta };
+      return { ...state, analysisMeta: action.meta ? { ...(state.analysisMeta ?? {}), ...action.meta } : null };
     case "setProfile":
       return { ...state, profile: action.profile };
     case "patchProfile":
@@ -118,6 +127,10 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
       return { ...state, retrieval: action.retrieval };
     case "setRetrievalStatus":
       return { ...state, retrievalStatus: action.status, retrievalError: action.error ?? null };
+    case "setRerank":
+      return { ...state, rerank: action.rerank };
+    case "setRerankStatus":
+      return { ...state, rerankStatus: action.status, rerankError: action.error ?? null };
     case "setWeights":
       return { ...state, weights: action.weights };
     case "setCatalogSource":
@@ -136,6 +149,8 @@ function reducer(state: OnboardingState, action: Action): OnboardingState {
         profile: null,
         retrieval: null,
         retrievalStatus: "idle",
+  rerank: null,
+  rerankStatus: "idle",
         retrievalError: null,
       };
     case "reset":
@@ -165,6 +180,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         // Never resume mid-analysis; the stream is gone.
         if (saved.analysisStatus === "analyzing" || saved.analysisStatus === "extracting") saved.analysisStatus = "idle";
         if (saved.retrievalStatus === "running") saved.retrievalStatus = "idle";
+        if (!saved.rerank) saved.rerank = null;
+        if (saved.rerankStatus !== "done") saved.rerankStatus = "idle";
         if (!saved.weights) saved.weights = DEFAULT_WEIGHTS;
         if (saved.profile && typeof saved.profile.explore !== "number") saved.profile = { ...saved.profile, explore: 0.5, strength: 0.8 };
         if (!saved.catalogSource || !saved.catalogChosen) saved.catalogSource = "shopify";

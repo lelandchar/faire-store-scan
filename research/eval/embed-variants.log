@@ -1,0 +1,28 @@
+[encoders] siglip-b16 (Xenova/siglip-base-patch16-224) loaded in 6179 ms
+[embed siglip-b16] 64/3793 images, 2 s
+[embed siglip-b16] 384/3793 images, 12 s
+[embed siglip-b16] 704/3793 images, 23 s
+[embed siglip-b16] 1024/3793 images, 33 s
+[embed siglip-b16] 1344/3793 images, 43 s
+[embed siglip-b16] 1664/3793 images, 54 s
+[embed siglip-b16] 1984/3793 images, 64 s
+[embed siglip-b16] 2304/3793 images, 75 s
+[embed siglip-b16] 2624/3793 images, 85 s
+[embed siglip-b16] 2944/3793 images, 95 s
+[embed siglip-b16] 3264/3793 images, 105 s
+[embed siglip-b16] 3584/3793 images, 115 s
+[embed siglip-b16] wrote /Users/lelandchar/Faire personalization prototype/data/embeddings/catalog-shopify.siglip-b16.json (3793 x 768) in 153 s
+[encoders] clip-b16 (Xenova/clip-vit-base-patch16) loaded in 62025 ms
+[embed clip-b16] 64/3793 images, 2 s
+[embed clip-b16] 384/3793 images, 11 s
+[embed clip-b16] 704/3793 images, 20 s
+[embed clip-b16] 1024/3793 images, 29 s
+[embed clip-b16] 1344/3793 images, 38 s
+[embed clip-b16] 1664/3793 images, 47 s
+[embed clip-b16] 1984/3793 images, 56 s
+[embed clip-b16] 2304/3793 images, 65 s
+[embed clip-b16] 2624/3793 images, 74 s
+[embed clip-b16] 2944/3793 images, 83 s
+[embed clip-b16] 3264/3793 images, 92 s
+[embed clip-b16] 3584/3793 images, 102 s
+[embed clip-b16] wrote /Users/lelandchar/Faire personalization prototype/data/embeddings/catalog-shopify.clip-b16.json (3793 x 512) in 113 s

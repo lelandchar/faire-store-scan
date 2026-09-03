@@ -30,7 +30,8 @@ function SearchInner() {
   const personalized = state.personalized && !!profile;
   const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
   const scores = state.retrieval && state.retrieval.catalog === state.catalogSource ? state.retrieval.scores : undefined;
-  const ranked = useMemo(() => (profile ? personalize(catalog, profile, { scores, weights: state.weights }) : null), [catalog, profile, scores, state.weights]);
+  const rerank = state.rerank && state.rerank.catalog === state.catalogSource ? state.rerank.fits : undefined;
+  const ranked = useMemo(() => (profile ? personalize(catalog, profile, { scores, weights: state.weights, rerank }) : null), [catalog, profile, scores, state.weights, rerank]);
   const [why, setWhy] = useState<Ranked | null>(null);
 
   const results: FeedItem[] = useMemo(() => {

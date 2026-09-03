@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { styleLabel } from "@/lib/ranking";
 import type { OnboardingState } from "@/lib/store";
 import { CATEGORIES, STYLES, type Analysis, type CategorySignal, type Frame, type StyleSignal } from "@/lib/types";
@@ -162,6 +162,32 @@ function PromptSummary({
   );
 }
 
+/** Progress paced against the median store-read time: 90% at the P50, then a slow creep so a long tail never looks stuck. */
+function ReadProgress({ startedAt, expectedMs }: { startedAt: number; expectedMs: number }) {
+  const [now, setNow] = useState(() => performance.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(performance.now()), 250);
+    return () => clearInterval(t);
+  }, []);
+  const elapsed = Math.max(0, now - startedAt);
+  const t = elapsed / Math.max(1000, expectedMs);
+  const pct = t <= 1 ? 90 * t : Math.min(97, 90 + 7 * (1 - Math.exp(-(t - 1) * 1.4)));
+  return (
+    <div className="rounded-[6px] border border-line bg-white p-3">
+      <div className="flex items-baseline justify-between text-[12px]">
+        <span className="text-ink">Model call in flight</span>
+        <Mono>
+          {(elapsed / 1000).toFixed(0)} s / P50 {(expectedMs / 1000).toFixed(0)} s
+        </Mono>
+      </div>
+      <div className="mt-2 h-[4px] overflow-hidden rounded-full bg-line">
+        <div className="h-full rounded-full bg-ink" style={{ width: `${pct}%`, transition: "width 0.25s linear" }} />
+      </div>
+      <p className="text-caption mt-1.5">P50 is the median of recent store reads on this deployment (seeded at 52 s for Muse Spark xhigh); the bar reaches 90% at the P50 and creeps from there.</p>
+    </div>
+  );
+}
+
 export function StageAnalysis({
   analysis,
   meta,
@@ -169,6 +195,7 @@ export function StageAnalysis({
   error,
   frames,
   context,
+  progress,
 }: {
   analysis: Partial<Analysis> | null;
   meta: OnboardingState["analysisMeta"];
@@ -176,6 +203,7 @@ export function StageAnalysis({
   error: string | null;
   frames: Frame[];
   context: { storeName: string; storeType: string | null; description: string; sampleSlug: string | null };
+  progress?: { startedAt: number; expectedMs: number } | null;
 }) {
   const frameById = new Map(frames.map((f) => [f.id, f]));
   const usage = readUsage(meta);
@@ -205,6 +233,7 @@ export function StageAnalysis({
               { k: "Served by", v: <Mono className={meta?.fallbackReason ? "text-orange" : ""}>{model}</Mono> },
               ...(meta?.fallbackReason ? [{ k: "Fallback", v: <span className="text-[12px] text-orange">{meta.fallbackReason}</span> }] : []),
               { k: "Latency", v: <Mono>{fmtMs(meta?.ms)}</Mono> },
+              { k: "P50 (deploy)", v: <Mono>{meta?.p50Ms ? fmtMs(meta.p50Ms) : "—"}</Mono> },
               {
                 k: "Tokens",
                 v: usage ? (
@@ -228,6 +257,7 @@ export function StageAnalysis({
               { k: "Sample slug", v: <Mono>{context.sampleSlug ?? "—"}</Mono> },
             ]}
           />
+          {progress && status === "analyzing" && <ReadProgress startedAt={progress.startedAt} expectedMs={progress.expectedMs} />}
           <ModelCard id={meta?.configuredModel ?? meta?.model} servedId={meta?.model} />
           <PromptSummary frames={frames} context={context} />
         </div>

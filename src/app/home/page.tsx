@@ -20,9 +20,10 @@ export default function HomePage() {
   const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
   const generic = useMemo(() => rankGeneric(catalog), [catalog]);
   const scores = state.retrieval && state.retrieval.catalog === state.catalogSource ? state.retrieval.scores : undefined;
+  const rerank = state.rerank && state.rerank.catalog === state.catalogSource ? state.rerank.fits : undefined;
   const ranked = useMemo(
-    () => (profile ? personalize(catalog, profile, { scores, weights: state.weights }) : null),
-    [catalog, profile, scores, state.weights],
+    () => (profile ? personalize(catalog, profile, { scores, weights: state.weights, rerank }) : null),
+    [catalog, profile, scores, state.weights, rerank],
   );
   const [hidden, setHidden] = useState<Set<string>>(new Set());
   const [limit, setLimit] = useState(PAGE);

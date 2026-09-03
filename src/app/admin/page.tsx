@@ -8,6 +8,7 @@ import { StageEmbeddings } from "@/components/admin/StageEmbeddings";
 import { StageFeed } from "@/components/admin/StageFeed";
 import { StageFrames } from "@/components/admin/StageFrames";
 import { StageFusion } from "@/components/admin/StageFusion";
+import { StageRerank } from "@/components/admin/StageRerank";
 import { IDLE_PROGRESS, runPipeline, type PipelineInput, type PipelineProgress } from "@/components/admin/runPipeline";
 import { Card, Mono } from "@/components/admin/ui";
 import { CATALOG_LABEL, getCatalog } from "@/lib/catalog";
@@ -21,7 +22,8 @@ const STAGES = [
   ["stage-2", "Store read"],
   ["stage-3", "Embeddings"],
   ["stage-4", "Fusion"],
-  ["stage-5", "Feed"],
+  ["stage-5", "Buyer's eye"],
+  ["stage-6", "Feed"],
 ] as const;
 
 function hasChannel(catalog: Product[], scores: Record<string, ProductScores> | undefined, key: "visual" | "semantic"): boolean {
@@ -42,9 +44,14 @@ export default function AdminPage() {
   const generic = useMemo(() => rankGeneric(catalog), [catalog]);
   // Same rule as /home: only apply embedding scores computed for the catalog we are ranking.
   const scores = state.retrieval && state.retrieval.catalog === state.catalogSource ? state.retrieval.scores : undefined;
-  const ranked = useMemo(
+  const rerank = state.rerank && state.rerank.catalog === state.catalogSource ? state.rerank.fits : undefined;
+  const rankedBefore = useMemo(
     () => (state.profile ? personalize(catalog, state.profile, { scores, weights: state.weights }) : null),
     [catalog, state.profile, scores, state.weights],
+  );
+  const ranked = useMemo(
+    () => (state.profile ? personalize(catalog, state.profile, { scores, weights: state.weights, rerank }) : null),
+    [catalog, state.profile, scores, state.weights, rerank],
   );
   const hasVisual = useMemo(() => hasChannel(catalog, scores, "visual"), [catalog, scores]);
   const hasSemantic = useMemo(() => hasChannel(catalog, scores, "semantic"), [catalog, scores]);
@@ -95,8 +102,8 @@ export default function AdminPage() {
           <p className="text-caption uppercase tracking-[0.14em]">Store Scan · pipeline trace</p>
           <h1 className="font-serif text-[36px] leading-[1.15] text-ink">End-to-end trace view</h1>
           <p className="text-body mt-1 max-w-[780px]">
-            Every stage of the cold-start pipeline, inspectable: input frames → LM store read → CLIP retrieval → weighted fusion → the feed
-            the retailer sees. Re-run it on canned inputs here; the phone views share this state.
+            Every stage of the cold-start pipeline, inspectable: input frames → LM store read → SigLIP retrieval → weighted fusion → a
+            buyer&apos;s-eye rerank by the LM → the feed the retailer sees. Re-run it on canned inputs here; the phone views share this state.
           </p>
         </div>
         <nav className="flex flex-wrap gap-x-4 text-[13px]">
@@ -135,6 +142,7 @@ export default function AdminPage() {
             status={state.analysisStatus}
             error={state.analysisError}
             frames={state.frames}
+            progress={progress.analyze}
             context={{
               storeName: state.storeName,
               storeType: state.storeCategory,
@@ -169,6 +177,10 @@ export default function AdminPage() {
         </div>
 
         <div id="stage-5" className="scroll-mt-[200px]">
+          <StageRerank rerank={state.rerank} status={state.rerankStatus} error={state.rerankError} before={rankedBefore} after={ranked} />
+        </div>
+
+        <div id="stage-6" className="scroll-mt-[200px]">
           <StageFeed generic={generic} personalized={ranked} profile={state.profile} />
         </div>
 
@@ -184,9 +196,10 @@ export default function AdminPage() {
                   {state.analysisMeta ? <> (this run: {state.analysisMeta.mock ? "mock" : "live"})</> : null}.
                 </li>
                 <li>
-                  Embeddings are real CLIP ViT-B/32 vectors (transformers.js, int8 ONNX on CPU). The catalog index is precomputed by{" "}
+                  Embeddings are real SigLIP base vectors (transformers.js, int8 ONNX on CPU). The catalog index is precomputed by{" "}
                   <Mono>scripts/embed-catalog.mjs</Mono>; frame and prompt vectors are computed per run.
                 </li>
+                <li>The buyer&apos;s-eye rerank is a second live vision-LM call over the top 60 candidates (thumbnails + the confirmed brief).</li>
                 <li>Fusion, normalization, reasons and the generic/personalized rank deltas are computed exactly as shown (ranking.ts) and drive the phone feed.</li>
               </ul>
             </div>
@@ -194,8 +207,9 @@ export default function AdminPage() {
               <p className="font-medium text-ink">Simulated</p>
               <ul className="mt-1 list-disc space-y-1 pl-4">
                 <li>
-                  The catalog: 72 synthetic Faire-style products with generated imagery and hand-written tags (or a public product dataset without
-                  wholesale semantics). Ratings, review counts, bestseller and new-brand flags are invented, so the popularity prior is a stand-in.
+                  The catalog: 2,016 real merchant listings from the public Shopify product-catalogue dataset (12 categories, junk listings removed by
+                  an LM pass over titles and photos), plus a 72-product synthetic Faire-style catalog and a public dataset without wholesale semantics.
+                  Ratings, review counts, bestseller and new-brand flags are invented, so the popularity prior is a stand-in.
                 </li>
                 <li>No retailer history, orders or engagement — this is deliberately the cold-start case. The tag scorer is a hand-tuned linear model, not learned.</li>
                 <li>Latencies are one laptop CPU handling one request; nothing here is a serving-path benchmark.</li>

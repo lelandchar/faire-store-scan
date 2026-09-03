@@ -1,3 +1,4 @@
+import type { ScoringOptions } from "./scoring";
 import type { Analysis, Frame, StoreProfile } from "./types";
 
 // Shared contract between the retrieval route, the store, the ranking fusion
@@ -20,6 +21,7 @@ export interface RetrievalResult {
   timings: { loadMs: number; embedImagesMs: number; embedTextsMs: number; scoreMs: number; totalMs: number };
   storeVectorPreview: number[];
   prompts: string[];
+  scoring?: ScoringOptions;
   scores: Record<string, ProductScores>;
   frameNeighbors: { frameId: string; neighbors: { id: string; score: number }[] }[];
   frameVectorPreviews: { frameId: string; preview: number[] }[];
@@ -31,49 +33,72 @@ export interface FusionWeights {
   semantic: number;
 }
 
-export const DEFAULT_WEIGHTS: FusionWeights = { tag: 0.5, visual: 0.3, semantic: 0.2 };
+/**
+ * Fusion weights and scoring modes were chosen on the offline evaluation in scripts/eval
+ * (six captured demos, Sonnet-judged top 20): semantic matching on per-category prompts
+ * carries most of the within-category ordering; the shelf frames are a weaker signal.
+ */
+export const DEFAULT_WEIGHTS: FusionWeights = { tag: 0.4, visual: 0.15, semantic: 0.45 };
+export const DEFAULT_SCORING_OPTIONS: ScoringOptions = { visual: "top2", semantic: "top2", imageShare: 0.75 };
 
-/** Turn the LM's structured read into a few short text prompts for the CLIP text tower. */
+export interface PromptInput {
+  styles: string[];
+  storeType?: string | null;
+  categories: { name: string; examples?: string[] }[];
+  complements: string[];
+  /** What the model saw on each shelf (frame notes). */
+  seen?: string[];
+}
+
+/**
+ * Prompts for the text tower, one per category the retailer carries (with the examples the
+ * model saw, the look, and the kind of store), then complements, then the shelf notes.
+ * Each prompt is matched on its own (best-two average), so a candle can match the candle
+ * prompt without being diluted by the apparel prompt.
+ */
+export function buildPrompts(input: PromptInput): string[] {
+  const style = input.styles.slice(0, 2).map((s) => s.replace(/-/g, " ")).join(" ");
+  const type = (input.storeType || "independent shop").trim().toLowerCase();
+  const tidy = (s: string) => s.replace(/\s+/g, " ").trim();
+  const out: string[] = [];
+  for (const c of input.categories.slice(0, 6)) {
+    const ex = (c.examples ?? []).filter(Boolean).slice(0, 3).join(", ");
+    out.push(tidy(`${ex ? `${ex}, ` : ""}${style} ${c.name.toLowerCase()} sold at a ${type}`));
+  }
+  for (const c of input.complements.slice(0, 3)) out.push(tidy(`${style} ${c.toLowerCase()} sold at a ${type}`));
+  for (const n of (input.seen ?? []).slice(0, 8)) out.push(tidy(`${n}, ${style} style`));
+  return out.slice(0, 16);
+}
+
+/** Prompts straight from the model's read (trace view, before the retailer confirms anything). */
 export function promptsFromAnalysis(a: Partial<Analysis>): string[] {
-  const prompts: string[] = [];
-  const styles = (a.styles ?? []).slice(0, 2).map((s) => s.name.replace("-", " "));
-  const styleWords = styles.join(" ");
-  const storeType = a.store_read?.store_type_guess?.trim();
-  if (storeType) prompts.push(`a product sold at ${storeType.toLowerCase()}`);
-  for (const c of (a.categories ?? []).slice(0, 4)) {
-    if (!c?.name) continue;
-    const ex = (c.examples ?? []).slice(0, 3).join(", ");
-    prompts.push(`${ex || c.name.toLowerCase()}${styleWords ? `, ${styleWords} style` : ""}`);
-  }
-  for (const s of (a.suggested_complements ?? []).slice(0, 2)) {
-    if (s?.category) prompts.push(`${s.category.toLowerCase()}${styleWords ? `, ${styleWords} style` : ""}`);
-  }
-  const mats = (a.materials ?? []).slice(0, 3).map((m) => m.name).join(", ");
-  if (mats) prompts.push(`products made of ${mats}`);
-  return prompts.slice(0, 8);
+  return buildPrompts({
+    styles: (a.styles ?? []).map((s) => s?.name).filter(Boolean) as string[],
+    storeType: a.store_read?.store_type_guess,
+    categories: (a.categories ?? []).filter((c) => c?.name).map((c) => ({ name: c.name, examples: c.examples })),
+    complements: (a.suggested_complements ?? []).map((c) => c?.category).filter(Boolean) as string[],
+    seen: (a.frame_notes ?? []).map((n) => n?.what_we_saw).filter((x): x is string => !!x),
+  });
 }
 
 /** Prompts from the profile the retailer actually confirmed (their edits win over the raw read). */
 export function promptsFromProfile(profile: StoreProfile, a: Partial<Analysis> | null): string[] {
-  const prompts: string[] = [];
-  const styleWords = profile.styles.slice(0, 2).map((s) => s.replace("-", " ")).join(" ");
-  const storeType = a?.store_read?.store_type_guess?.trim();
-  if (storeType) prompts.push(`a product sold at ${storeType.toLowerCase()}`);
-  for (const c of profile.categories.filter((c) => c.intent !== "skip").slice(0, 5)) {
-    const sig = a?.categories?.find((s) => s.name === c.name);
-    const ex = (sig?.examples ?? []).slice(0, 3).join(", ");
-    prompts.push(`${ex || c.name.toLowerCase()}${styleWords ? `, ${styleWords} style` : ""}`);
-  }
-  for (const c of profile.complements.slice(0, 2)) prompts.push(`${c.toLowerCase()}${styleWords ? `, ${styleWords} style` : ""}`);
-  const mats = profile.materials.slice(0, 3).join(", ");
-  if (mats) prompts.push(`products made of ${mats}`);
-  return prompts.slice(0, 10);
+  return buildPrompts({
+    styles: profile.styles,
+    storeType: a?.store_read?.store_type_guess || profile.storeType,
+    categories: profile.categories
+      .filter((c) => c.intent !== "skip")
+      .map((c) => ({ name: c.name, examples: a?.categories?.find((s) => s?.name === c.name)?.examples })),
+    complements: profile.complements,
+    seen: (a?.frame_notes ?? []).map((n) => n?.what_we_saw).filter((x): x is string => !!x),
+  });
 }
 
 export async function runRetrieval(opts: {
   frames: Frame[];
   catalog: CatalogSource;
   prompts: string[];
+  scoring?: ScoringOptions;
   signal?: AbortSignal;
 }): Promise<RetrievalResult> {
   const res = await fetch("/api/retrieve", {
@@ -83,6 +108,7 @@ export async function runRetrieval(opts: {
       frames: opts.frames.map((f) => ({ id: f.id, dataUrl: f.dataUrl })),
       catalog: opts.catalog,
       prompts: opts.prompts,
+      scoring: opts.scoring ?? DEFAULT_SCORING_OPTIONS,
     }),
     signal: opts.signal,
   });

@@ -9,7 +9,7 @@ export function StageFrames({ frames, progress }: { frames: Frame[]; progress: {
     <Card
       step="Stage 1"
       title={frames[0]?.source === "photo" ? "Photo processing" : "Video to frames"}
-      subtitle="Client-side selection (frames.ts): candidates are sampled uniformly across the clip (up to 16, ~1.5 per second), each scored by the variance of a 3×3 Laplacian over a 96px grayscale copy (sharpness), then bucketed into 8 temporal buckets and the sharpest of each bucket is kept. Frames are resized to ≤1280px and JPEG-encoded at q=0.8; the raw video never leaves the device. Photos skip sampling and are only resized."
+      subtitle="Client-side selection (frames.ts): candidates are sampled uniformly across the clip (~2 per second, up to 32), each scored for sharpness (mean 3×3 Laplacian over a 96px grayscale copy) and fingerprinted (24×24 grayscale) for similarity. The clip is split into evenly spaced time buckets, about 0.8 per second (6 to 16 frames), so every section of the store is represented; in each bucket the acceptably sharp frames (≥60% of the bucket's best) are ranked by how different they look from frames already kept, and near-duplicates (fingerprint difference <0.035) are skipped. Frames are resized to ≤1280px and JPEG-encoded at q=0.8; the raw video never leaves the device. Photos skip sampling and are only resized."
     >
       {frames.length === 0 ? (
         <Placeholder>{progress ? `Extracting ${progress.done}/${progress.total}…` : "Run a sample to populate."}</Placeholder>

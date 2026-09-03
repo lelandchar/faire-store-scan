@@ -1,0 +1,402 @@
+{
+  "slug": "general-store-video",
+  "kind": "video",
+  "name": "Fern & Fig General",
+  "storeType": "General Store",
+  "description": "Neighborhood general store & pantry",
+  "capturedAt": "2026-09-03T05:34:50.368Z",
+  "analysisMs": 53856,
+  "meta": {
+    "done": true,
+    "usage": {
+      "input": 11251,
+      "output": 4839
+    },
+    "model": "meta/muse-spark-1.3",
+    "configuredModel": "meta/muse-spark-1.3",
+    "effort": "xhigh",
+    "fallbackReason": null,
+    "issues": [],
+    "provider": "openrouter"
+  },
+  "issues": [],
+  "frames": [
+    {
+      "id": "f1",
+      "file": "general-store-video/f1.jpg",
+      "timestampMs": 400
+    },
+    {
+      "id": "f2",
+      "file": "general-store-video/f2.jpg",
+      "timestampMs": 1071
+    },
+    {
+      "id": "f3",
+      "file": "general-store-video/f3.jpg",
+      "timestampMs": 3086
+    },
+    {
+      "id": "f4",
+      "file": "general-store-video/f4.jpg",
+      "timestampMs": 4429
+    },
+    {
+      "id": "f5",
+      "file": "general-store-video/f5.jpg",
+      "timestampMs": 5100
+    },
+    {
+      "id": "f6",
+      "file": "general-store-video/f6.jpg",
+      "timestampMs": 6443
+    },
+    {
+      "id": "f7",
+      "file": "general-store-video/f7.jpg",
+      "timestampMs": 8457
+    },
+    {
+      "id": "f8",
+      "file": "general-store-video/f8.jpg",
+      "timestampMs": 9800
+    }
+  ],
+  "analysis": {
+    "store_read": {
+      "store_type_guess": "Farmhouse pantry and general store",
+      "vibe_words": [
+        "warm",
+        "homestead",
+        "tactile",
+        "welcoming"
+      ],
+      "summary": "Your walls of jewel-toned preserves and kraft pantry bags make the shop feel like a sunlit farm kitchen. The scrubbed wood boards, striped linens and rainbow of enamel mugs invite neighbors to linger, touch and take something delicious home."
+    },
+    "frame_notes": [
+      {
+        "frame_id": "f1",
+        "what_we_saw": "jars of jams and oils on shelves"
+      },
+      {
+        "frame_id": "f2",
+        "what_we_saw": "preserves and oil bottles on shelving"
+      },
+      {
+        "frame_id": "f3",
+        "what_we_saw": "kraft bags, boards and striped linens"
+      },
+      {
+        "frame_id": "f4",
+        "what_we_saw": "wooden boards and colorful enamel mugs"
+      },
+      {
+        "frame_id": "f5",
+        "what_we_saw": "enamel mugs and boards on table"
+      },
+      {
+        "frame_id": "f6",
+        "what_we_saw": "soap bars, mugs and pantry shelves"
+      },
+      {
+        "frame_id": "f7",
+        "what_we_saw": "handmade soaps, candles and cards"
+      },
+      {
+        "frame_id": "f8",
+        "what_we_saw": "scented candles and greeting card rack"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Food & drink",
+        "share": "dominant",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3"
+        ],
+        "examples": [
+          "fruit preserves",
+          "bottled oils",
+          "pantry dry goods"
+        ]
+      },
+      {
+        "name": "Kitchen & tabletop",
+        "share": "strong",
+        "confidence": "high",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5",
+          "f6"
+        ],
+        "examples": [
+          "wooden cutting boards",
+          "enamel mugs",
+          "striped tea towels"
+        ]
+      },
+      {
+        "name": "Bath & body",
+        "share": "present",
+        "confidence": "high",
+        "evidence_frames": [
+          "f6",
+          "f7",
+          "f8"
+        ],
+        "examples": [
+          "bar soap",
+          "bath oils"
+        ]
+      },
+      {
+        "name": "Candles & fragrance",
+        "share": "present",
+        "confidence": "high",
+        "evidence_frames": [
+          "f7",
+          "f8"
+        ],
+        "examples": [
+          "jar candles"
+        ]
+      },
+      {
+        "name": "Stationery & paper",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f6",
+          "f7",
+          "f8"
+        ],
+        "examples": [
+          "greeting cards",
+          "art prints"
+        ]
+      }
+    ],
+    "styles": [
+      {
+        "name": "modern-farmhouse",
+        "confidence": "high",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "rustic",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f4",
+          "f5"
+        ]
+      },
+      {
+        "name": "natural",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f7",
+          "f8"
+        ]
+      },
+      {
+        "name": "cottagecore",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f7"
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "wood",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f4",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "glass",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f7",
+          "f8"
+        ]
+      },
+      {
+        "name": "kraft paper",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5"
+        ]
+      },
+      {
+        "name": "enamel",
+        "evidence_frames": [
+          "f4",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "linen",
+        "evidence_frames": [
+          "f3",
+          "f4",
+          "f5",
+          "f6"
+        ]
+      }
+    ],
+    "palette": [
+      {
+        "name": "warm oak",
+        "hex": "#C9A072"
+      },
+      {
+        "name": "warm white",
+        "hex": "#F7F3EB"
+      },
+      {
+        "name": "kraft brown",
+        "hex": "#B68D5E"
+      },
+      {
+        "name": "preserve red",
+        "hex": "#9E2B25"
+      },
+      {
+        "name": "sage green",
+        "hex": "#6A8A6B"
+      }
+    ],
+    "price_position": {
+      "tier": "unknown",
+      "confidence": "low",
+      "rationale": "No legible prices are visible, only handwritten product labels."
+    },
+    "visible_brands": [],
+    "merchandising_notes": [
+      "Tall open pine shelves hold pantry jars by type",
+      "Long central wood table stages boards, mugs and linens",
+      "Soap and candle vignette with card spinners by checkout",
+      "Color-blocked mugs lined up as table border"
+    ],
+    "suggested_complements": [
+      {
+        "category": "Home decor",
+        "reason": "Wood tables and white cabinetry suit bud vases and seasonal accents."
+      },
+      {
+        "category": "Garden & outdoor",
+        "reason": "Preserves and pantry focus pairs naturally with seeds and garden tools."
+      },
+      {
+        "category": "Apparel",
+        "reason": "Boards and tea towels invite canvas aprons and market totes."
+      }
+    ]
+  },
+  "profile": {
+    "storeName": "Fern & Fig General",
+    "storeType": "General Store",
+    "description": "Neighborhood general store & pantry",
+    "categories": [
+      {
+        "name": "Food & drink",
+        "share": "dominant",
+        "intent": "more"
+      },
+      {
+        "name": "Kitchen & tabletop",
+        "share": "strong",
+        "intent": "more"
+      },
+      {
+        "name": "Bath & body",
+        "share": "present",
+        "intent": "more"
+      },
+      {
+        "name": "Candles & fragrance",
+        "share": "present",
+        "intent": "more"
+      },
+      {
+        "name": "Stationery & paper",
+        "share": "present",
+        "intent": "more"
+      }
+    ],
+    "styles": [
+      "modern-farmhouse",
+      "rustic",
+      "natural",
+      "cottagecore"
+    ],
+    "materials": [
+      "wood",
+      "glass",
+      "kraft paper",
+      "enamel",
+      "linen"
+    ],
+    "palette": [
+      {
+        "name": "warm oak",
+        "hex": "#C9A072"
+      },
+      {
+        "name": "warm white",
+        "hex": "#F7F3EB"
+      },
+      {
+        "name": "kraft brown",
+        "hex": "#B68D5E"
+      },
+      {
+        "name": "preserve red",
+        "hex": "#9E2B25"
+      },
+      {
+        "name": "sage green",
+        "hex": "#6A8A6B"
+      }
+    ],
+    "priceTier": "unknown",
+    "complements": [
+      "Home decor",
+      "Garden & outdoor",
+      "Apparel"
+    ],
+    "mode": "complement",
+    "explore": 0.5,
+    "strength": 0.8,
+    "vibeWords": [
+      "warm",
+      "homestead",
+      "tactile",
+      "welcoming"
+    ],
+    "summary": "Your walls of jewel-toned preserves and kraft pantry bags make the shop feel like a sunlit farm kitchen. The scrubbed wood boards, striped linens and rainbow of enamel mugs invite neighbors to linger, touch and take something delicious home."
+  }
+}

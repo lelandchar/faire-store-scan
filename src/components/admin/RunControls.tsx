@@ -27,6 +27,8 @@ function stageLabel(p: PipelineProgress): string {
       return "analyzing";
     case "matching":
       return "matching";
+    case "reranking":
+      return "reranking";
     case "done":
       return "done";
     case "error":
@@ -184,6 +186,10 @@ export function RunControls({
         <span>
           <span className="text-muted">match </span>
           <Mono>{fmtMs(t.matchMs)}</Mono>
+        </span>
+        <span>
+          <span className="text-muted">rerank </span>
+          <Mono>{fmtMs(t.rerankMs)}</Mono>
         </span>
         <span>
           <span className="text-muted">total </span>

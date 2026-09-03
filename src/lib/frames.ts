@@ -16,6 +16,10 @@ export interface ExtractOptions {
 }
 
 const DEFAULTS = { count: 8, maxEdge: 1280, quality: 0.8 };
+/** Frames kept for a clip: about 0.8 per second, never fewer than 6 or more than 16. */
+export function framesToKeep(durationSeconds: number): number {
+  return Math.max(6, Math.min(16, Math.round(durationSeconds * 0.8)));
+}
 
 function once<K extends keyof HTMLVideoElementEventMap>(
   el: HTMLVideoElement,
@@ -107,7 +111,7 @@ function fitSize(w: number, h: number, maxEdge: number): [number, number] {
 }
 
 export async function extractFramesFromVideo(file: File, opts: ExtractOptions = {}): Promise<Frame[]> {
-  const { count, maxEdge, quality } = { ...DEFAULTS, ...opts };
+  const { maxEdge, quality } = { ...DEFAULTS, ...opts };
   const url = URL.createObjectURL(file);
   const video = document.createElement("video");
   video.src = url;
@@ -131,7 +135,9 @@ export async function extractFramesFromVideo(file: File, opts: ExtractOptions = 
     }
     if (!Number.isFinite(duration) || duration <= 0) throw new Error("Could not read the video length.");
 
-    const candidateCount = Math.min(16, Math.max(count, Math.round(duration * 1.5)));
+    // Longer walkthroughs earn more frames: they cover more of the store.
+    const keep = opts.count ?? framesToKeep(duration);
+    const candidateCount = Math.min(32, Math.max(keep, Math.round(duration * 2)));
     const start = Math.min(0.4, duration * 0.05);
     const end = Math.max(start, duration - 0.25);
     const times = Array.from({ length: candidateCount }, (_, i) =>
@@ -158,31 +164,35 @@ export async function extractFramesFromVideo(file: File, opts: ExtractOptions = 
       opts.onProgress?.(i + 1, times.length);
     }
 
-    // Keep temporal spread: bucket candidates by time, take the sharpest of each.
-    // Keep temporal spread (one frame per bucket), prefer sharp frames, and skip
-    // frames that are near-duplicates of ones already kept so a static clip does
-    // not produce eight copies of the same shelf.
-    const buckets = Math.min(count, candidates.length);
+    // Selection balances three things: even spacing through the walkthrough (one
+    // frame per time bucket, so every section of the store is represented),
+    // sharpness (blurry pans are useless to the model), and diversity (among the
+    // acceptably sharp frames of a bucket, prefer the one that looks least like
+    // anything already kept; near-duplicates are skipped outright).
+    const buckets = Math.min(keep, candidates.length);
     const chosen: typeof candidates = [];
-    const isDuplicate = (c: (typeof candidates)[number]) => chosen.some((k) => difference(k.sig, c.sig) < DUPLICATE_THRESHOLD);
+    const minDiff = (c: (typeof candidates)[number]) => (chosen.length ? Math.min(...chosen.map((k) => difference(k.sig, c.sig))) : 1);
+    const isDuplicate = (c: (typeof candidates)[number]) => minDiff(c) < DUPLICATE_THRESHOLD;
     for (let b = 0; b < buckets; b++) {
       const lo = Math.floor((candidates.length * b) / buckets);
       const hi = Math.floor((candidates.length * (b + 1)) / buckets);
-      const slice = candidates.slice(lo, Math.max(lo + 1, hi)).sort((x, y) => y.sharp - x.sharp);
-      const fresh = slice.find((c) => !isDuplicate(c));
-      if (fresh) chosen.push(fresh);
+      const slice = candidates.slice(lo, Math.max(lo + 1, hi)).filter((c) => !isDuplicate(c));
+      if (!slice.length) continue;
+      const best = Math.max(...slice.map((c) => c.sharp));
+      const sharpEnough = slice.filter((c) => c.sharp >= 0.6 * best);
+      sharpEnough.sort((x, y) => minDiff(y) - minDiff(x) || y.sharp - x.sharp);
+      chosen.push(sharpEnough[0]);
     }
-    // If duplicates collapsed the set, top up with the most different remaining candidates.
+    // If duplicates collapsed the set, top up with the sharpest distinct leftovers.
     if (chosen.length < Math.min(4, candidates.length)) {
-      const rest = candidates.filter((c) => !chosen.includes(c));
-      rest.sort((x, y) => y.sharp - x.sharp);
+      const rest = candidates.filter((c) => !chosen.includes(c)).sort((x, y) => y.sharp - x.sharp);
       for (const c of rest) {
-        if (chosen.length >= Math.min(count, candidates.length)) break;
+        if (chosen.length >= Math.min(keep, candidates.length)) break;
         if (!isDuplicate(c)) chosen.push(c);
       }
       if (chosen.length < 3) for (const c of rest) if (!chosen.includes(c) && chosen.length < 3) chosen.push(c);
-      chosen.sort((x, y) => x.t - y.t);
     }
+    chosen.sort((x, y) => x.t - y.t);
     opts.onSelected?.(chosen.map((c) => candidates.indexOf(c)));
     return chosen.map((c, i) => ({
       id: `f${i + 1}`,

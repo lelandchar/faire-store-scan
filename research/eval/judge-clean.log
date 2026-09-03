@@ -1,0 +1,62 @@
+objc[56159]: Class GNotificationCenterDelegate is implemented in both /Users/lelandchar/Faire personalization prototype/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.6.dylib (0x118ac5a58) and /Users/lelandchar/Faire personalization prototype/node_modules/@huggingface/transformers/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib (0x119c41978). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+clean catalog: 3047 of 3793 listings
+[encoders] clip-b32 (Xenova/clip-vit-base-patch32) loaded in 278 ms
+baseline    bookshop             carry  85%  comp  15%  off   0%  cats 4/4   fit 2.90  fit>=4 30%  junk 6/20
+baseline    boutique-video       carry  55%  comp  45%  off   0%  cats 3/4   fit 2.65  fit>=4 35%  junk 3/20
+baseline    boutique             carry  80%  comp  20%  off   0%  cats 3/3   fit 2.50  fit>=4 25%  junk 5/20
+baseline    general-store-video  carry  55%  comp  45%  off   0%  cats 3/5   fit 3.20  fit>=4 50%  junk 5/20
+baseline    home-gift-video      carry  78%  comp  23%  off   0%  cats 4/4   fit 2.80  fit>=4 35%  junk 4/20
+baseline    home-gift            carry  85%  comp  15%  off   0%  cats 3/6   fit 3.25  fit>=4 55%  junk 5/20
+baseline    MEAN                 carry  73%  comp  27%  off   0%  fit 2.88  fit>=4 38%  junk 28
+prompts2    bookshop             carry  85%  comp  15%  off   0%  cats 4/4   fit 3.00  fit>=4 35%  junk 8/20
+prompts2    boutique-video       carry  60%  comp  40%  off   0%  cats 4/4   fit 2.70  fit>=4 30%  junk 5/20
+prompts2    boutique             carry  70%  comp  30%  off   0%  cats 2/3   fit 2.65  fit>=4 30%  junk 4/20
+prompts2    general-store-video  carry  65%  comp  35%  off   0%  cats 3/5   fit 3.05  fit>=4 45%  junk 6/20
+prompts2    home-gift-video      carry  73%  comp  28%  off   0%  cats 3/4   fit 2.70  fit>=4 35%  junk 5/20
+prompts2    home-gift            carry  90%  comp  10%  off   0%  cats 4/6   fit 3.40  fit>=4 60%  junk 4/20
+prompts2    MEAN                 carry  74%  comp  26%  off   0%  fit 2.92  fit>=4 39%  junk 32
+[encoders] siglip-b16 (Xenova/siglip-base-patch16-224) loaded in 240 ms
+siglip      bookshop             carry  85%  comp  15%  off   0%  cats 2/4   fit 2.50  fit>=4 20%  junk 11/20
+siglip      boutique-video       carry  68%  comp  33%  off   0%  cats 3/4   fit 2.95  fit>=4 45%  junk 6/20
+siglip      boutique             carry  75%  comp  25%  off   0%  cats 2/3   fit 2.90  fit>=4 30%  junk 2/20
+siglip      general-store-video  carry  70%  comp  30%  off   0%  cats 3/5   fit 3.80  fit>=4 65%  junk 3/20
+siglip      home-gift-video      carry  75%  comp  25%  off   0%  cats 4/4   fit 2.45  fit>=4 25%  junk 7/20
+siglip      home-gift            carry  88%  comp  13%  off   0%  cats 2/6   fit 3.10  fit>=4 45%  junk 6/20
+siglip      MEAN                 carry  77%  comp  23%  off   0%  fit 2.95  fit>=4 38%  junk 35
+siglip3     bookshop             carry  85%  comp  15%  off   0%  cats 2/4   fit 2.35  fit>=4 15%  junk 11/20
+siglip3     boutique-video       carry  68%  comp  33%  off   0%  cats 3/4   fit 2.85  fit>=4 35%  junk 5/20
+siglip3     boutique             carry  85%  comp  15%  off   0%  cats 2/3   fit 2.70  fit>=4 30%  junk 4/20
+siglip3     general-store-video  carry  70%  comp  30%  off   0%  cats 2/5   fit 3.55  fit>=4 60%  junk 5/20
+siglip3     home-gift-video      carry  88%  comp  13%  off   0%  cats 4/4   fit 2.40  fit>=4 25%  junk 8/20
+siglip3     home-gift            carry  93%  comp   8%  off   0%  cats 2/6   fit 3.10  fit>=4 45%  junk 6/20
+siglip3     MEAN                 carry  81%  comp  19%  off   0%  fit 2.82  fit>=4 35%  junk 39
+siglipimg   bookshop             carry  90%  comp  10%  off   0%  cats 3/4   fit 2.70  fit>=4 30%  junk 11/20
+siglipimg   boutique-video       carry  60%  comp  40%  off   0%  cats 4/4   fit 3.00  fit>=4 50%  junk 4/20
+siglipimg   boutique             carry  65%  comp  35%  off   0%  cats 2/3   fit 2.80  fit>=4 25%  junk 3/20
+siglipimg   general-store-video  carry  68%  comp  33%  off   0%  cats 3/5   fit 3.40  fit>=4 50%  junk 3/20
+siglipimg   home-gift-video      carry  70%  comp  30%  off   0%  cats 4/4   fit 2.60  fit>=4 35%  junk 8/20
+siglipimg   home-gift            carry  88%  comp  13%  off   0%  cats 4/6   fit 3.30  fit>=4 50%  junk 5/20
+siglipimg   MEAN                 carry  73%  comp  27%  off   0%  fit 2.97  fit>=4 40%  junk 34
+siglip3img  bookshop             carry  90%  comp  10%  off   0%  cats 3/4   fit 2.70  fit>=4 30%  junk 11/20
+siglip3img  boutique-video       carry  65%  comp  35%  off   0%  cats 4/4   fit 3.05  fit>=4 50%  junk 4/20
+siglip3img  boutique             carry  75%  comp  25%  off   0%  cats 2/3   fit 2.60  fit>=4 25%  junk 4/20
+siglip3img  general-store-video  carry  65%  comp  35%  off   0%  cats 3/5   fit 3.45  fit>=4 50%  junk 4/20
+siglip3img  home-gift-video      carry  78%  comp  23%  off   0%  cats 4/4   fit 2.35  fit>=4 25%  junk 8/20
+siglip3img  home-gift            carry  90%  comp  10%  off   0%  cats 3/6   fit 3.55  fit>=4 60%  junk 3/20
+siglip3img  MEAN                 carry  77%  comp  23%  off   0%  fit 2.95  fit>=4 40%  junk 34
+siglip3top2 bookshop             carry  88%  comp  13%  off   0%  cats 3/4   fit 2.70  fit>=4 30%  junk 11/20
+siglip3top2 boutique-video       carry  63%  comp  38%  off   0%  cats 4/4   fit 3.15  fit>=4 50%  junk 4/20
+siglip3top2 boutique             carry  75%  comp  25%  off   0%  cats 3/3   fit 2.60  fit>=4 25%  junk 4/20
+siglip3top2 general-store-video  carry  73%  comp  28%  off   0%  cats 3/5   fit 3.60  fit>=4 55%  junk 3/20
+siglip3top2 home-gift-video      carry  88%  comp  13%  off   0%  cats 4/4   fit 2.70  fit>=4 35%  junk 7/20
+siglip3top2 home-gift            carry  90%  comp  10%  off   0%  cats 3/6   fit 3.40  fit>=4 55%  junk 4/20
+siglip3top2 MEAN                 carry  79%  comp  21%  off   0%  fit 3.02  fit>=4 42%  junk 33
+[encoders] clip-b16 (Xenova/clip-vit-base-patch16) loaded in 274 ms
+clipb16     bookshop             carry  65%  comp  35%  off   0%  cats 3/4   fit 2.45  fit>=4 25%  junk 10/20
+clipb16     boutique-video       carry  80%  comp  20%  off   0%  cats 3/4   fit 2.20  fit>=4 25%  junk 7/20
+clipb16     boutique             carry  80%  comp  20%  off   0%  cats 2/3   fit 2.10  fit>=4 10%  junk 5/20
+clipb16     general-store-video  carry  95%  comp   5%  off   0%  cats 3/5   fit 3.55  fit>=4 65%  junk 6/20
+clipb16     home-gift-video      carry  95%  comp   5%  off   0%  cats 4/4   fit 2.05  fit>=4 10%  junk 12/20
+clipb16     home-gift            carry  95%  comp   5%  off   0%  cats 3/6   fit 2.75  fit>=4 35%  junk 9/20
+clipb16     MEAN                 carry  85%  comp  15%  off   0%  fit 2.52  fit>=4 28%  junk 49
+wrote /Users/lelandchar/Faire personalization prototype/research/eval/results-clean-baseline+prompts2+siglip+siglip3+siglipimg+siglip3img+siglip3top2+clipb16.md

@@ -47,8 +47,8 @@ function extractJson(text: string): string | null {
 }
 export const maxDuration = 120;
 
-const MAX_FRAMES = 12;
-const MAX_FRAME_BYTES = 2_500_000;
+const MAX_FRAMES = 16;
+const MAX_FRAME_BYTES = 4_000_000;
 
 const RequestSchema = z.object({
   frames: z

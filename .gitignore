@@ -46,3 +46,6 @@ shots/
 
 # transformers.js model cache (see src/lib/embeddings.ts, TRANSFORMERS_CACHE_DIR)
 /.cache/
+
+# evaluation captures (frames are derived from the sample media)
+/research/eval/runs/*/

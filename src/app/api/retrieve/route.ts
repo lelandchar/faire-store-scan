@@ -1,41 +1,33 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
-import { cosine, embedImages, embedTexts, EMBEDDING_DIM, EMBEDDING_MODEL, meanVector } from "@/lib/embeddings";
-import type { CatalogSource, ProductScores, RetrievalResult } from "@/lib/retrieval";
+import { embedImages, embedTexts, EMBEDDING_DIM, EMBEDDING_MODEL } from "@/lib/embeddings";
+import { DEFAULT_SCORING_OPTIONS, type CatalogSource, type RetrievalResult } from "@/lib/retrieval";
+import { computeScores, decodeVectors, dot, meanVector, type VectorIndex } from "@/lib/scoring";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
 
 const RequestSchema = z.object({
-  frames: z.array(z.object({ id: z.string().regex(/^f\d{1,2}$/), dataUrl: z.string().startsWith("data:image/jpeg;base64,") })).min(1).max(12),
+  frames: z.array(z.object({ id: z.string().regex(/^f\d{1,2}$/), dataUrl: z.string().startsWith("data:image/jpeg;base64,") })).min(1).max(16),
   catalog: z.enum(["synthetic", "public", "shopify"]).default("synthetic"),
-  prompts: z.array(z.string().max(200)).max(12).default([]),
+  prompts: z.array(z.string().max(200)).max(16).default([]),
+  scoring: z
+    .object({
+      visual: z.enum(["mean", "max", "top2"]).optional(),
+      semantic: z.enum(["mean", "max", "top2"]).optional(),
+      imageShare: z.number().min(0).max(1).optional(),
+    })
+    .optional(),
 });
 
-interface Index {
-  model: string;
-  dim: number;
-  ids: string[];
-  image: Float32Array[];
-  text: Float32Array[];
-}
+type Index = VectorIndex;
 
 const FILES: Record<CatalogSource, string> = {
   synthetic: "catalog.json",
   public: "catalog-public.json",
   shopify: "catalog-shopify.json",
 };
-
-function decode(b64: string, dim: number): Float32Array[] {
-  const buf = Buffer.from(b64, "base64");
-  const copy = new ArrayBuffer(buf.byteLength);
-  new Uint8Array(copy).set(buf);
-  const all = new Float32Array(copy);
-  const out: Float32Array[] = [];
-  for (let i = 0; i + dim <= all.length; i += dim) out.push(all.subarray(i, i + dim));
-  return out;
-}
 
 const g = globalThis as unknown as { __indexCache?: Map<CatalogSource, { mtime: number; index: Promise<Index> }> };
 g.__indexCache ??= new Map();
@@ -47,8 +39,8 @@ async function loadIndex(source: CatalogSource): Promise<Index> {
   if (cached && cached.mtime === mtime) return cached.index;
   const p = (async () => {
     const raw = JSON.parse(await fs.readFile(file, "utf8")) as { model: string; dim: number; ids: string[]; image: string; text: string };
-    const image = decode(raw.image, raw.dim);
-    const text = decode(raw.text, raw.dim);
+    const image = decodeVectors(raw.image, raw.dim);
+    const text = decodeVectors(raw.text, raw.dim);
     if (image.length !== raw.ids.length) throw new Error(`Embedding index ${file} is inconsistent (${image.length} vectors for ${raw.ids.length} ids)`);
     return { model: raw.model, dim: raw.dim, ids: raw.ids, image, text };
   })();
@@ -74,21 +66,13 @@ export async function POST(req: Request) {
     const tImg = performance.now();
     const storeVisual = meanVector(frameVecs);
 
-    let storeText: Float32Array | null = null;
-    if (body.prompts.length) {
-      const textVecs = await embedTexts(body.prompts);
-      storeText = meanVector(textVecs);
-    }
+    const promptVecs = body.prompts.length ? await embedTexts(body.prompts) : [];
     const tTxt = performance.now();
 
-    const scores: Record<string, ProductScores> = {};
-    for (let i = 0; i < index.ids.length; i++) {
-      const visual = cosine(index.image[i], storeVisual);
-      const semantic = storeText ? 0.5 * cosine(index.image[i], storeText) + 0.5 * cosine(index.text[i], storeText) : null;
-      scores[index.ids[i]] = { visual, semantic };
-    }
+    const scoring = { ...DEFAULT_SCORING_OPTIONS, ...(body.scoring ?? {}) };
+    const scores = computeScores(index, frameVecs, promptVecs, scoring);
     const frameNeighbors = body.frames.map((f, fi) => {
-      const sims = index.ids.map((id, i) => ({ id, score: cosine(index.image[i], frameVecs[fi]) }));
+      const sims = index.ids.map((id, i) => ({ id, score: dot(index.image[i], frameVecs[fi]) }));
       sims.sort((a, b) => b.score - a.score);
       return { frameId: f.id, neighbors: sims.slice(0, 5) };
     });
@@ -108,6 +92,7 @@ export async function POST(req: Request) {
       },
       storeVectorPreview: Array.from(storeVisual.subarray(0, 8)).map((x) => Number(x.toFixed(4))),
       prompts: body.prompts,
+      scoring,
       scores,
       frameNeighbors,
       frameVectorPreviews: body.frames.map((f, i) => ({ frameId: f.id, preview: Array.from(frameVecs[i].subarray(0, 8)).map((x) => Number(x.toFixed(4))) })),

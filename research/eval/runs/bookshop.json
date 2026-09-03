@@ -1,0 +1,352 @@
+{
+  "slug": "bookshop",
+  "kind": "photos",
+  "name": "Marginalia Books & Paper",
+  "storeType": "Book Store",
+  "description": "New and used books, greeting cards, stationery, and small gifts in a sunlit corner shop.",
+  "capturedAt": "2026-09-03T05:36:18.512Z",
+  "analysisMs": 87997,
+  "meta": {
+    "done": true,
+    "usage": {
+      "input": 9944,
+      "output": 6160
+    },
+    "model": "meta/muse-spark-1.3",
+    "configuredModel": "meta/muse-spark-1.3",
+    "effort": "xhigh",
+    "fallbackReason": null,
+    "issues": [],
+    "provider": "openrouter"
+  },
+  "issues": [],
+  "frames": [
+    {
+      "id": "f1",
+      "file": "bookshop/f1.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f2",
+      "file": "bookshop/f2.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f3",
+      "file": "bookshop/f3.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f4",
+      "file": "bookshop/f4.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f5",
+      "file": "bookshop/f5.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f6",
+      "file": "bookshop/f6.jpg",
+      "timestampMs": 0
+    }
+  ],
+  "analysis": {
+    "store_read": {
+      "store_type_guess": "Independent bookshop with stationery and gifts",
+      "vibe_words": [
+        "warm",
+        "literary",
+        "whimsical",
+        "sunlit"
+      ],
+      "summary": "Your soaring shelves and floating books turn every visit into a cozy adventure for curious readers. Your sunlit corners, local artist cards, and playful little gifts make the shop feel warm, personal, and full of discovery."
+    },
+    "frame_notes": [
+      {
+        "frame_id": "f1",
+        "what_we_saw": "floating books above wooden fiction shelves"
+      },
+      {
+        "frame_id": "f2",
+        "what_we_saw": "sunlit book displays by tall windows"
+      },
+      {
+        "frame_id": "f3",
+        "what_we_saw": "stacked books beside bright window seat"
+      },
+      {
+        "frame_id": "f4",
+        "what_we_saw": "colorful spines on corner wooden shelves"
+      },
+      {
+        "frame_id": "f5",
+        "what_we_saw": "stationery table under giant fish lantern"
+      },
+      {
+        "frame_id": "f6",
+        "what_we_saw": "checkout counter with local artist cards"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Books & journals",
+        "share": "dominant",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4",
+          "f6"
+        ],
+        "examples": [
+          "hardcover fiction",
+          "art books",
+          "cookbooks",
+          "children's books"
+        ]
+      },
+      {
+        "name": "Stationery & paper",
+        "share": "strong",
+        "confidence": "high",
+        "evidence_frames": [
+          "f5",
+          "f6"
+        ],
+        "examples": [
+          "greeting cards",
+          "postcards",
+          "journals",
+          "stickers"
+        ]
+      },
+      {
+        "name": "Home decor",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f5"
+        ],
+        "examples": [
+          "framed art prints",
+          "paper fish lantern"
+        ]
+      },
+      {
+        "name": "Kids & baby",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f5",
+          "f6"
+        ],
+        "examples": [
+          "plush bunnies",
+          "panda cushions",
+          "toy gift boxes"
+        ]
+      }
+    ],
+    "styles": [
+      {
+        "name": "literary",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4"
+        ]
+      },
+      {
+        "name": "vintage",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f6"
+        ]
+      },
+      {
+        "name": "playful",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f5"
+        ]
+      },
+      {
+        "name": "natural",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f2",
+          "f3"
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "paper",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4",
+          "f5",
+          "f6"
+        ]
+      },
+      {
+        "name": "wood",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f4"
+        ]
+      },
+      {
+        "name": "glass",
+        "evidence_frames": [
+          "f2",
+          "f3"
+        ]
+      },
+      {
+        "name": "fabric",
+        "evidence_frames": [
+          "f3",
+          "f5",
+          "f6"
+        ]
+      }
+    ],
+    "palette": [
+      {
+        "name": "warm oak",
+        "hex": "#9C6B43"
+      },
+      {
+        "name": "cream white",
+        "hex": "#F5F0E6"
+      },
+      {
+        "name": "ink black",
+        "hex": "#2B2B2B"
+      },
+      {
+        "name": "ocean blue",
+        "hex": "#6AA0C8"
+      },
+      {
+        "name": "warm red",
+        "hex": "#C96A4A"
+      }
+    ],
+    "price_position": {
+      "tier": "mid",
+      "confidence": "medium",
+      "rationale": "Handwritten $6 local-artist card sign and curated book tables suggest accessible independent pricing."
+    },
+    "visible_brands": [],
+    "merchandising_notes": [
+      "Front tables stacked with face-out new titles",
+      "Books suspended from ceiling for whimsical discovery",
+      "Dedicated stationery and gift counter with art prints",
+      "Window seats and cafe chairs invite lingering"
+    ],
+    "suggested_complements": [
+      {
+        "category": "Candles & fragrance",
+        "reason": "Cozy reading corners pair naturally with a small candle offer for gift baskets."
+      },
+      {
+        "category": "Food & drink",
+        "reason": "Packaged teas and chocolates would complement the linger-longer bookshop feel."
+      },
+      {
+        "category": "Jewelry & accessories",
+        "reason": "Small accessories like totes and bookmarks fit neatly beside cards and gifts."
+      }
+    ]
+  },
+  "profile": {
+    "storeName": "Marginalia Books & Paper",
+    "storeType": "Book Store",
+    "description": "New and used books, greeting cards, stationery, and small gifts in a sunlit corner shop.",
+    "categories": [
+      {
+        "name": "Books & journals",
+        "share": "dominant",
+        "intent": "more"
+      },
+      {
+        "name": "Stationery & paper",
+        "share": "strong",
+        "intent": "more"
+      },
+      {
+        "name": "Home decor",
+        "share": "present",
+        "intent": "more"
+      },
+      {
+        "name": "Kids & baby",
+        "share": "present",
+        "intent": "more"
+      }
+    ],
+    "styles": [
+      "literary",
+      "vintage",
+      "playful",
+      "natural"
+    ],
+    "materials": [
+      "paper",
+      "wood",
+      "glass",
+      "fabric"
+    ],
+    "palette": [
+      {
+        "name": "warm oak",
+        "hex": "#9C6B43"
+      },
+      {
+        "name": "cream white",
+        "hex": "#F5F0E6"
+      },
+      {
+        "name": "ink black",
+        "hex": "#2B2B2B"
+      },
+      {
+        "name": "ocean blue",
+        "hex": "#6AA0C8"
+      },
+      {
+        "name": "warm red",
+        "hex": "#C96A4A"
+      }
+    ],
+    "priceTier": "unknown",
+    "complements": [
+      "Candles & fragrance",
+      "Food & drink",
+      "Jewelry & accessories"
+    ],
+    "mode": "complement",
+    "explore": 0.5,
+    "strength": 0.8,
+    "vibeWords": [
+      "warm",
+      "literary",
+      "whimsical",
+      "sunlit"
+    ],
+    "summary": "Your soaring shelves and floating books turn every visit into a cozy adventure for curious readers. Your sunlit corners, local artist cards, and playful little gifts make the shop feel warm, personal, and full of discovery."
+  }
+}

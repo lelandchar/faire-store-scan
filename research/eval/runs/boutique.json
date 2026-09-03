@@ -1,0 +1,345 @@
+{
+  "slug": "boutique",
+  "kind": "photos",
+  "name": "Juniper & June",
+  "storeType": "Apparel Boutique",
+  "description": "Women's apparel, jewelry, bags, and accessories with a bright, playful, boho edge.",
+  "capturedAt": "2026-09-03T05:39:35.131Z",
+  "analysisMs": 99508,
+  "meta": {
+    "done": true,
+    "usage": {
+      "input": 9917,
+      "output": 6504
+    },
+    "model": "meta/muse-spark-1.3",
+    "configuredModel": "meta/muse-spark-1.3",
+    "effort": "xhigh",
+    "fallbackReason": null,
+    "issues": [],
+    "provider": "openrouter"
+  },
+  "issues": [],
+  "frames": [
+    {
+      "id": "f1",
+      "file": "boutique/f1.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f2",
+      "file": "boutique/f2.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f3",
+      "file": "boutique/f3.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f4",
+      "file": "boutique/f4.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f5",
+      "file": "boutique/f5.jpg",
+      "timestampMs": 0
+    },
+    {
+      "id": "f6",
+      "file": "boutique/f6.jpg",
+      "timestampMs": 0
+    }
+  ],
+  "analysis": {
+    "store_read": {
+      "store_type_guess": "Women's apparel boutique with jewelry and gifts",
+      "vibe_words": [
+        "bright",
+        "playful",
+        "boho",
+        "airy"
+      ],
+      "summary": "Your boutique feels bright and joyful, with airy racks of soft creams, happy pinks and fresh pops of green. Your layered jewelry wall and cozy robe corner show a loving eye for finishing touches and easy gifting."
+    },
+    "frame_notes": [
+      {
+        "frame_id": "f1",
+        "what_we_saw": "Pastel apparel racks around leafy planter"
+      },
+      {
+        "frame_id": "f2",
+        "what_we_saw": "Earth-tone tops under leather pouches"
+      },
+      {
+        "frame_id": "f3",
+        "what_we_saw": "Neutral dresses by terracotta fitting rooms"
+      },
+      {
+        "frame_id": "f4",
+        "what_we_saw": "Pink knit sets with colorful heeled shoes"
+      },
+      {
+        "frame_id": "f5",
+        "what_we_saw": "Cozy robes slippers and folded blankets"
+      },
+      {
+        "frame_id": "f6",
+        "what_we_saw": "Layered necklaces rings on wood shelf"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Apparel",
+        "share": "dominant",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f3",
+          "f4",
+          "f5"
+        ],
+        "examples": [
+          "pastel blouses",
+          "knit cardigans",
+          "slip dresses",
+          "lounge robes"
+        ]
+      },
+      {
+        "name": "Jewelry & accessories",
+        "share": "strong",
+        "confidence": "high",
+        "evidence_frames": [
+          "f6",
+          "f2",
+          "f4"
+        ],
+        "examples": [
+          "layered necklaces",
+          "rings and earrings",
+          "leather clutches",
+          "heeled mules"
+        ]
+      },
+      {
+        "name": "Home decor",
+        "share": "present",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f5",
+          "f3"
+        ],
+        "examples": [
+          "folded throws",
+          "ruffled pillows",
+          "ceramic vases"
+        ]
+      }
+    ],
+    "styles": [
+      {
+        "name": "playful",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f4"
+        ]
+      },
+      {
+        "name": "minimalist",
+        "confidence": "high",
+        "evidence_frames": [
+          "f1",
+          "f4"
+        ]
+      },
+      {
+        "name": "boho",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f2",
+          "f3"
+        ]
+      },
+      {
+        "name": "natural",
+        "confidence": "medium",
+        "evidence_frames": [
+          "f1",
+          "f3",
+          "f6"
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "cotton",
+        "evidence_frames": [
+          "f1",
+          "f2",
+          "f4"
+        ]
+      },
+      {
+        "name": "wood",
+        "evidence_frames": [
+          "f2",
+          "f6"
+        ]
+      },
+      {
+        "name": "brass",
+        "evidence_frames": [
+          "f3",
+          "f4"
+        ]
+      },
+      {
+        "name": "glass",
+        "evidence_frames": [
+          "f1",
+          "f5"
+        ]
+      },
+      {
+        "name": "ceramic",
+        "evidence_frames": [
+          "f3",
+          "f5"
+        ]
+      },
+      {
+        "name": "linen",
+        "evidence_frames": [
+          "f1",
+          "f3"
+        ]
+      }
+    ],
+    "palette": [
+      {
+        "name": "warm white",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "blush pink",
+        "hex": "#EFA9C0"
+      },
+      {
+        "name": "sage green",
+        "hex": "#A8C0B1"
+      },
+      {
+        "name": "terracotta",
+        "hex": "#C47A63"
+      },
+      {
+        "name": "natural wood",
+        "hex": "#C9A87A"
+      }
+    ],
+    "price_position": {
+      "tier": "unknown",
+      "confidence": "medium",
+      "rationale": "No price tags are legible and only NEW signage is visible, so positioning cannot be determined."
+    },
+    "visible_brands": [],
+    "merchandising_notes": [
+      "Racks color-merchandised in soft pastel stories",
+      "NEW signs flag fresh arrivals throughout",
+      "Jewelry layered on busts with dried florals",
+      "Cozy corner pairs robes with throws and slippers"
+    ],
+    "suggested_complements": [
+      {
+        "category": "Candles & fragrance",
+        "reason": "Easy gift add-on beside jewelry and pouches."
+      },
+      {
+        "category": "Bath & body",
+        "reason": "Pairs with cozy robes, slippers and soft neutrals."
+      },
+      {
+        "category": "Kids & baby",
+        "reason": "Mini versions of soft knits suit gift buyers."
+      }
+    ]
+  },
+  "profile": {
+    "storeName": "Juniper & June",
+    "storeType": "Apparel Boutique",
+    "description": "Women's apparel, jewelry, bags, and accessories with a bright, playful, boho edge.",
+    "categories": [
+      {
+        "name": "Apparel",
+        "share": "dominant",
+        "intent": "more"
+      },
+      {
+        "name": "Jewelry & accessories",
+        "share": "strong",
+        "intent": "more"
+      },
+      {
+        "name": "Home decor",
+        "share": "present",
+        "intent": "more"
+      }
+    ],
+    "styles": [
+      "playful",
+      "minimalist",
+      "boho",
+      "natural"
+    ],
+    "materials": [
+      "cotton",
+      "wood",
+      "brass",
+      "glass",
+      "ceramic",
+      "linen"
+    ],
+    "palette": [
+      {
+        "name": "warm white",
+        "hex": "#FAF7F2"
+      },
+      {
+        "name": "blush pink",
+        "hex": "#EFA9C0"
+      },
+      {
+        "name": "sage green",
+        "hex": "#A8C0B1"
+      },
+      {
+        "name": "terracotta",
+        "hex": "#C47A63"
+      },
+      {
+        "name": "natural wood",
+        "hex": "#C9A87A"
+      }
+    ],
+    "priceTier": "unknown",
+    "complements": [
+      "Candles & fragrance",
+      "Bath & body",
+      "Kids & baby"
+    ],
+    "mode": "complement",
+    "explore": 0.5,
+    "strength": 0.8,
+    "vibeWords": [
+      "bright",
+      "playful",
+      "boho",
+      "airy"
+    ],
+    "summary": "Your boutique feels bright and joyful, with airy racks of soft creams, happy pinks and fresh pops of green. Your layered jewelry wall and cozy robe corner show a loving eye for finishing touches and easy gifting."
+  }
+}

@@ -1,0 +1,21 @@
+kept 2016 of 3047
+Home decor: 257
+Kitchen & tabletop: 170
+Candles & fragrance: 33
+Stationery & paper: 174
+Books & journals: 22
+Apparel: 238
+Jewelry & accessories: 72
+Bath & body: 143
+Food & drink: 237
+Kids & baby: 220
+Pets: 245
+Garden & outdoor: 205
+
+> faire-store-scan@0.1.0 embed
+> node scripts/embed-catalog.mjs
+
+[embed] loaded Xenova/siglip-base-patch16-224 (siglip) in 299 ms
+[embed] catalog: 72 products -> data/embeddings/catalog.json (579 KB); images 2364 ms (33 ms/img), texts 602 ms (8 ms/text)
+[embed] catalog-public: 1110 products -> data/embeddings/catalog-public.json (8933 KB); images 35397 ms (32 ms/img), texts 9029 ms (8 ms/text)
+[embed] catalog-shopify: 2016 products -> data/embeddings/catalog-shopify.json (16222 KB); images 63592 ms (32 ms/img), texts 16372 ms (8 ms/text)

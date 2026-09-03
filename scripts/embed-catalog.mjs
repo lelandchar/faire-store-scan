@@ -14,26 +14,9 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import {
-  AutoProcessor,
-  AutoTokenizer,
-  CLIPTextModelWithProjection,
-  CLIPVisionModelWithProjection,
-  RawImage,
-  env,
-} from "@huggingface/transformers";
+import { loadEncoder, MODEL } from "./lib/encoder.mjs";
 
 const ROOT = process.cwd();
-const MODEL = "Xenova/clip-vit-base-patch32";
-const DTYPE = "q8";
-const DIM = 512;
-const IMAGE_BATCH = 8;
-const TEXT_BATCH = 32;
-
-env.cacheDir = process.env.TRANSFORMERS_CACHE_DIR ?? path.join(ROOT, ".cache", "transformers");
-env.useFSCache = true;
-env.allowLocalModels = false;
-env.allowRemoteModels = process.env.TRANSFORMERS_OFFLINE !== "1";
 
 const CATALOGS = [
   { name: "catalog", json: "data/catalog.json" },
@@ -62,56 +45,6 @@ const productText = (p) => `${p.name}. ${p.category}. ${p.subcategory}. ${(p.mat
 
 const ms = (t) => `${Math.round(t)} ms`;
 
-async function loadClip() {
-  const t0 = performance.now();
-  const opts = { dtype: DTYPE };
-  const [processor, tokenizer, vision, text] = await Promise.all([
-    AutoProcessor.from_pretrained(MODEL),
-    AutoTokenizer.from_pretrained(MODEL),
-    CLIPVisionModelWithProjection.from_pretrained(MODEL, opts),
-    CLIPTextModelWithProjection.from_pretrained(MODEL, opts),
-  ]);
-  console.log(`[embed] loaded ${MODEL} (${DTYPE}) in ${ms(performance.now() - t0)} from ${env.cacheDir}`);
-  return { processor, tokenizer, vision, text };
-}
-
-function normalize(v) {
-  let s = 0;
-  for (let i = 0; i < v.length; i++) s += v[i] * v[i];
-  const n = Math.sqrt(s);
-  if (n > 0) for (let i = 0; i < v.length; i++) v[i] /= n;
-  return v;
-}
-
-function splitRows(tensor, rows) {
-  const [n, dim] = tensor.dims;
-  if (n !== rows || dim !== DIM) throw new Error(`unexpected shape [${tensor.dims}]`);
-  const out = [];
-  for (let r = 0; r < n; r++) out.push(normalize(tensor.data.slice(r * dim, (r + 1) * dim)));
-  return out;
-}
-
-async function embedImageFiles(clip, files) {
-  const out = [];
-  for (let i = 0; i < files.length; i += IMAGE_BATCH) {
-    const chunk = files.slice(i, i + IMAGE_BATCH);
-    const images = await Promise.all(chunk.map((f) => RawImage.read(f)));
-    const { image_embeds } = await clip.vision(await clip.processor(images));
-    out.push(...splitRows(image_embeds, chunk.length));
-  }
-  return out;
-}
-
-async function embedTexts(clip, texts) {
-  const out = [];
-  for (let i = 0; i < texts.length; i += TEXT_BATCH) {
-    const chunk = texts.slice(i, i + TEXT_BATCH);
-    const inputs = await clip.tokenizer(chunk, { padding: true, truncation: true });
-    const { text_embeds } = await clip.text(inputs);
-    out.push(...splitRows(text_embeds, chunk.length));
-  }
-  return out;
-}
 
 const dot = (a, b) => {
   let s = 0;
@@ -120,6 +53,7 @@ const dot = (a, b) => {
 };
 
 function concatBase64(vectors) {
+  const DIM = vectors[0].length;
   const flat = new Float32Array(vectors.length * DIM);
   vectors.forEach((v, i) => flat.set(v, i * DIM));
   return Buffer.from(flat.buffer, flat.byteOffset, flat.byteLength).toString("base64");
@@ -146,10 +80,10 @@ async function buildCatalog(clip, styleVectors, { name, json }) {
   }
 
   let t = performance.now();
-  const imageVecs = await embedImageFiles(clip, kept.map((k) => k.file));
+  const imageVecs = await clip.embedImages(kept.map((k) => k.file));
   const imageMs = performance.now() - t;
   t = performance.now();
-  const textVecs = await embedTexts(clip, kept.map((k) => productText(k.product)));
+  const textVecs = await clip.embedTexts(kept.map((k) => productText(k.product)));
   const textMs = performance.now() - t;
 
   const styles = {};
@@ -164,7 +98,7 @@ async function buildCatalog(clip, styleVectors, { name, json }) {
   const outPath = path.join(outDir, `${name}.json`);
   const payload = {
     model: MODEL,
-    dim: DIM,
+    dim: imageVecs[0].length,
     ids: kept.map((k) => k.product.id),
     image: concatBase64(imageVecs),
     text: concatBase64(textVecs),
@@ -179,8 +113,9 @@ async function buildCatalog(clip, styleVectors, { name, json }) {
 }
 
 async function main() {
-  const clip = await loadClip();
-  const styleVectors = await embedTexts(clip, STYLES.map(([, label]) => stylePrompt(label)));
+  const clip = await loadEncoder();
+  console.log(`[embed] loaded ${clip.model} (${clip.family}) in ${ms(clip.loadMs)}`);
+  const styleVectors = await clip.embedTexts(STYLES.map(([, label]) => stylePrompt(label)));
   for (const catalog of CATALOGS) await buildCatalog(clip, styleVectors, catalog);
 }
 

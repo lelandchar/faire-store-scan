@@ -1,0 +1,54 @@
+objc[55884]: Class GNotificationCenterDelegate is implemented in both /Users/lelandchar/Faire personalization prototype/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.6.dylib (0x1362f5a58) and /Users/lelandchar/Faire personalization prototype/node_modules/@huggingface/transformers/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib (0x137471978). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+[encoders] clip-b32 (Xenova/clip-vit-base-patch32) loaded in 280 ms
+max         bookshop             carry  85%  comp  15%  off   0%  cats 3/4   fit 2.65  fit>=4 25%  junk 9/20
+max         boutique-video       carry  65%  comp  35%  off   0%  cats 3/4   fit 2.60  fit>=4 30%  junk 5/20
+max         boutique             carry  80%  comp  20%  off   0%  cats 3/3   fit 2.55  fit>=4 25%  junk 5/20
+max         general-store-video  carry  68%  comp  33%  off   0%  cats 3/5   fit 3.00  fit>=4 45%  junk 6/20
+max         home-gift-video      carry  83%  comp  18%  off   0%  cats 3/4   fit 2.50  fit>=4 30%  junk 7/20
+max         home-gift            carry  83%  comp  18%  off   0%  cats 4/6   fit 3.15  fit>=4 50%  junk 5/20
+max         MEAN                 carry  77%  comp  23%  off   0%  fit 2.74  fit>=4 34%  junk 37
+prompts2    bookshop             carry  88%  comp  13%  off   0%  cats 3/4   fit 2.75  fit>=4 30%  junk 9/20
+prompts2    boutique-video       carry  63%  comp  38%  off   0%  cats 4/4   fit 2.55  fit>=4 30%  junk 7/20
+prompts2    boutique             carry  75%  comp  25%  off   0%  cats 2/3   fit 2.50  fit>=4 25%  junk 6/20
+prompts2    general-store-video  carry  65%  comp  35%  off   0%  cats 3/5   fit 3.05  fit>=4 45%  junk 6/20
+prompts2    home-gift-video      carry  80%  comp  20%  off   0%  cats 3/4   fit 2.50  fit>=4 30%  junk 7/20
+prompts2    home-gift            carry  88%  comp  13%  off   0%  cats 4/6   fit 3.30  fit>=4 55%  junk 4/20
+prompts2    MEAN                 carry  76%  comp  24%  off   0%  fit 2.77  fit>=4 36%  junk 39
+weights     bookshop             carry  90%  comp  10%  off   0%  cats 2/4   fit 2.90  fit>=4 35%  junk 8/20
+weights     boutique-video       carry  73%  comp  28%  off   0%  cats 3/4   fit 2.45  fit>=4 30%  junk 7/20
+weights     boutique             carry  83%  comp  18%  off   0%  cats 3/3   fit 2.30  fit>=4 15%  junk 6/20
+weights     general-store-video  carry  83%  comp  18%  off   0%  cats 3/5   fit 3.15  fit>=4 50%  junk 7/20
+weights     home-gift-video      carry  88%  comp  13%  off   0%  cats 3/4   fit 2.45  fit>=4 20%  junk 7/20
+weights     home-gift            carry  88%  comp  13%  off   0%  cats 4/6   fit 3.15  fit>=4 50%  junk 6/20
+weights     MEAN                 carry  84%  comp  16%  off   0%  fit 2.73  fit>=4 33%  junk 41
+textonly    bookshop             carry  95%  comp   5%  off   0%  cats 2/4   fit 2.70  fit>=4 30%  junk 10/20
+textonly    boutique-video       carry  75%  comp  25%  off   0%  cats 3/4   fit 2.55  fit>=4 30%  junk 7/20
+textonly    boutique             carry  88%  comp  13%  off   0%  cats 3/3   fit 2.20  fit>=4 20%  junk 7/20
+textonly    general-store-video  carry  93%  comp   8%  off   0%  cats 3/5   fit 3.15  fit>=4 50%  junk 7/20
+textonly    home-gift-video      carry  85%  comp  15%  off   0%  cats 3/4   fit 2.45  fit>=4 20%  junk 8/20
+textonly    home-gift            carry  88%  comp  13%  off   0%  cats 3/6   fit 2.90  fit>=4 40%  junk 7/20
+textonly    MEAN                 carry  87%  comp  13%  off   0%  fit 2.66  fit>=4 32%  junk 46
+[encoders] siglip-b16 (Xenova/siglip-base-patch16-224) loaded in 245 ms
+siglip      bookshop             carry  88%  comp  13%  off   0%  cats 2/4   fit 2.20  fit>=4 15%  junk 13/20
+siglip      boutique-video       carry  65%  comp  35%  off   0%  cats 3/4   fit 2.80  fit>=4 40%  junk 7/20
+siglip      boutique             carry  78%  comp  23%  off   0%  cats 2/3   fit 2.90  fit>=4 30%  junk 3/20
+siglip      general-store-video  carry  68%  comp  33%  off   0%  cats 3/5   fit 3.80  fit>=4 65%  junk 3/20
+siglip      home-gift-video      carry  83%  comp  18%  off   0%  cats 4/4   fit 2.30  fit>=4 25%  junk 10/20
+siglip      home-gift            carry  90%  comp  10%  off   0%  cats 2/6   fit 3.10  fit>=4 45%  junk 6/20
+siglip      MEAN                 carry  78%  comp  22%  off   0%  fit 2.85  fit>=4 37%  junk 42
+siglipmean  bookshop             carry  85%  comp  15%  off   0%  cats 2/4   fit 2.10  fit>=4 10%  junk 14/20
+siglipmean  boutique-video       carry  68%  comp  33%  off   0%  cats 3/4   fit 3.05  fit>=4 50%  junk 6/20
+siglipmean  boutique             carry  80%  comp  20%  off   0%  cats 2/3   fit 2.90  fit>=4 30%  junk 3/20
+siglipmean  general-store-video  carry  65%  comp  35%  off   0%  cats 2/5   fit 3.60  fit>=4 60%  junk 4/20
+siglipmean  home-gift-video      carry  83%  comp  18%  off   0%  cats 4/4   fit 2.15  fit>=4 20%  junk 11/20
+siglipmean  home-gift            carry  88%  comp  13%  off   0%  cats 2/6   fit 3.10  fit>=4 45%  junk 6/20
+siglipmean  MEAN                 carry  78%  comp  22%  off   0%  fit 2.82  fit>=4 36%  junk 44
+[encoders] clip-b16 (Xenova/clip-vit-base-patch16) loaded in 259 ms
+clipb16     bookshop             carry  70%  comp  30%  off   0%  cats 3/4   fit 2.25  fit>=4 20%  junk 10/20
+clipb16     boutique-video       carry  83%  comp  18%  off   0%  cats 3/4   fit 2.10  fit>=4 25%  junk 9/20
+clipb16     boutique             carry  88%  comp  13%  off   0%  cats 2/3   fit 2.05  fit>=4 10%  junk 5/20
+clipb16     general-store-video  carry  95%  comp   5%  off   0%  cats 3/5   fit 3.40  fit>=4 60%  junk 7/20
+clipb16     home-gift-video      carry  98%  comp   3%  off   0%  cats 3/4   fit 2.00  fit>=4 10%  junk 12/20
+clipb16     home-gift            carry  98%  comp   3%  off   0%  cats 3/6   fit 2.60  fit>=4 30%  junk 10/20
+clipb16     MEAN                 carry  88%  comp  12%  off   0%  fit 2.40  fit>=4 26%  junk 53
+wrote /Users/lelandchar/Faire personalization prototype/research/eval/results-max+prompts2+weights+textonly+siglip+siglipmean+clipb16.md

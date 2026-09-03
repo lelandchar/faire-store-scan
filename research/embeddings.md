@@ -259,3 +259,17 @@ wrong tool for the real product:
 - Railway volumes (plan limits, no replicas with volumes): https://docs.railway.com/reference/volumes
 - Railway config-as-code (`build.buildCommand`, deprecation notice): https://docs.railway.com/reference/config-as-code
 - Railway variables (`RAILWAY_VOLUME_MOUNT_PATH`, `RAILWAY_VOLUME_NAME`): https://docs.railway.com/reference/variables
+
+
+## Addendum (2026-09-03): SigLIP base replaces CLIP ViT-B/32
+
+Decided on the offline evaluation in `scripts/eval` (six demos, Sonnet-judged top 20, clean catalog of 2,016):
+
+| variant | fit (1–5) | fit ≥ 4 |
+|---|---|---|
+| generic popularity feed | 1.58 | 7% |
+| CLIP ViT-B/32, mean vectors, prompts v1 (old default) | 3.02 | 42% |
+| SigLIP base, best-two-of-16 prompts, fusion 0.4/0.15/0.45, style 0.08 (shipped) | 3.28 | 48% |
+| the same plus the buyer's-eye rerank of the top 60 (shipped) | 3.73 | 65% |
+
+CLIP ViT-B/16 scored below B/32 on the same setup (2.52), so bigger is not automatically better here; SigLIP's sigmoid-trained text tower is what helps the per-prompt matching. Both towers load through the same wrapper (`src/lib/embeddings.ts`, `scripts/lib/encoder.mjs`); `EMBEDDING_MODEL` switches models and `npm run embed` rebuilds the indexes. SigLIP text inputs pad to 64 tokens; vectors are 768-d.

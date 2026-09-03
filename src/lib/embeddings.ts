@@ -23,13 +23,19 @@ import {
   CLIPTextModelWithProjection,
   CLIPVisionModelWithProjection,
   RawImage,
+  SiglipTextModel,
+  SiglipVisionModel,
   env,
   type Tensor,
 } from "@huggingface/transformers";
 
-export const EMBEDDING_MODEL = "Xenova/clip-vit-base-patch32";
-export const EMBEDDING_DIM = 512;
-/** Quantized int8 ONNX weights (`*_quantized.onnx`): ~85 MB vision + ~62 MB text. */
+/** Keep in sync with scripts/lib/encoder.mjs (build-time scripts). */
+export const DEFAULT_EMBEDDING_MODEL = "Xenova/siglip-base-patch16-224";
+export const EMBEDDING_MODEL = process.env.EMBEDDING_MODEL ?? DEFAULT_EMBEDDING_MODEL;
+export const EMBEDDING_FAMILY: "clip" | "siglip" = /siglip/i.test(EMBEDDING_MODEL) ? "siglip" : "clip";
+/** Projection width: 512 for CLIP ViT-B, 768 for SigLIP base and CLIP ViT-L. */
+export const EMBEDDING_DIM = EMBEDDING_FAMILY === "siglip" || /large/i.test(EMBEDDING_MODEL) ? 768 : 512;
+/** Quantized int8 ONNX weights (`*_quantized.onnx`): ~99 MB vision + ~111 MB text for SigLIP base. */
 export const EMBEDDING_DTYPE = "q8" as const;
 export const EMBEDDING_CACHE_DIR =
   process.env.TRANSFORMERS_CACHE_DIR ?? path.join(process.cwd(), ".cache", "transformers");
@@ -53,8 +59,8 @@ env.allowRemoteModels = process.env.TRANSFORMERS_OFFLINE !== "1";
 
 type Processor = Awaited<ReturnType<typeof AutoProcessor.from_pretrained>>;
 type Tokenizer = Awaited<ReturnType<typeof AutoTokenizer.from_pretrained>>;
-type VisionModel = Awaited<ReturnType<typeof CLIPVisionModelWithProjection.from_pretrained>>;
-type TextModel = Awaited<ReturnType<typeof CLIPTextModelWithProjection.from_pretrained>>;
+type VisionModel = Awaited<ReturnType<typeof CLIPVisionModelWithProjection.from_pretrained>> | Awaited<ReturnType<typeof SiglipVisionModel.from_pretrained>>;
+type TextModel = Awaited<ReturnType<typeof CLIPTextModelWithProjection.from_pretrained>> | Awaited<ReturnType<typeof SiglipTextModel.from_pretrained>>;
 
 export interface ClipBundle {
   processor: Processor;
@@ -67,8 +73,10 @@ export interface ClipBundle {
 
 // Cached on globalThis so `next dev` module re-evaluation (HMR) does not reload
 // ~150 MB of weights on every edit.
-const GLOBAL_KEY = "__faireClipBundle" as const;
-type GlobalWithClip = typeof globalThis & { [GLOBAL_KEY]?: Promise<ClipBundle> };
+// Keyed by model so switching EMBEDDING_MODEL (or editing the default) reloads instead of
+// serving vectors from the previously loaded tower.
+const GLOBAL_KEY = `__faireEmbeddingBundle:${EMBEDDING_MODEL}:${EMBEDDING_DTYPE}`;
+type GlobalWithClip = typeof globalThis & Record<string, Promise<ClipBundle> | undefined>;
 
 /** Load (once) and return the CLIP processor, tokenizer and both towers. */
 export function loadClip(): Promise<ClipBundle> {
@@ -80,8 +88,8 @@ export function loadClip(): Promise<ClipBundle> {
       const [processor, tokenizer, vision, text] = await Promise.all([
         AutoProcessor.from_pretrained(EMBEDDING_MODEL),
         AutoTokenizer.from_pretrained(EMBEDDING_MODEL),
-        CLIPVisionModelWithProjection.from_pretrained(EMBEDDING_MODEL, opts),
-        CLIPTextModelWithProjection.from_pretrained(EMBEDDING_MODEL, opts),
+        EMBEDDING_FAMILY === "clip" ? CLIPVisionModelWithProjection.from_pretrained(EMBEDDING_MODEL, opts) : SiglipVisionModel.from_pretrained(EMBEDDING_MODEL, opts),
+        EMBEDDING_FAMILY === "clip" ? CLIPTextModelWithProjection.from_pretrained(EMBEDDING_MODEL, opts) : SiglipTextModel.from_pretrained(EMBEDDING_MODEL, opts),
       ]);
       return { processor, tokenizer, vision, text, loadMs: performance.now() - started };
     })().catch((err) => {
@@ -128,10 +136,10 @@ export async function embedTexts(texts: string[]): Promise<Float32Array[]> {
   const out: Float32Array[] = [];
   for (let i = 0; i < texts.length; i += TEXT_BATCH) {
     const chunk = texts.slice(i, i + TEXT_BATCH);
-    // CLIP's context window is 77 tokens; truncation keeps long product strings safe.
-    const inputs = await tokenizer(chunk, { padding: true, truncation: true });
-    const { text_embeds } = (await text(inputs)) as { text_embeds: Tensor };
-    out.push(...splitRows(text_embeds, chunk.length));
+    // CLIP's context window is 77 tokens (SigLIP pads to 64); truncation keeps long product strings safe.
+    const inputs = await tokenizer(chunk, EMBEDDING_FAMILY === "siglip" ? { padding: "max_length", truncation: true } : { padding: true, truncation: true });
+    const res = (await text(inputs)) as { text_embeds?: Tensor; pooler_output?: Tensor };
+    out.push(...splitRows((res.text_embeds ?? res.pooler_output)!, chunk.length));
   }
   return out;
 }
@@ -178,8 +186,8 @@ export function normalize(v: Float32Array): Float32Array {
 async function embedRawImages(images: RawImage[]): Promise<Float32Array[]> {
   const { processor, vision } = await loadClip();
   const pixelInputs = await processor(images);
-  const { image_embeds } = (await vision(pixelInputs)) as { image_embeds: Tensor };
-  return splitRows(image_embeds, images.length);
+  const res = (await vision(pixelInputs)) as { image_embeds?: Tensor; pooler_output?: Tensor };
+  return splitRows((res.image_embeds ?? res.pooler_output)!, images.length);
 }
 
 async function toRawImage(input: Buffer | string): Promise<RawImage> {
