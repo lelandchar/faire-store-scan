@@ -93,7 +93,7 @@ export default function AdminPage() {
       <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-caption uppercase tracking-[0.14em]">Store Scan · pipeline trace</p>
-          <h1 className="font-serif text-[36px] leading-[1.15] text-ink">Engineer view</h1>
+          <h1 className="font-serif text-[36px] leading-[1.15] text-ink">End-to-end trace view</h1>
           <p className="text-body mt-1 max-w-[780px]">
             Every stage of the cold-start pipeline, inspectable: input frames → LM store read → CLIP retrieval → weighted fusion → the feed
             the retailer sees. Re-run it on canned inputs here; the phone views share this state.
