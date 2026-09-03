@@ -3,7 +3,7 @@ import type { Analysis, Frame } from "./types";
 // Shared contract between the retrieval route, the store, the ranking fusion
 // and the admin trace view.
 
-export type CatalogSource = "synthetic" | "public";
+export type CatalogSource = "synthetic" | "public" | "shopify";
 
 export interface ProductScores {
   /** cosine(product image, mean of frame image embeddings) */

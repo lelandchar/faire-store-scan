@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, Search as SearchIcon, Sparkles, X } from "lucide-react";
+import { ChevronLeft, Search as SearchIcon, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useMemo, useState } from "react";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
@@ -25,7 +25,7 @@ function SearchInner() {
   const initial = params.get("q") ?? "";
   const [q, setQ] = useState(initial);
   const [submitted, setSubmitted] = useState(initial);
-  const { state, dispatch, hydrated } = useOnboarding();
+  const { state, hydrated } = useOnboarding();
   const profile = state.profile;
   const personalized = state.personalized && !!profile;
   const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
@@ -100,27 +100,6 @@ function SearchInner() {
             )}
           </div>
         </form>
-        <div className="mt-2 flex h-9 items-center justify-between">
-          {profile ? (
-            <>
-              <span className="flex items-center gap-1.5 text-[13px] text-ink-2">
-                <Sparkles size={14} className={personalized ? "text-accent" : "text-muted"} />
-                {personalized ? "Re-ordered for your store" : "Generic ranking"}
-              </span>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={personalized}
-                onClick={() => dispatch({ type: "setPersonalized", value: !state.personalized })}
-                className={`relative h-6 w-11 rounded-full transition-colors ${personalized ? "bg-ink" : "bg-line"}`}
-              >
-                <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${personalized ? "left-0.5 translate-x-5" : "left-0.5"}`} />
-              </button>
-            </>
-          ) : (
-            <span className="text-caption">Film your store to personalize search</span>
-          )}
-        </div>
       </div>
 
       <div className="flex-1 px-4 pb-6">
@@ -153,7 +132,6 @@ function SearchInner() {
           <>
             <p className="text-caption mt-2">
               {results.length} result{results.length === 1 ? "" : "s"} for &ldquo;{submitted}&rdquo;
-              {personalized ? " · re-ordered for your store" : ""}
             </p>
             {results.length === 0 ? (
               <div className="mt-10 text-center">

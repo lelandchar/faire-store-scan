@@ -15,7 +15,7 @@ export interface SampleMeta {
   storeType: string;
 }
 
-const SOURCES: CatalogSource[] = ["synthetic", "public"];
+const SOURCES: CatalogSource[] = ["synthetic", "public", "shopify"];
 
 function stageLabel(p: PipelineProgress): string {
   switch (p.stage) {
@@ -67,6 +67,8 @@ export function RunControls({
   // dataset is empty, so check both length and identity.
   const publicCatalog = getCatalog("public");
   const publicUnavailable = publicCatalog.length === 0 || publicCatalog === getCatalog("synthetic");
+  const shopifyCatalog = getCatalog("shopify");
+  const shopifyUnavailable = shopifyCatalog.length === 0 || shopifyCatalog === getCatalog("synthetic");
 
   const onFiles = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
@@ -139,7 +141,7 @@ export function RunControls({
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-3">
         <span className="text-caption uppercase tracking-[0.14em]">Catalog</span>
         {SOURCES.map((src) => {
-          const disabled = busy || (src === "public" && publicUnavailable);
+          const disabled = busy || (src === "public" && publicUnavailable) || (src === "shopify" && shopifyUnavailable);
           return (
             <label key={src} className={`inline-flex items-center gap-1.5 text-[13px] text-ink ${disabled ? "opacity-50" : "cursor-pointer"}`}>
               <input
@@ -155,7 +157,7 @@ export function RunControls({
             </label>
           );
         })}
-        {publicUnavailable && <span className="text-caption">Public dataset is not loaded in this build.</span>}
+        {(publicUnavailable || shopifyUnavailable) && <span className="text-caption">A public catalog is not loaded in this build.</span>}
         <span className="ml-auto flex flex-wrap gap-x-4 text-[13px]">
           <a href="/home" target="_blank" rel="opener" className="text-ink-2 underline underline-offset-2">
             Open feed in phone (/home) ↗

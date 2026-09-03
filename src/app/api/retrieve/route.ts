@@ -9,7 +9,7 @@ export const maxDuration = 120;
 
 const RequestSchema = z.object({
   frames: z.array(z.object({ id: z.string().regex(/^f\d{1,2}$/), dataUrl: z.string().startsWith("data:image/jpeg;base64,") })).min(1).max(12),
-  catalog: z.enum(["synthetic", "public"]).default("synthetic"),
+  catalog: z.enum(["synthetic", "public", "shopify"]).default("synthetic"),
   prompts: z.array(z.string().max(200)).max(12).default([]),
 });
 
@@ -24,6 +24,7 @@ interface Index {
 const FILES: Record<CatalogSource, string> = {
   synthetic: "catalog.json",
   public: "catalog-public.json",
+  shopify: "catalog-shopify.json",
 };
 
 function decode(b64: string, dim: number): Float32Array[] {

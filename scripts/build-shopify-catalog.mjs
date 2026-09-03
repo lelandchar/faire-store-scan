@@ -117,13 +117,13 @@ function shuffle(arr, rng) {
 
 const MAP = [
   // --- Candles & fragrance ---
-  ["Home & Garden > Decor > Home Fragrance", "Candles & fragrance"], // Home Fragrances + Home Fragrance Accessories
-  ["Home & Garden > Decor > Candles", "Candles & fragrance"],
+  ["Home & Garden > Decor > Home Fragrance*", "Candles & fragrance"], // Home Fragrances + Home Fragrance Accessories
+  ["Home & Garden > Decor > Candle*", "Candles & fragrance"],
   ["Health & Beauty > Personal Care > Cosmetics > Perfume & Cologne", "Candles & fragrance"],
 
   // --- Garden & outdoor (outdoorsy Decor subtrees first, before the generic Decor rule) ---
-  ["Home & Garden > Decor > Outdoor", "Garden & outdoor"],
-  ["Home & Garden > Decor > Bird & Wildlife", "Garden & outdoor"],
+  ["Home & Garden > Decor > Outdoor*", "Garden & outdoor"],
+  ["Home & Garden > Decor > Bird & Wildlife*", "Garden & outdoor"],
   ["Home & Garden > Decor > Wind Chimes", "Garden & outdoor"],
   ["Home & Garden > Decor > Wind Wheels & Spinners", "Garden & outdoor"],
   ["Home & Garden > Decor > Lawn Ornaments & Garden Sculptures", "Garden & outdoor"],
@@ -132,7 +132,7 @@ const MAP = [
   ["Home & Garden > Decor > Weather Vanes & Roof Decor", "Garden & outdoor"],
   ["Home & Garden > Decor > Flags & Windsocks", "Garden & outdoor"],
   ["Home & Garden > Decor > Address Signs", "Garden & outdoor"],
-  ["Home & Garden > Decor > Mailbox", "Garden & outdoor"],
+  ["Home & Garden > Decor > Mailbox*", "Garden & outdoor"],
   ["Home & Garden > Decor > Rain Chains", "Garden & outdoor"],
   ["Home & Garden > Lighting > Landscape Pathway Lighting", "Garden & outdoor"],
   ["Home & Garden > Lawn & Garden > Outdoor Power Equipment", null],
@@ -156,7 +156,7 @@ const MAP = [
   // --- Home decor ---
   ["Home & Garden > Decor", "Home decor"],
   ["Home & Garden > Linens & Bedding > Table Linens", "Kitchen & tabletop"],
-  ["Home & Garden > Linens & Bedding > Kitchen Linens", "Kitchen & tabletop"],
+  ["Home & Garden > Linens & Bedding > Kitchen Linens*", "Kitchen & tabletop"],
   ["Home & Garden > Linens & Bedding", "Home decor"],
   ["Home & Garden > Lighting > Light Bulbs", null],
   ["Home & Garden > Lighting > Emergency Lighting", null],
@@ -167,12 +167,12 @@ const MAP = [
   ["Home & Garden > Lighting", "Home decor"],
   ["Home & Garden > Bathroom Accessories > Bath Mats & Rugs", "Home decor"],
   ["Home & Garden > Bathroom Accessories > Shower Curtains", "Home decor"],
-  ["Home & Garden > Bathroom Accessories > Toilet", null],
+  ["Home & Garden > Bathroom Accessories > Toilet*", null],
   ["Home & Garden > Bathroom Accessories", "Bath & body"],
   ["Home & Garden > Household Supplies > Storage & Organization > Household Storage Baskets", "Home decor"],
 
   // --- Kitchen & tabletop ---
-  ["Home & Garden > Kitchen & Dining > Kitchen Appliance", null], // Kitchen Appliances + Kitchen Appliance Accessories
+  ["Home & Garden > Kitchen & Dining > Kitchen Appliance*", null], // Kitchen Appliances + Kitchen Appliance Accessories
   ["Home & Garden > Kitchen & Dining", "Kitchen & tabletop"],
 
   // --- Stationery & paper / Books & journals ---
@@ -184,7 +184,7 @@ const MAP = [
   ["Office Supplies > Impulse Sealers", null],
   ["Office Supplies > Office Carts", null],
   ["Office Supplies > Presentation Supplies", null],
-  ["Office Supplies > General Office Supplies > Laminating", null],
+  ["Office Supplies > General Office Supplies > Laminating*", null],
   ["Office Supplies > General Office Supplies > Binding Supplies", null],
   ["Office Supplies > General Office Supplies > Paper Products > Printer & Copier Paper", null],
   ["Office Supplies", "Stationery & paper"],
@@ -218,25 +218,25 @@ const MAP = [
   // --- Bath & body ---
   ["Health & Beauty > Personal Care > Back Care", null],
   ["Health & Beauty > Personal Care > Ear Care", null],
-  ["Health & Beauty > Personal Care > Enema", null],
+  ["Health & Beauty > Personal Care > Enema*", null],
   ["Health & Beauty > Personal Care > Feminine Sanitary Supplies", null],
   ["Health & Beauty > Personal Care > Vision Care", null],
   ["Health & Beauty > Personal Care > Personal Lubricants", null],
   ["Health & Beauty > Personal Care > Foot Care", null],
   ["Health & Beauty > Personal Care > Massage & Relaxation > Massage Oil", "Bath & body"],
-  ["Health & Beauty > Personal Care > Massage & Relaxation > Massage Stone", "Bath & body"],
+  ["Health & Beauty > Personal Care > Massage & Relaxation > Massage Stone*", "Bath & body"],
   ["Health & Beauty > Personal Care > Massage & Relaxation", null],
   ["Health & Beauty > Personal Care > Shaving & Grooming > Electric Razors", null],
   ["Health & Beauty > Personal Care > Shaving & Grooming > Hair Clippers & Trimmers", null],
-  ["Health & Beauty > Personal Care > Hair Care > Hair Dryer", null],
+  ["Health & Beauty > Personal Care > Hair Care > Hair Dryer*", null],
   ["Health & Beauty > Personal Care > Hair Care > Hair Styling Tools", null],
   ["Health & Beauty > Personal Care > Hair Care > Hair Styling Tool Accessories", null],
   ["Health & Beauty > Personal Care > Oral Care > Dental Water Jets", null],
   ["Health & Beauty > Personal Care > Oral Care > Power Flossers", null],
   ["Health & Beauty > Personal Care > Oral Care > Toothbrush Accessories", null],
-  ["Health & Beauty > Personal Care > Oral Care > Orthodontic", null],
+  ["Health & Beauty > Personal Care > Oral Care > Orthodontic*", null],
   ["Health & Beauty > Personal Care > Cosmetics > Cosmetic Tools > Skin Care Tools > Facial Saunas", null],
-  ["Health & Beauty > Personal Care > Cosmetics > Cosmetic Tools > Skin Care Tools > Skin Cleansing Brush", null],
+  ["Health & Beauty > Personal Care > Cosmetics > Cosmetic Tools > Skin Care Tools > Skin Cleansing Brush*", null],
   ["Health & Beauty > Personal Care > Sleeping Aids > Sleep Masks", "Bath & body"],
   ["Health & Beauty > Personal Care > Sleeping Aids", null],
   ["Health & Beauty > Personal Care", "Bath & body"],
@@ -248,24 +248,24 @@ const MAP = [
   ["Food, Beverages & Tobacco > Beverages > Buttermilk", null],
   ["Food, Beverages & Tobacco > Beverages", "Food & drink"],
   ["Food, Beverages & Tobacco > Food Items > Dairy Products", null],
-  ["Food, Beverages & Tobacco > Food Items > Fresh & Frozen", null],
+  ["Food, Beverages & Tobacco > Food Items > Fresh & Frozen*", null],
   ["Food, Beverages & Tobacco > Food Items > Meat, Seafood & Eggs", null],
-  ["Food, Beverages & Tobacco > Food Items > Frozen Desserts", null],
+  ["Food, Beverages & Tobacco > Food Items > Frozen Desserts*", null],
   ["Food, Beverages & Tobacco > Food Items > Prepared Foods", null],
   ["Food, Beverages & Tobacco > Food Items > Tofu, Soy & Vegetarian Products", null],
-  ["Food, Beverages & Tobacco > Food Items > Bakery > Bread", null],
-  ["Food, Beverages & Tobacco > Food Items > Bakery > Cakes", null],
-  ["Food, Beverages & Tobacco > Food Items > Bakery > Pies", null],
-  ["Food, Beverages & Tobacco > Food Items > Bakery > Pastries", null],
-  ["Food, Beverages & Tobacco > Food Items > Bakery > Muffins", null],
+  ["Food, Beverages & Tobacco > Food Items > Bakery > Bread*", null],
+  ["Food, Beverages & Tobacco > Food Items > Bakery > Cakes*", null],
+  ["Food, Beverages & Tobacco > Food Items > Bakery > Pies*", null],
+  ["Food, Beverages & Tobacco > Food Items > Bakery > Pastries*", null],
+  ["Food, Beverages & Tobacco > Food Items > Bakery > Muffins*", null],
   ["Food, Beverages & Tobacco > Food Items", "Food & drink"],
 
   // --- Kids & baby ---
   ["Baby & Toddler > Baby Health", null],
   ["Baby & Toddler > Baby Safety", null],
-  ["Baby & Toddler > Baby Transport", null],
+  ["Baby & Toddler > Baby Transport*", null],
   ["Baby & Toddler > Potty Training", null],
-  ["Baby & Toddler > Nursing & Feeding > Breast", null],
+  ["Baby & Toddler > Nursing & Feeding > Breast*", null],
   ["Baby & Toddler > Baby & Toddler Furniture", null],
   ["Baby & Toddler", "Kids & baby"],
   ["Toys & Games > Outdoor Play Equipment", null],
@@ -273,26 +273,28 @@ const MAP = [
 
   // --- Pets ---
   ["Animals & Pet Supplies > Live Animals", null],
-  ["Animals & Pet Supplies > Pet Supplies > Pet Medical", null],
-  ["Animals & Pet Supplies > Pet Supplies > Pet Medicine", null],
-  ["Animals & Pet Supplies > Pet Supplies > Pet Vitamins", null],
-  ["Animals & Pet Supplies > Pet Supplies > Pet Flea", null],
-  ["Animals & Pet Supplies > Pet Supplies > Pet First Aid", null],
+  ["Animals & Pet Supplies > Pet Supplies > Pet Medical*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Pet Medicine*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Pet Vitamins*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Pet Flea*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Pet First Aid*", null],
   ["Animals & Pet Supplies > Pet Supplies > Fish Supplies", null],
-  ["Animals & Pet Supplies > Pet Supplies > Reptile", null],
-  ["Animals & Pet Supplies > Pet Supplies > Pet Door", null],
+  ["Animals & Pet Supplies > Pet Supplies > Reptile*", null],
+  ["Animals & Pet Supplies > Pet Supplies > Pet Door*", null],
   ["Animals & Pet Supplies > Pet Supplies > Pet Containment", null],
   ["Animals & Pet Supplies", "Pets"],
 ];
 
-// Cheap prefix index: first path segment -> rules, preserving order.
+// First rule whose prefix matches wins. A prefix matches at a segment boundary
+// ("Home & Garden > Decor" matches "Home & Garden > Decor > Vases" but not
+// "Home & Garden > Decorative..."); a rule ending in "*" is a stem and matches any
+// continuation ("... > Home Fragrance*" covers "Home Fragrances" and "Home Fragrance Accessories").
 function mapCategory(pathStr) {
   for (const [prefix, cat] of MAP) {
-    if (pathStr === prefix || pathStr.startsWith(prefix)) {
-      // `startsWith` alone would let "Home & Garden > Decor > Candlesticks" match "... > Candles";
-      // require the match to end at a segment boundary unless the rule is deliberately a stem.
-      const rest = pathStr.slice(prefix.length);
-      if (rest === "" || rest.startsWith(" > ") || /^[a-z ,&-]*( > |$)/i.test(rest) === true) return cat;
+    if (prefix.endsWith("*")) {
+      if (pathStr.startsWith(prefix.slice(0, -1))) return cat;
+    } else if (pathStr === prefix || pathStr.startsWith(prefix + " > ")) {
+      return cat;
     }
   }
   return undefined;
@@ -451,7 +453,6 @@ function normalizeBrand(raw) {
   let b = normalizeText(raw);
   b = b.replace(/\s*\([^)]*\)\s*/g, " ").trim();
   b = b.replace(/^(brand|by|from)\s*:\s*/i, "");
-  b = b.replace(/\s+(inc\.?|llc\.?|ltd\.?|co\.?|corp\.?|gmbh)$/i, "");
   const letters = b.replace(/[^A-Za-z]/g, "");
   if (letters.length >= 5 && letters === letters.toUpperCase()) b = b.split(" ").map(titleCaseWord).join(" ");
   if (!/^[\x20-\x7e]+$/.test(b)) b = b.replace(/[^\x20-\x7e]+/g, "").replace(/\s+/g, " ").trim();
@@ -1044,8 +1045,15 @@ async function main() {
   for (const cat of CATEGORIES) console.log(`  ${cat.padEnd(24)} ${String(poolCounts[cat]).padStart(5)}  (${leafCounts[cat]} leaves)`);
   console.log(`Selected ${selected.length} candidates for image fetch (cap ${CAP} × ${OVERSELECT})`);
   if (DRY) {
+    console.log("Top leaf paths per category:");
     for (const cat of CATEGORIES) {
-      const sample = selected.filter((c) => c.category === cat).slice(0, 6);
+      const leaves = [...byCat.get(cat).entries()].sort((a, b) => b[1].length - a[1].length).slice(0, 14);
+      console.log(`  [${cat}]`);
+      for (const [leaf, arr] of leaves) console.log(`     ${String(arr.length).padStart(4)}  ${leaf}`);
+    }
+    console.log("Sample selections:");
+    for (const cat of CATEGORIES) {
+      const sample = selected.filter((c) => c.category === cat).slice(0, 8);
       console.log(`  [${cat}]`);
       for (const c of sample) console.log(`     ${c.name}  |  ${c.brand}  |  ${c.subcategory}`);
     }

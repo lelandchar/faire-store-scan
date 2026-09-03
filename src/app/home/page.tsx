@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Camera, MessageCircle, Search, Sparkles, X } from "lucide-react";
+import { Camera, MessageCircle, Search, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { Confetti } from "@/components/Confetti";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { CelebrationBanner } from "@/components/Confetti";
+import { JoyBurst } from "@/components/JoyBurst";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
 import { getCatalog } from "@/lib/catalog";
@@ -15,7 +16,7 @@ import { CATEGORIES, type Category } from "@/lib/types";
 const PAGE = 24;
 
 export default function HomePage() {
-  const { state, dispatch, hydrated } = useOnboarding();
+  const { state, hydrated } = useOnboarding();
   const profile = state.profile;
   const personalized = state.personalized && !!profile;
   const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
@@ -31,20 +32,22 @@ export default function HomePage() {
   const [confetti, setConfetti] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Decide once per mount whether this landing gets the celebration. A ref keeps
+  // the decision stable across StrictMode's double effect run.
+  const celebrateRef = useRef<boolean | null>(null);
   useEffect(() => {
     if (!personalized) return;
-    let celebrate = false;
-    try {
-      if (sessionStorage.getItem("celebrated") !== "1") {
-        sessionStorage.setItem("celebrated", "1");
-        celebrate = true;
+    if (celebrateRef.current === null) {
+      try {
+        celebrateRef.current = sessionStorage.getItem("celebrated") !== "1";
+        if (celebrateRef.current) sessionStorage.setItem("celebrated", "1");
+      } catch {
+        celebrateRef.current = false;
       }
-    } catch {
-      /* ignore */
     }
-    if (!celebrate) return;
-    const start = setTimeout(() => setConfetti(true), 0);
-    const stop = setTimeout(() => setConfetti(false), 2400);
+    if (!celebrateRef.current) return;
+    const start = setTimeout(() => setConfetti(true), 150);
+    const stop = setTimeout(() => setConfetti(false), 2800);
     return () => {
       clearTimeout(start);
       clearTimeout(stop);
@@ -70,7 +73,12 @@ export default function HomePage() {
 
   return (
     <div className="relative flex min-h-full flex-1 flex-col">
-      {confetti && <Confetti />}
+      {confetti && (
+        <>
+          <JoyBurst originX={50} originY={30} count={24} scale={0.85} seed={9} />
+          <CelebrationBanner text="Your storefront, built from your walkthrough" />
+        </>
+      )}
       {/* Search */}
       <div className="sticky top-0 z-20 bg-white px-4 pb-2 pt-3">
         <div className="flex items-center gap-3">
@@ -80,30 +88,6 @@ export default function HomePage() {
             <Camera size={18} strokeWidth={1.75} />
           </Link>
           <MessageCircle size={24} strokeWidth={1.5} className="text-ink" />
-        </div>
-        {/* Personalization bar */}
-        <div className="mt-2 flex h-9 items-center justify-between">
-          {profile ? (
-            <>
-              <span className="flex items-center gap-1.5 text-[13px] text-ink-2">
-                <Sparkles size={14} className={personalized ? "text-accent" : "text-muted"} />
-                {personalized ? `Personalized for ${state.storeName || "your store"}` : "Showing the generic feed"}
-              </span>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={personalized}
-                onClick={() => dispatch({ type: "setPersonalized", value: !state.personalized })}
-                className={`relative h-6 w-11 rounded-full transition-colors ${personalized ? "bg-ink" : "bg-line"}`}
-              >
-                <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${personalized ? "left-0.5 translate-x-5" : "left-0.5"}`} />
-              </button>
-            </>
-          ) : (
-            <Link href="/onboarding/scan" className="flex items-center gap-1.5 text-[13px] text-ink underline underline-offset-4">
-              <Sparkles size={14} className="text-accent" /> Film your store to personalize this feed
-            </Link>
-          )}
         </div>
       </div>
 
@@ -142,7 +126,7 @@ export default function HomePage() {
       {/* Ideas for you */}
       <section className="mt-7 px-4 pb-6">
         <h2 className="text-[19px] font-semibold text-ink">Ideas for you</h2>
-        {personalized && profile && <p className="text-caption mt-0.5">Every card below was shaped by your walkthrough. It keeps learning as you browse.</p>}
+        {personalized && profile && <p className="text-caption mt-0.5">Shaped by your walkthrough. It keeps learning as you browse.</p>}
         <div key={personalized ? "p" : "g"} className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6">
           {feed.slice(0, limit).map((item, i) => (
             <ProductCard key={item.product.id} item={item} index={i} personalized={personalized} onWhy={setWhy} />
