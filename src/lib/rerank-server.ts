@@ -117,8 +117,8 @@ export async function rerankProducts(opts: { catalog: CatalogSource; profile: St
   const effort = process.env.RERANK_EFFORT || "low";
   const fallback = process.env.ANALYSIS_FALLBACK_MODEL || "qwen/qwen3.8-flash";
   // Providers cap images per request (Muse Spark: 50) and the smaller the batch the faster
-  // the answer, so the candidates go out as parallel batches of 20.
-  const BATCH = 20;
+  // the answer, so the candidates go out as parallel batches of 12.
+  const BATCH = 12;
   const batches: { products: Product[]; lines: string[]; thumbs: string[] }[] = [];
   for (let i = 0; i < products.length; i += BATCH) {
     batches.push({ products: products.slice(i, i + BATCH), lines: lines.slice(i, i + BATCH), thumbs: thumbs.slice(i, i + BATCH) });
