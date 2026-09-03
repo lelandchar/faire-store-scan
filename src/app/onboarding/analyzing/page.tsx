@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Maximize2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
@@ -153,6 +153,7 @@ export default function AnalyzingPage() {
     { index: number; dataUrl: string; timestampMs: number }[]
   >([]);
   const [kept, setKept] = useState<number[] | null>(null);
+  const [inputKind, setInputKind] = useState<"video" | "photos">("video");
   // Frames decode faster than the eye can follow; reveal them at a steady pace and give the
   // selection a beat before the note stage slides into view.
   const revealQueue = useRef<
@@ -230,6 +231,7 @@ export default function AnalyzingPage() {
       dispatch({ type: "setRetrievalStatus", status: "idle" });
       const onCandidate = enqueueCandidate;
       const onSelected = settleSelection;
+      setInputKind(input.kind === "photos" || input.kind === "sample-photos" ? "photos" : "video");
       let frames: Frame[] = [];
       if (input.kind === "video") {
         setPhase("extracting");
@@ -450,7 +452,7 @@ export default function AnalyzingPage() {
       </div>
 
       {/* Stage 1: the video becomes frames, live */}
-      <Stage index={1} title="Your walkthrough" state={stage1}>
+      <Stage index={1} title={inputKind === "photos" ? "Your photos" : "Your walkthrough"} state={stage1}>
         {candidates.length === 0 ? (
           <div className="flex h-24 items-center justify-center rounded-[var(--radius-lg)] bg-surface-2 text-caption">
             {phase === "loading"
@@ -479,6 +481,9 @@ export default function AnalyzingPage() {
                     alt=""
                     className="h-full w-full object-cover"
                   />
+                  <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm" aria-hidden>
+                    <Maximize2 size={11} strokeWidth={2.25} />
+                  </span>
                   {kept && isKept && (
                     <span className="absolute bottom-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-ink shadow-sm">
                       <Check size={10} strokeWidth={3} />
@@ -489,25 +494,17 @@ export default function AnalyzingPage() {
             })}
           </div>
         )}
-        <div className="text-caption mt-2 space-y-0.5">
-          {candidates.length > 0 && (
+        <div className="text-caption mt-2">
+          {candidates.length > 0 && !kept && (
             <p>
-              {kept
-                ? `Sampled ${candidates.length} images.`
-                : `Sampling ${candidates.length} images`}
-              {!kept && <span className="pulse-soft">…</span>}
+              {inputKind === "photos" ? "Loading your photos" : `Sampling ${candidates.length} images from your video`}
+              <span className="pulse-soft">…</span>
             </p>
           )}
           <AnimatePresence>
             {kept && (
-              <motion.p
-                key="keep"
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                Keeping {kept.length} clear, distinct views from across your
-                store. Tap any image to look closer. Your video itself never
-                leaves your phone.
+              <motion.p key="keep" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
+                {inputKind === "photos" ? `Captured ${kept.length} photos of your store.` : `Captured ${kept.length} high-quality images from your video.`}
               </motion.p>
             )}
           </AnimatePresence>
@@ -549,6 +546,9 @@ export default function AnalyzingPage() {
                         alt=""
                         className="h-full w-full object-cover"
                       />
+                      <span className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm" aria-hidden>
+                        <Maximize2 size={12} strokeWidth={2.25} />
+                      </span>
                       {scanning && (
                         <div className="pointer-events-none absolute inset-0 overflow-hidden">
                           <div
