@@ -7,7 +7,7 @@ import { Suspense, useMemo, useState } from "react";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
 import { getCatalog } from "@/lib/catalog";
-import { personalize, popularityScore, type Ranked } from "@/lib/ranking";
+import { genericPrior, personalize, type Ranked } from "@/lib/ranking";
 import { relevance, SUGGESTED_QUERIES } from "@/lib/search";
 import { useOnboarding } from "@/lib/store";
 
@@ -42,12 +42,12 @@ function SearchInner() {
     const maxRel = Math.max(...rel.map((x) => x.r));
     const byId = new Map((ranked ?? []).map((r) => [r.product.id, r]));
     const maxPers = Math.max(0.0001, ...rel.map((x) => byId.get(x.p.id)?.score ?? 0));
-    // Generic: relevance, then popularity. Personalized: relevance dominates, profile re-orders within.
+    // Generic: relevance, then the seeded random order. Personalized: relevance dominates, profile re-orders within.
     const scored = rel.map((x) => {
       const rk = byId.get(x.p.id);
       const relN = x.r / maxRel;
       const pers = rk && rk.score > 0 ? rk.score / maxPers : 0;
-      const generic = relN + 0.15 * popularityScore(x.p);
+      const generic = relN + 0.15 * genericPrior(x.p);
       const skip = rk?.score === -1;
       const personal = skip ? -1 : 0.65 * relN + 0.35 * pers;
       return { p: x.p, rk, generic, personal };

@@ -231,7 +231,7 @@ async function main() {
     for (const run of runs) {
       let ranked: Ranked[];
       if (isGeneric || !index || !enc) {
-        ranked = rankGeneric(catalog).map((p, i) => ({ product: p, score: 1, components: { tag: 0, visual: null, semantic: null, buyer: null, fused: 0 }, reasons: [], genericRank: i + 1, personalizedRank: i + 1, delta: 0 }));
+        ranked = rankGeneric(catalog).map((p, i) => ({ product: p, score: 1, components: { tag: 0, parts: { category: 0, style: 0, material: 0, price: 0, novelty: 0 }, visual: null, semantic: null, buyer: null, fused: 0 }, reasons: [], genericRank: i + 1, personalizedRank: i + 1, delta: 0 }));
       } else {
         const fkey = `${v.encoder}|${run.slug}`;
         if (!frameCache.has(fkey)) frameCache.set(fkey, await enc.embedImages(run.frames.map((f) => path.join(RUNS, f.file))));

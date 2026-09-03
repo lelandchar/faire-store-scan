@@ -37,7 +37,7 @@ export function StageFeed({ generic, personalized, profile }: { generic: Product
     <Card
       step="Stage 5"
       title="Feed comparison"
-      subtitle="What the retailer sees on /home: the popularity prior every new account would get, versus the fused ranking from the confirmed profile. Green category labels are in the confirmed set; the badge is the rank delta versus generic."
+      subtitle="What the retailer sees on /home: the seeded random order every new account would get (no popularity signal), versus the fused ranking from the confirmed profile. Green category labels are in the confirmed set; the badge is the rank delta versus generic."
     >
       {profile && personalized ? (
         <p className="mb-3 text-[13px] text-ink-2">
@@ -51,7 +51,7 @@ export function StageFeed({ generic, personalized, profile }: { generic: Product
       <div className="grid gap-6 md:grid-cols-2">
         <div className="min-w-0">
           <h3 className="mb-2 text-[13px] font-medium text-ink">
-            Generic <span className="font-normal text-muted">(popularity prior · rankGeneric)</span>
+            Generic <span className="font-normal text-muted">(random order · rankGeneric)</span>
           </h3>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
             {gTop.map((p) => (

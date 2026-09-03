@@ -86,6 +86,8 @@ export async function rerankProducts(opts: { catalog: CatalogSource; profile: St
   const t0 = performance.now();
   const provider = pickProvider();
   const base = { catalog, count: products.length, fallbackReason: null as string | null };
+  // RERANK_MODEL=off skips the review entirely (the fused ranking stands on its own).
+  if (process.env.RERANK_MODEL === "off") return { ...base, count: 0, model: "off", effort: null, mock: false, ms: 0, fits: {} };
   if (provider === "mock" || products.length === 0) {
     const fits: Record<string, number> = {};
     for (const p of products) fits[p.id] = hashFit(`${profile.summary.length}:${p.id}`);

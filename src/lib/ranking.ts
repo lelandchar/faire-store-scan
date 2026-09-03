@@ -44,9 +44,19 @@ export interface Reason {
   weight: number;
 }
 
+/** Weighted contributions inside the tag score. */
+export interface TagParts {
+  category: number;
+  style: number;
+  material: number;
+  price: number;
+  novelty: number;
+}
+
 export interface RankComponents {
   /** deterministic tag score, ~0..1 */
   tag: number;
+  parts: TagParts;
   /** min-max normalized visual similarity across the catalog, or null without embeddings */
   visual: number | null;
   semantic: number | null;
@@ -66,7 +76,20 @@ export interface Ranked {
   delta: number;
 }
 
-/** 0..1 prior used for the generic (non-personalized) feed. */
+/**
+ * The generic feed is a seeded random order over the catalog: the blank slate a brand-new
+ * account starts from. (Ratings and review counts in the public catalog are synthetic, so a
+ * popularity order would be an invented signal.)
+ */
+export const GENERIC_SEED = 7;
+export function genericPrior(p: Product): number {
+  const s = `${GENERIC_SEED}:${p.id}`;
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  return (h >>> 0) / 4294967296;
+}
+
+/** 0..1 popularity prior from the (synthetic) ratings; kept for the trace view, not used for ranking. */
 export function popularityScore(p: Product): number {
   const rating = Math.max(0, Math.min(1, (p.rating - 4.3) / 0.7));
   const reviews = Math.min(1, Math.log10(p.reviewCount + 1) / 3);
@@ -78,7 +101,7 @@ function stableSort<T>(arr: T[], key: (t: T) => number, tiebreak: (t: T) => stri
 }
 
 export function rankGeneric(catalog: Product[]): Product[] {
-  return stableSort(catalog, popularityScore, (p) => p.id);
+  return stableSort(catalog, genericPrior, (p) => p.id);
 }
 
 function prettyList(items: string[]): string {
@@ -112,7 +135,9 @@ const TIER_ORDER = { value: 0, mid: 1, premium: 2 } as const;
 
 export type TagWeights = { [K in keyof typeof WEIGHTS]: number };
 
-export function scoreProduct(p: Product, profile: StoreProfile, W: TagWeights = WEIGHTS): { score: number; reasons: Reason[] } {
+const ZERO_PARTS: TagParts = { category: 0, style: 0, material: 0, price: 0, novelty: 0 };
+
+export function scoreProduct(p: Product, profile: StoreProfile, W: TagWeights = WEIGHTS): { score: number; reasons: Reason[]; parts: TagParts } {
   const reasons: Reason[] = [];
   const cat = profile.categories.find((c) => c.name === p.category);
   const isComplement = profile.complements.includes(p.category);
@@ -123,6 +148,7 @@ export function scoreProduct(p: Product, profile: StoreProfile, W: TagWeights = 
     return {
       score: -1,
       reasons: [{ kind: "skip", text: `You asked us to skip ${p.category.toLowerCase()}`, weight: 1 }],
+      parts: ZERO_PARTS,
     };
   }
   if (cat && cat.intent === "more") {
@@ -204,7 +230,14 @@ export function scoreProduct(p: Product, profile: StoreProfile, W: TagWeights = 
     W.novelty * noveltyScore;
 
   reasons.sort((a, b) => b.weight - a.weight);
-  return { score, reasons: reasons.slice(0, 3) };
+  const parts: TagParts = {
+    category: W.category * categoryScore,
+    style: W.style * styleScore,
+    material: W.material * materialScore,
+    price: W.price * priceScore,
+    novelty: W.novelty * noveltyScore,
+  };
+  return { score, reasons: reasons.slice(0, 3), parts };
 }
 
 /** Score shift per point of buyer's-eye fit away from neutral (3): a 5 gains +0.3, a 1 loses 0.3. */
@@ -259,7 +292,7 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
     const fit = opts.rerank?.[t.product.id];
     const buyer = typeof fit === "number" ? fit : null;
     if (t.score < 0) {
-      return { ...t, reasons, components: { tag: -1, visual: v, semantic: sm, buyer, fused: -1 } };
+      return { ...t, reasons, components: { tag: -1, parts: t.parts, visual: v, semantic: sm, buyer, fused: -1 } };
     }
     if (v !== null && v >= 0.72) reasons.push({ kind: "visual", text: "Looks like what's on your shelves", weight: w.visual * v });
     if (sm !== null && sm >= 0.72) reasons.push({ kind: "semantic", text: "Fits how we read your store", weight: w.semantic * sm });
@@ -271,10 +304,10 @@ export function personalize(catalog: Product[], profile: StoreProfile, opts: Ran
       fusedScore += (buyer - 3) * BUYER_STEP;
       if (buyer >= 4) reasons.push({ kind: "buyer", text: "Passed a buyer's-eye check for your store", weight: (buyer - 3) * BUYER_STEP });
     }
-    // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic popularity order.
+    // Personalization strength: 1 = fully shaped by the walkthrough, 0 = the generic (random) order.
     const strength = typeof profile.strength === "number" ? Math.max(0, Math.min(1, profile.strength)) : 1;
-    const score = strength * fusedScore + (1 - strength) * popularityScore(t.product);
-    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, visual: v, semantic: sm, buyer, fused: score } };
+    const score = strength * fusedScore + (1 - strength) * genericPrior(t.product);
+    return { product: t.product, score, reasons: reasons.slice(0, 3), components: { tag, parts: t.parts, visual: v, semantic: sm, buyer, fused: score } };
   });
 
   const ordered = stableSort(fused, (s) => s.score, (s) => s.product.id);

@@ -15,12 +15,15 @@ export function ProductCard({
   item,
   personalized,
   onWhy,
+  onHover,
   compact = false,
   index = 0,
 }: {
   item: FeedItem;
   personalized: boolean;
   onWhy?: (r: Ranked) => void;
+  /** Desktop reviewers: the panel beside the phone shows this card's ranking breakdown. */
+  onHover?: (r: Ranked) => void;
   compact?: boolean;
   index?: number;
 }) {
@@ -28,7 +31,13 @@ export function ProductCard({
   const r = item.ranked;
   const topReason = personalized && r && r.reasons.length ? r.reasons[0] : null;
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.04, ease: [0.2, 0.7, 0.2, 1] }} className={compact ? "w-[156px] shrink-0" : ""}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.04, ease: [0.2, 0.7, 0.2, 1] }}
+      className={compact ? "w-[156px] shrink-0" : ""}
+      onMouseEnter={() => r && onHover?.(r)}
+    >
       <div className="relative overflow-hidden rounded-[var(--radius)] bg-surface-2" style={{ aspectRatio: "1" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-cover" />
@@ -41,9 +50,6 @@ export function ProductCard({
         <button type="button" aria-label="Add" className="absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-full bg-white text-ink shadow-sm">
           <Plus size={18} strokeWidth={2} />
         </button>
-        {personalized && r && r.delta >= 8 && (
-          <span className="absolute bottom-2 left-2 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-medium text-teal shadow-sm">↑ {r.delta}</span>
-        )}
       </div>
       <div className="mt-2">
         <p className="flex items-baseline gap-1.5">

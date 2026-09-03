@@ -8,13 +8,15 @@ import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
 import { CATEGORY_TILE_IMAGE, getCatalog } from "@/lib/catalog";
 import { orderCategories, personalize, rankGeneric, type Ranked } from "@/lib/ranking";
+import { useInspect } from "@/lib/inspect";
 import { useOnboarding } from "@/lib/store";
 import { CATEGORIES, type Category } from "@/lib/types";
 
-const PAGE = 24;
+const PAGE = 48;
 
 export default function HomePage() {
   const { state, hydrated } = useOnboarding();
+  const { setItem: inspect } = useInspect();
   const profile = state.profile;
   const personalized = state.personalized && !!profile;
   const catalog = useMemo(() => getCatalog(state.catalogSource), [state.catalogSource]);
@@ -81,7 +83,7 @@ export default function HomePage() {
         {personalized && profile && <p className="text-caption mt-0.5">Ordered from your walkthrough and your choices. Tap a card&apos;s note to see why.</p>}
         <div key={personalized ? "p" : "g"} className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6">
           {feed.slice(0, limit).map((item, i) => (
-            <ProductCard key={item.product.id} item={item} index={i} personalized={personalized} onWhy={setWhy} />
+            <ProductCard key={item.product.id} item={item} index={i} personalized={personalized} onWhy={setWhy} onHover={(r) => inspect(r, catalog.length)} />
           ))}
         </div>
         {limit < feed.length && (
@@ -113,7 +115,7 @@ export default function HomePage() {
                 <div className="min-w-0 flex-1">
                   <p className="line-clamp-2 text-[15px] font-medium text-ink">{why.product.name}</p>
                   <p className="text-caption">
-                    {why.delta > 0 ? `Moved up ${why.delta} places for your store` : why.delta === 0 ? "Same spot as the generic feed" : `Moved down ${-why.delta} places`}
+                    Ranked #{why.personalizedRank} of {catalog.length.toLocaleString()} for your store
                   </p>
                 </div>
                 <button type="button" aria-label="Close" onClick={() => setWhy(null)} className="text-muted">

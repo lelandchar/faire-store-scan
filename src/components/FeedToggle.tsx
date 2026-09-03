@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useOnboarding } from "@/lib/store";
+import { RankInspector } from "./RankInspector";
 
 /**
  * The generic-vs-personalized switch lives outside the app UI: beside the phone
@@ -23,7 +24,7 @@ export function FeedToggle({ variant }: { variant: "side" | "floating" }) {
         onClick={() => set(false)}
         className={`rounded-full px-3 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ink/40 ${!on ? "bg-ink text-white" : "text-ink-2"}`}
       >
-        Generic
+        Random
       </button>
       <button
         type="button"
@@ -48,10 +49,11 @@ export function FeedToggle({ variant }: { variant: "side" | "floating" }) {
       <p className="text-caption mt-3 leading-snug">
         {hasProfile
           ? on
-            ? "Ranked only from the walkthrough: what the retailer carries, their style, their goal, and visual matches to their shelves. No popularity signal."
-            : "What a brand-new retailer sees today: popularity order, no store context."
-          : "No walkthrough yet, so this is the generic feed."}
+            ? "Ranked only from the walkthrough: what the retailer carries, their look, their goal, how each product matches the shelves and the brief, and a buyer's-eye review. No popularity signal."
+            : "The blank slate a brand-new retailer starts from: a random order over the catalog, no store context."
+          : "No walkthrough yet, so this is a random order over the catalog."}
       </p>
+      {on && <RankInspector />}
       {!hasProfile && (
         <Link href="/onboarding/scan" className="mt-2 inline-block text-[13px] text-ink underline underline-offset-4">
           Film a store to personalize

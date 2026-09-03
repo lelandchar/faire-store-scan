@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Inter } from "next/font/google";
 import "./globals.css";
+import { InspectProvider } from "@/lib/inspect";
 import { OnboardingProvider } from "@/lib/store";
 import { DeviceShell } from "@/components/DeviceShell";
 
@@ -38,7 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
       <body className="min-h-full">
         <OnboardingProvider>
-          <DeviceShell>{children}</DeviceShell>
+          <InspectProvider>
+            <DeviceShell>{children}</DeviceShell>
+          </InspectProvider>
         </OnboardingProvider>
       </body>
     </html>
