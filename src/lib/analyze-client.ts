@@ -18,6 +18,8 @@ export async function runAnalysis(opts: {
   context: { storeName?: string; storeType?: string; description?: string; sampleSlug?: string };
   onPartial: (partial: Partial<Analysis>) => void;
   onMeta?: (meta: AnalyzeMeta) => void;
+  /** Characters of model reasoning seen so far (reasoning models think before they write). */
+  onThinking?: (chars: number) => void;
   signal?: AbortSignal;
 }): Promise<Analysis> {
   const res = await fetch("/api/analyze", {
@@ -50,6 +52,7 @@ export async function runAnalysis(opts: {
       const evt = JSON.parse(line.slice(6)) as {
         delta?: string;
         replace?: string;
+        thinking?: number;
         error?: string;
         status?: string;
         done?: boolean;
@@ -63,6 +66,7 @@ export async function runAnalysis(opts: {
         usage?: { input: number; output: number };
       };
       if (evt.error) throw new Error(evt.error);
+      if (typeof evt.thinking === "number") opts.onThinking?.(evt.thinking);
       if (evt.status === "started") opts.onMeta?.({ mock: evt.mock, provider: evt.provider });
       if (evt.delta) {
         text += evt.delta;

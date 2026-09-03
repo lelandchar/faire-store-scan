@@ -21,7 +21,17 @@ const SHARE_LABEL: Record<Share, string> = {
   trace: "A hint of it",
 };
 
-function statusFor(a: Partial<Analysis> | null, phase: Phase): string {
+const THINKING_STEPS = [
+  "Looking at what's on your shelves",
+  "Comparing the shelves to each other",
+  "Working out how the sections fit together",
+  "Thinking about what your store is really about",
+  "Choosing the words for your note",
+  "Double-checking against the frames",
+  "Nearly there",
+];
+
+function statusFor(a: Partial<Analysis> | null, phase: Phase, thinkingChars = 0): string {
   switch (phase) {
     case "loading":
       return "Getting your video ready";
@@ -32,7 +42,7 @@ function statusFor(a: Partial<Analysis> | null, phase: Phase): string {
     case "error":
       return "Hmm.";
   }
-  if (!a) return "Looking at what's on your shelves";
+  if (!a) return thinkingChars > 0 ? THINKING_STEPS[Math.min(THINKING_STEPS.length - 1, Math.floor(thinkingChars / 2500))] : "Looking at what's on your shelves";
   if (a.suggested_complements) return "Almost there";
   if (a.styles || a.palette) return "Noticing your style";
   if (a.categories) return "Sorting what's on your shelves";
@@ -68,6 +78,7 @@ export default function AnalyzingPage() {
   const [kept, setKept] = useState<number[] | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scanIdx, setScanIdx] = useState(0);
+  const [thinking, setThinking] = useState(0);
   useEffect(() => {
     if (phase !== "analyzing") return;
     const t = setInterval(() => setScanIdx((i) => i + 1), 850);
@@ -118,6 +129,7 @@ export default function AnalyzingPage() {
         },
         onPartial: (p) => dispatch({ type: "setAnalysis", analysis: p }),
         onMeta: (m) => dispatch({ type: "setAnalysisMeta", meta: { ...m, ms: Math.round(performance.now() - t0) } }),
+        onThinking: (chars) => setThinking(chars),
       });
       dispatch({ type: "setAnalysis", analysis });
       dispatch({
@@ -152,7 +164,7 @@ export default function AnalyzingPage() {
 
   const a = state.analysis;
   const frames = state.frames;
-  const status = statusFor(a, phase);
+  const status = statusFor(a, phase, thinking);
   const notes = useMemo(
     () => new Map((a?.frame_notes ?? []).filter((n) => n?.frame_id && n?.what_we_saw).map((n) => [n.frame_id, n.what_we_saw])),
     [a?.frame_notes],
@@ -188,6 +200,9 @@ export default function AnalyzingPage() {
           </motion.span>
         )}
       </div>
+      {phase === "analyzing" && !a && thinking > 0 && (
+        <p className="text-caption mt-1">Thinking it through · about {Math.max(1, Math.round(thinking / 5)).toLocaleString()} words so far</p>
+      )}
 
       {/* Stage 1: the video becomes frames, live */}
       <Stage index={1} title="Your walkthrough" state={stage1}>

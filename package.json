@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "embed": "node scripts/embed-catalog.mjs",
-    "warm-models": "node scripts/warm-models.mjs"
+    "warm-models": "node scripts/warm-models.mjs",
+    "postprocess-shopify": "node scripts/postprocess-shopify.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.123.0",

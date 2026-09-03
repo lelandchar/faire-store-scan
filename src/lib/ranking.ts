@@ -140,7 +140,8 @@ export function scoreProduct(p: Product, profile: StoreProfile): { score: number
   }
   if (isComplement) {
     const anchor = profile.categories.find((c) => c.share === "dominant" || c.share === "strong");
-    const complementScore = profile.mode === "complement" ? 0.95 : profile.mode === "replenish" ? 0.45 : 0.8;
+    // Complements interleave with the store's own sections; they never outrank a dominant one.
+    const complementScore = profile.mode === "complement" ? 0.7 : profile.mode === "replenish" ? 0.35 : 0.6;
     if (complementScore > categoryScore) categoryScore = complementScore;
     reasons.push({
       kind: "complement",

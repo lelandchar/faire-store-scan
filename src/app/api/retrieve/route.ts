@@ -37,21 +37,22 @@ function decode(b64: string, dim: number): Float32Array[] {
   return out;
 }
 
-const g = globalThis as unknown as { __indexCache?: Map<CatalogSource, Promise<Index>> };
+const g = globalThis as unknown as { __indexCache?: Map<CatalogSource, { mtime: number; index: Promise<Index> }> };
 g.__indexCache ??= new Map();
 
 async function loadIndex(source: CatalogSource): Promise<Index> {
+  const file = path.join(process.cwd(), "data", "embeddings", FILES[source]);
+  const mtime = (await fs.stat(file)).mtimeMs;
   const cached = g.__indexCache!.get(source);
-  if (cached) return cached;
+  if (cached && cached.mtime === mtime) return cached.index;
   const p = (async () => {
-    const file = path.join(process.cwd(), "data", "embeddings", FILES[source]);
     const raw = JSON.parse(await fs.readFile(file, "utf8")) as { model: string; dim: number; ids: string[]; image: string; text: string };
     const image = decode(raw.image, raw.dim);
     const text = decode(raw.text, raw.dim);
     if (image.length !== raw.ids.length) throw new Error(`Embedding index ${file} is inconsistent (${image.length} vectors for ${raw.ids.length} ids)`);
     return { model: raw.model, dim: raw.dim, ids: raw.ids, image, text };
   })();
-  g.__indexCache!.set(source, p);
+  g.__indexCache!.set(source, { mtime, index: p });
   p.catch(() => g.__indexCache!.delete(source));
   return p;
 }

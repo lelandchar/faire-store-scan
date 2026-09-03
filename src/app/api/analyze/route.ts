@@ -216,6 +216,8 @@ export async function POST(req: Request) {
           let usage: { input?: number; output?: number } | undefined;
           let finishReason: string | null = null;
           let finished = false;
+          let thinkingChars = 0;
+          let lastThinkingSent = 0;
           while (!finished) {
             const { value, done } = await reader.read();
             if (done) break;
@@ -232,7 +234,10 @@ export async function POST(req: Request) {
               }
               try {
                 const evt = JSON.parse(payload) as {
-                  choices?: { delta?: { content?: string | null }; finish_reason?: string | null }[];
+                  choices?: {
+                    delta?: { content?: string | null; reasoning?: string | null; reasoning_content?: string | null };
+                    finish_reason?: string | null;
+                  }[];
                   finish_reason?: string | null;
                   usage?: { prompt_tokens?: number; completion_tokens?: number };
                   error?: { message?: string };
@@ -241,7 +246,18 @@ export async function POST(req: Request) {
                   send({ error: `Analysis failed: ${evt.error.message}` });
                   return;
                 }
-                const delta = evt.choices?.[0]?.delta?.content;
+                const d = evt.choices?.[0]?.delta;
+                const reasoning = d?.reasoning ?? d?.reasoning_content;
+                if (reasoning) {
+                  // Reasoning models think before they write; let the phone show that something is happening.
+                  thinkingChars += reasoning.length;
+                  const now = Date.now();
+                  if (now - lastThinkingSent > 400) {
+                    lastThinkingSent = now;
+                    send({ thinking: thinkingChars });
+                  }
+                }
+                const delta = d?.content;
                 if (delta) {
                   full += delta;
                   send({ delta });
