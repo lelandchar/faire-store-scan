@@ -26,10 +26,8 @@ export default function WelcomePage() {
           loop
           playsInline
         />
-        <div className="absolute left-3 top-2">
-          <span className="inline-flex rounded-full bg-white/90 shadow-sm">
-            <BackChevron href="/" />
-          </span>
+        <div className="absolute left-4 top-3">
+          <BackChevron href="/" variant="overlay" />
         </div>
         <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent" />
       </div>

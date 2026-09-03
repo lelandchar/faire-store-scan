@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ProductCard, type FeedItem } from "@/components/ProductCard";
 import { TabBar } from "@/components/ui/TabBar";
-import { getCatalog } from "@/lib/catalog";
+import { CATEGORY_TILE_IMAGE, getCatalog } from "@/lib/catalog";
 import { orderCategories, personalize, rankGeneric, type Ranked } from "@/lib/ranking";
 import { useOnboarding } from "@/lib/store";
 import { CATEGORIES, type Category } from "@/lib/types";
@@ -35,10 +35,8 @@ export default function HomePage() {
   }, [personalized, ranked, generic, hidden]);
 
   const cats = useMemo(() => orderCategories(CATEGORIES, personalized ? profile : null), [personalized, profile]);
-  // Tile art follows the feed: the best-ranked product in each category when personalized.
-  const tileImage = (c: Category) =>
-    (personalized && ranked ? ranked.find((r) => r.product.category === c && r.score > 0)?.product.image : undefined) ??
-    generic.find((p) => p.category === c)?.image;
+  // Curated tile art so the top of the feed always reads cleanly, whichever catalog powers the list.
+  const tileImage = (c: Category) => CATEGORY_TILE_IMAGE[c] ?? generic.find((p) => p.category === c)?.image;
 
   const showToast = (msg: string) => {
     setToast(msg);

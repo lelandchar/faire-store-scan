@@ -4,15 +4,23 @@ import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
-export function BackChevron({ href }: { href?: string }) {
+export function BackChevron({ href, variant = "plain" }: { href?: string; variant?: "plain" | "overlay" }) {
   const router = useRouter();
+  const go = () => (href ? router.push(href) : router.back());
+  if (variant === "overlay") {
+    return (
+      <button
+        type="button"
+        aria-label="Back"
+        onClick={go}
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/92 text-ink shadow-[0_1px_4px_rgba(0,0,0,0.18)] backdrop-blur"
+      >
+        <ChevronLeft size={22} strokeWidth={1.75} className="-ml-0.5" />
+      </button>
+    );
+  }
   return (
-    <button
-      type="button"
-      aria-label="Back"
-      onClick={() => (href ? router.push(href) : router.back())}
-      className="-ml-2 flex h-11 w-11 items-center justify-center text-ink-2"
-    >
+    <button type="button" aria-label="Back" onClick={go} className="-ml-2 flex h-11 w-11 items-center justify-center text-ink-2">
       <ChevronLeft size={26} strokeWidth={1.5} />
     </button>
   );
