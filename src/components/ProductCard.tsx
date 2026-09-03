@@ -32,7 +32,7 @@ export function ProductCard({
       <div className="relative overflow-hidden rounded-[var(--radius)] bg-surface-2" style={{ aspectRatio: "1" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-cover" />
-        {p.isBestseller && (
+        {p.isBestseller && !p.ratingSynthetic && (
           <span className="absolute left-2 top-2 rounded-[3px] bg-white px-2 py-1 text-[11px] font-medium text-ink shadow-sm">Bestseller</span>
         )}
         <button type="button" aria-label="Save" className="absolute right-2 top-2 text-white drop-shadow">
@@ -56,7 +56,12 @@ export function ProductCard({
           <span className="truncate underline underline-offset-2">{p.brand}</span>
         </p>
         <p className="mt-0.5 flex items-center gap-1 text-[12px] text-ink-2">
-          <Star size={11} fill="currentColor" strokeWidth={0} /> {p.rating.toFixed(1)} · ${p.minOrder} min
+          {!p.ratingSynthetic && (
+            <>
+              <Star size={11} fill="currentColor" strokeWidth={0} /> {p.rating.toFixed(1)} ·{" "}
+            </>
+          )}
+          ${p.minOrder} min
         </p>
         {topReason && (
           <button

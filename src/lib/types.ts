@@ -56,6 +56,9 @@ export interface Product {
   madeIn: string;
   image: string;
   imagePrompt?: string;
+  /** Public-dataset catalogs have no real ratings or prices; these flags keep the UI honest. */
+  ratingSynthetic?: boolean;
+  priceSynthetic?: boolean;
 }
 
 export type Share = "dominant" | "strong" | "present" | "trace";

@@ -35,7 +35,10 @@ export default function HomePage() {
   }, [personalized, ranked, generic, hidden]);
 
   const cats = useMemo(() => orderCategories(CATEGORIES, personalized ? profile : null), [personalized, profile]);
-  const tileImage = (c: Category) => generic.find((p) => p.category === c)?.image;
+  // Tile art follows the feed: the best-ranked product in each category when personalized.
+  const tileImage = (c: Category) =>
+    (personalized && ranked ? ranked.find((r) => r.product.category === c && r.score > 0)?.product.image : undefined) ??
+    generic.find((p) => p.category === c)?.image;
 
   const showToast = (msg: string) => {
     setToast(msg);
