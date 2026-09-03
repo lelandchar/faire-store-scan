@@ -197,6 +197,7 @@ body {
     gap: 10px;
     font-size: 22px;
     color: var(--ink);
+    text-decoration: none;
   }
   .top-nav__mark {
     display: inline-flex;
