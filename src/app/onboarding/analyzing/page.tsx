@@ -231,7 +231,11 @@ export default function AnalyzingPage() {
       dispatch({ type: "setRetrievalStatus", status: "idle" });
       const onCandidate = enqueueCandidate;
       const onSelected = settleSelection;
-      setInputKind(input.kind === "photos" || input.kind === "sample-photos" ? "photos" : "video");
+      setInputKind(
+        input.kind === "photos" || input.kind === "sample-photos"
+          ? "photos"
+          : "video",
+      );
       let frames: Frame[] = [];
       if (input.kind === "video") {
         setPhase("extracting");
@@ -452,7 +456,11 @@ export default function AnalyzingPage() {
       </div>
 
       {/* Stage 1: the video becomes frames, live */}
-      <Stage index={1} title={inputKind === "photos" ? "Your photos" : "Your walkthrough"} state={stage1}>
+      <Stage
+        index={1}
+        title={inputKind === "photos" ? "Your photos" : "Your walkthrough"}
+        state={stage1}
+      >
         {candidates.length === 0 ? (
           <div className="flex h-24 items-center justify-center rounded-[var(--radius-lg)] bg-surface-2 text-caption">
             {phase === "loading"
@@ -481,7 +489,10 @@ export default function AnalyzingPage() {
                     alt=""
                     className="h-full w-full object-cover"
                   />
-                  <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm" aria-hidden>
+                  <span
+                    className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm"
+                    aria-hidden
+                  >
                     <Maximize2 size={11} strokeWidth={2.25} />
                   </span>
                   {kept && isKept && (
@@ -497,14 +508,22 @@ export default function AnalyzingPage() {
         <div className="text-caption mt-2">
           {candidates.length > 0 && !kept && (
             <p>
-              {inputKind === "photos" ? "Loading your photos" : `Sampling ${candidates.length} images from your video`}
+              {inputKind === "photos"
+                ? "Loading your photos"
+                : `Sampling ${candidates.length} images from your video`}
               <span className="pulse-soft">…</span>
             </p>
           )}
           <AnimatePresence>
             {kept && (
-              <motion.p key="keep" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
-                {inputKind === "photos" ? `Captured ${kept.length} photos of your store.` : `Captured ${kept.length} high-quality images from your video.`}
+              <motion.p
+                key="keep"
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {inputKind === "photos"
+                  ? `Captured ${kept.length} photos of your store.`
+                  : `Captured ${kept.length} high-quality images from your video.`}
               </motion.p>
             )}
           </AnimatePresence>
@@ -546,7 +565,10 @@ export default function AnalyzingPage() {
                         alt=""
                         className="h-full w-full object-cover"
                       />
-                      <span className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm" aria-hidden>
+                      <span
+                        className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm"
+                        aria-hidden
+                      >
                         <Maximize2 size={12} strokeWidth={2.25} />
                       </span>
                       {scanning && (
