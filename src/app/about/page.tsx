@@ -194,13 +194,17 @@ export default function AboutPage() {
             <div key={w.key} className={w.color} style={{ width: `${WEIGHTS[w.key] * 100}%` }} />
           ))}
         </div>
-        <ul className="mt-3 space-y-1.5">
+        <ul className="mt-4 space-y-2.5">
           {WEIGHT_ROWS.map((w) => (
-            <li key={w.key} className="flex items-baseline gap-2.5 text-[13px]">
-              <span className={`relative top-[1px] h-2.5 w-2.5 shrink-0 rounded-full ${w.color}`} />
-              <span className="w-[92px] shrink-0 font-medium text-ink">{w.label}</span>
-              <span className="w-8 shrink-0 tabular-nums text-ink">{Math.round(WEIGHTS[w.key] * 100)}%</span>
-              <span className="min-w-0 text-muted">{w.note}</span>
+            <li key={w.key} className="flex gap-2.5">
+              <span className={`mt-[5px] h-2.5 w-2.5 shrink-0 rounded-full ${w.color}`} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline justify-between gap-3 text-[13px]">
+                  <span className="font-medium text-ink">{w.label}</span>
+                  <span className="tabular-nums text-ink">{Math.round(WEIGHTS[w.key] * 100)}%</span>
+                </div>
+                <p className="text-caption">{w.note}</p>
+              </div>
             </li>
           ))}
         </ul>

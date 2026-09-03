@@ -68,11 +68,11 @@ export default function HomePage() {
       {/* Search */}
       <div className="sticky top-0 z-20 bg-white px-4 pb-2 pt-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 flex-1 items-center gap-3 rounded-full border border-line px-4 text-muted">
+          <Link href="/search" className="flex h-11 flex-1 items-center gap-3 rounded-full border border-line px-4 text-muted">
             <Search size={18} strokeWidth={1.75} />
-            <span className="flex-1 text-[15px]">Search</span>
+            <span className="flex-1 text-left text-[15px]">Search</span>
             <Camera size={18} strokeWidth={1.75} />
-          </div>
+          </Link>
           <MessageCircle size={24} strokeWidth={1.5} className="text-ink" />
         </div>
         {/* Personalization bar */}

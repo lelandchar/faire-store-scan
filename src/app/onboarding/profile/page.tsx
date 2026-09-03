@@ -262,6 +262,16 @@ export default function ProfilePage() {
           })}
         </div>
       </section>
+      <button
+        type="button"
+        onClick={() => {
+          dispatch({ type: "resetScan" });
+          router.replace("/onboarding/scan");
+        }}
+        className="mb-2 mt-4 w-full py-2 text-center text-[13px] text-muted underline underline-offset-4"
+      >
+        Delete my walkthrough and start over
+      </button>
     </Screen>
   );
 }
