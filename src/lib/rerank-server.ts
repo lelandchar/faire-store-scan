@@ -284,10 +284,9 @@ export async function rerankProducts(opts: {
       `The LLM rerank failed (${lastStatus}): ${lastBody.slice(0, 200)}`,
     );
   };
-  // At most three batches in flight, so a burst does not trip provider rate limits.
-  const parts: Record<string, number>[] = [];
-  for (let i = 0; i < batches.length; i += 3)
-    parts.push(...(await Promise.all(batches.slice(i, i + 3).map(runBatch))));
+  // All batches in flight at once (six for 60 candidates); a 429 falls through the model chain
+  // with backoff rather than serializing the healthy case.
+  const parts: Record<string, number>[] = await Promise.all(batches.map(runBatch));
   const fits: Record<string, number> = Object.assign({}, ...parts);
   return {
     ...base,
